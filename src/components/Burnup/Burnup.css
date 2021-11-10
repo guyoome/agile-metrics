@@ -1,0 +1,28 @@
+.flex-container {
+    display: flex;
+    flex-flow: column no-wrap;
+    justify-content: space-around;
+}
+
+.flex-item {
+    /* width: fit-content; */
+    /* flex-grow: 1; */
+    /* flex-shrink: 3; */
+}
+
+.mt-5 {
+    margin-top: 32px;
+}
+
+.highlight {
+    /* color: blue; */
+    font-size: calc(1em*1.438);
+    font-weight: bold;
+}
+
+p {
+    font-size: 1rem;
+    line-height: normal;
+    font-weight: 400;
+    color: #27416b;
+}
