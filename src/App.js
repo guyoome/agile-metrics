@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Burnup from './components/Burnup/Burnup.js';
+import Burnup from './Burnup/Burnup';
 
 function App() {
   return (
