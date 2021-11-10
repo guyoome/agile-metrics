@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Dropdown from '../atoms/Dropdown';
-import TEAMS from '../../constants/teams';
-import Epic from './core/Epic';
+import Dropdown from '../components/Dropdown';
+import Teams from '../utils/Teams';
+// import Epic from './core/Epic';
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
-
 import "./Burnup.css"
 
 const getEndSprint = (quarterEnd, sprints) => {
@@ -56,6 +55,8 @@ const getEndSprint = (quarterEnd, sprints) => {
 const getChartDataSetForecast = () => {
 
 }
+import burnup from "./Burnup.logic";
+
 
 
 /**
@@ -100,6 +101,7 @@ function Burnup() {
                 })
                 .catch(error => console.log('error', error));
         }
+        
     }, [team])
 
     /**
@@ -128,6 +130,7 @@ function Burnup() {
                 })
                 .catch(error => console.log('error', error));
         }
+        console.log("getNotDoneEpicsSummary", burnup.getNotDoneEpicsSummary(epicList))
     }, [epic, team])
 
     /**
@@ -135,7 +138,7 @@ function Burnup() {
      * @hook
      */
     useEffect(() => {
-        const chartDataSet = Epic.getChartDataSet(sprints, history, quarterStart);
+        const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart);
         setChartData(chartDataSet);
         console.log("get last sprint: ", getEndSprint(quarterEnd, sprints))
 
@@ -149,14 +152,14 @@ function Burnup() {
 
                 <div className="flex-item">
                     <Dropdown default="choose a team"
-                        options={TEAMS.getTags()}
-                        value={(e) => { setTeam(TEAMS.getTeamByTag(e)) }} />
+                        options={Teams.getTags()}
+                        value={(e) => { setTeam(Teams.getTeamByTag(e)) }} />
                 </div>
 
                 <div className="flex-item">
                     <Dropdown default="choose an epic"
-                        options={Epic.getNotDoneEpicsSummary(epicList)}
-                        value={(e) => { setEpic(Epic.getEpicBySummary(epicList, e)) }}
+                        options={burnup.getNotDoneEpicsSummary(epicList)}
+                        value={(e) => { setEpic(burnup.getEpicBySummary(epicList, e)) }}
                     />
                 </div>
 
