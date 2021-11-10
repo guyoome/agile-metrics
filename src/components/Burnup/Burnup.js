@@ -128,8 +128,8 @@ function Burnup() {
                 <ResponsiveContainer height={400}>
                     <LineChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
-                        <Line type="monotone" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
-                        <Line type="monotone" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
+                        <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
+                        <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
                         <XAxis dataKey="name" />
                         <YAxis />
                     </LineChart>
