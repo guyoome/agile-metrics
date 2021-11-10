@@ -1,4 +1,5 @@
 const Epic = {
+
     /**
      * Get the list of epic summaries not done
      * @param {Array} epics - List of epics
@@ -13,6 +14,7 @@ const Epic = {
         });
         return summaries;
     },
+
     /**
      * Get the epic that have a specific summary
      * @param {Array} epics - List of epics
@@ -28,6 +30,7 @@ const Epic = {
         });
         return epicBySummary;
     },
+
     getScope: function (sprints, history) {
         const scope = new Array(sprints.length);
         scope.fill(0);
@@ -52,6 +55,7 @@ const Epic = {
 
         return scope;
     },
+
     getDoneIssues: function (sprints, history) {
         const doneIssues = new Array(sprints.length);
         doneIssues.fill(0);
@@ -75,6 +79,7 @@ const Epic = {
 
         return doneIssues;
     },
+
     getStartSprint: function (quarter, sprints) {
         // quarter === 1/2/3/4
         // 1 - Janvier/Fevrier/Mars
@@ -111,6 +116,7 @@ const Epic = {
 
         return startSprint;
     },
+
     /**
      * Assign the project to an employee.
      * @param {Array} employee - The employee who is responsible for the project.
@@ -124,6 +130,7 @@ const Epic = {
         ));
         return chartDataSet.slice(sliceStart);
     },
+
     /**
      * Get the Data set to print a chart with Rechart
      * @param {Array} sprints - list of a team sprints

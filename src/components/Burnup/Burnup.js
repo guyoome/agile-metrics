@@ -6,6 +6,57 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
 
 import "./Burnup.css"
 
+const getEndSprint = (quarterEnd, sprints) => {
+    // quarter === 1/2/3/4
+    // 1 - Janvier/Fevrier/Mars
+    // 2 - Avril/Mai/Juin
+    // 3 - Juillet/Aout/Septembre
+    // 4 - Octobre/Novembre/Decembre
+    // new Date(year,monthID,day)
+
+    const today = new Date();
+    let firstDayOfQuarter = new Date(today.getFullYear(), 0).getTime()
+    switch (quarterEnd + 1) {
+        case 5:
+            firstDayOfQuarter = new Date(today.getFullYear() + 1, 0).getTime()
+            // return 01/10/today.year
+            break;
+        case 4:
+            firstDayOfQuarter = new Date(today.getFullYear(), 9).getTime()
+            // return 01/10/today.year
+            break;
+        case 3:
+            firstDayOfQuarter = new Date(today.getFullYear(), 6).getTime()
+            // return 01/07/today.year
+            break;
+        case 2:
+            firstDayOfQuarter = new Date(today.getFullYear(), 3).getTime()
+            // return 01/04/today.year 
+            break;
+    }
+
+    let endSprint = sprints.at(-1);
+
+    sprints.forEach((sprint, i) => {
+        if (firstDayOfQuarter <= sprint.startTime && firstDayOfQuarter > (typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1].startTime : sprint.startTime)) {
+            endSprint = typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1] : sprint;
+            // We can add abreak here /!\
+        }
+    });
+
+    if (endSprint === sprints.at(-1)) {
+        console.log("aaaaa");
+        
+        
+    }
+
+    return endSprint;
+}
+
+const getChartDataSetForecast = () => {
+
+}
+
 
 /**
  * Component for showing an Epic Burnup chart of a Team.
@@ -86,8 +137,9 @@ function Burnup() {
     useEffect(() => {
         const chartDataSet = Epic.getChartDataSet(sprints, history, quarterStart);
         setChartData(chartDataSet);
+        console.log("get last sprint: ", getEndSprint(quarterEnd, sprints))
 
-    }, [history, sprints, quarterStart])
+    }, [history, sprints, quarterStart, quarterEnd])
 
 
 
@@ -114,6 +166,13 @@ function Burnup() {
                     <Dropdown default="choose start Quarter"
                         options={["1", "2", "3", "4"]}
                         value={(e) => { setQuarterStart(parseInt(e, 10)) }}
+                    />
+                </div>
+
+                <div className="flex-item">
+                    <Dropdown default="choose end Quarter"
+                        options={["1", "2", "3", "4"]}
+                        value={(e) => { setQuarterEnd(parseInt(e, 10)) }}
                     />
                 </div>
             </div>
