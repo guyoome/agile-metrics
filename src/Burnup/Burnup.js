@@ -3,9 +3,13 @@ import Dropdown from '../components/Dropdown';
 import Teams from '../utils/Teams';
 // import Epic from './core/Epic';
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import burnup from "./Burnup.logic";
+
 import "./Burnup.css"
 
-const getEndSprint = (quarterEnd, sprints) => {
+
+const getForecastScope = (sprints, quarterEnd) => {
+    const forecastScope = [];
     // quarter === 1/2/3/4
     // 1 - Janvier/Fevrier/Mars
     // 2 - Avril/Mai/Juin
@@ -34,29 +38,150 @@ const getEndSprint = (quarterEnd, sprints) => {
             break;
     }
 
-    let endSprint = sprints.at(-1);
+    // Define the last sprint 
+    // let endSprint = {};
 
-    sprints.forEach((sprint, i) => {
-        if (firstDayOfQuarter <= sprint.startTime && firstDayOfQuarter > (typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1].startTime : sprint.startTime)) {
-            endSprint = typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1] : sprint;
-            // We can add abreak here /!\
+    if (sprints.length > 0) {
+
+
+        let endSprint;
+
+        sprints.forEach((sprint, i) => {
+            if (firstDayOfQuarter <= sprint.startTime && firstDayOfQuarter > (typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1].startTime : sprint.startTime)) {
+                endSprint = typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1] : sprint;
+                // We can add abreak here /!\
+            }
+        });
+
+        if (typeof endSprint === "undefined") {
+            // console.log('(sprints.at(-1)).endTime:',sprints.at(-1).endTime)
+            let lastSprintEndTime = (sprints.at(-1)).endTime;
+            // console.log
+            let i = 0
+            while (typeof endSprint === "undefined") {
+                forecastScope.push({ name: "Sprint X", startTime: lastSprintEndTime, endTime: lastSprintEndTime + 1209600 })
+                if (firstDayOfQuarter <= forecastScope.startTime && firstDayOfQuarter > (typeof forecastScope[i - 1] !== 'undefined' ? forecastScope[i - 1].startTime : forecastScope.startTime)) {
+                    endSprint = typeof forecastScope[i - 1] !== 'undefined' ? forecastScope[i - 1] : forecastScope;
+                    // We can add abreak here /!\
+                } else {
+                    lastSprintEndTime = typeof forecastScope.at(-1) ? forecastScope.at(-1).endTime : forecastScope.at(0);
+                    i++;
+                }
+            }
+
+        }
+    }
+
+    return forecastScope;
+    // return Array[{name:"sprint X"}]
+}
+
+// const updateEndSprint = (sprints, quarterEnd) => {
+//     // quarter === 1/2/3/4
+//     // 1 - Janvier/Fevrier/Mars
+//     // 2 - Avril/Mai/Juin
+//     // 3 - Juillet/Aout/Septembre
+//     // 4 - Octobre/Novembre/Decembre
+//     // new Date(year,monthID,day)
+
+//     const today = new Date();
+//     let firstDayOfQuarter = new Date(today.getFullYear(), 0).getTime()
+//     switch (quarterEnd + 1) {
+//         case 5:
+//             firstDayOfQuarter = new Date(today.getFullYear() + 1, 0).getTime()
+//             // return 01/10/today.year
+//             break;
+//         case 4:
+//             firstDayOfQuarter = new Date(today.getFullYear(), 9).getTime()
+//             // return 01/10/today.year
+//             break;
+//         case 3:
+//             firstDayOfQuarter = new Date(today.getFullYear(), 6).getTime()
+//             // return 01/07/today.year
+//             break;
+//         case 2:
+//             firstDayOfQuarter = new Date(today.getFullYear(), 3).getTime()
+//             // return 01/04/today.year 
+//             break;
+//     }
+
+//     let endSprint = sprints.at(-1);
+
+//     sprints.forEach((sprint, i) => {
+//         if (firstDayOfQuarter <= sprint.startTime && firstDayOfQuarter > (typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1].startTime : sprint.startTime)) {
+//             endSprint = typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1] : sprint;
+//             // We can add abreak here /!\
+//         }
+//     });
+
+//     if (endSprint === sprints.at(-1)) {
+//         console.log("aaaaa");
+
+
+//     }
+
+//     return endSprint;
+// }
+
+// const getChartDataSetForecast = () => {
+
+// }
+
+const getAverageDoneBySprint = (sprints, history, interval = 10) => {
+    const chartDataSet = burnup.getChartDataSet(sprints, history, 0);
+
+    let totalDoneIssues = 0;
+    let totalSprints = chartDataSet.length;
+
+    chartDataSet.forEach((element, i) => {
+        console.log(element.doneIssues)
+        const done = element.doneIssues - (i === 0 ? 0 : chartDataSet[i - 1].doneIssues);
+        totalDoneIssues += done;
+        if (element.doneIssues === 0) {
+            totalSprints--;
         }
     });
 
-    if (endSprint === sprints.at(-1)) {
-        console.log("aaaaa");
-        
-        
+    const averageDoneBySprint = totalDoneIssues / totalSprints;
+
+    return averageDoneBySprint;
+}
+
+const getForecast = (forecastScope, sprints, history) => {
+    let forecast = [];
+    if (forecastScope > 0) {
+        forecast = new Array(forecastScope);
+        forecast.fill({ name: "Sprint " });
     }
 
-    return endSprint;
+
+    const lastSprint = sprints.slice(-1);
+    let lastSprintName
+    let lastSprintID;
+    if (lastSprint.length > 0) {
+        lastSprintName = lastSprint[0].name;
+        lastSprintID = parseInt(lastSprintName.replace(/[^0-9]/g, ""), 10);
+    }
+
+    const scope = burnup.getScope(sprints, history);
+
+    forecast.forEach((element, i) => {
+        forecast[i] = {
+            name: element.name + (lastSprintID + 1),
+            scope: scope.at(-1).value
+        }
+        lastSprintID++
+    });
+
+    console.log("getAverageDoneBySprint", getAverageDoneBySprint(sprints, history));
+    const avg = getAverageDoneBySprint(sprints, history);
+
+    forecast.forEach((element, i) => {
+        forecast[i].avg = (i > 0 ? forecast[i - 1] + avg : avg)
+    });
+
+    return forecast;
 }
-
-const getChartDataSetForecast = () => {
-
-}
-import burnup from "./Burnup.logic";
-
 
 
 /**
@@ -68,7 +193,7 @@ function Burnup() {
     const [team, setTeam] = useState({});
     const [epic, setEpic] = useState([]);
     const [quarterStart, setQuarterStart] = useState();
-    const [quarterEnd, setQuarterEnd] = useState();
+    const [forecastScope, setForecastScope] = useState(0);
 
     const [chartData, setChartData] = useState([]);
 
@@ -101,7 +226,7 @@ function Burnup() {
                 })
                 .catch(error => console.log('error', error));
         }
-        
+
     }, [team])
 
     /**
@@ -139,11 +264,13 @@ function Burnup() {
      */
     useEffect(() => {
         const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart);
-        setChartData(chartDataSet);
-        console.log("get last sprint: ", getEndSprint(quarterEnd, sprints))
+        setChartData(chartDataSet.concat(getForecast(forecastScope, sprints, history)));
 
-    }, [history, sprints, quarterStart, quarterEnd])
+        // if (forecastScope && sprints !== []) {
+        //     console.log("🎈getForecast🎈", getForecast(forecastScope, sprints, history))
+        // }
 
+    }, [history, sprints, quarterStart])
 
 
     return (
@@ -173,9 +300,9 @@ function Burnup() {
                 </div>
 
                 <div className="flex-item">
-                    <Dropdown default="choose end Quarter"
-                        options={["1", "2", "3", "4"]}
-                        value={(e) => { setQuarterEnd(parseInt(e, 10)) }}
+                    <Dropdown default="choose forecast"
+                        options={["1", "2", "3", "4", "5"]}
+                        value={(e) => { setForecastScope(parseInt(e, 10)) }}
                     />
                 </div>
             </div>
@@ -183,8 +310,8 @@ function Burnup() {
             <p>The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
                 for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
 
-            <p>From <span className="highlight">{quarterStart ? "Q" + quarterStart : "..."}</span>,
-                to <span className="highlight">{quarterEnd ? "Q" + quarterEnd : "..."}</span> </p>
+            <p>From <span className="highlight">{quarterStart ? "Q" + quarterStart : "..."}</span>,</p>
+            {/* to <span className="highlight">{forecastScope ? "Q" + quarterEnd : "..."}</span> */}
 
             <div className="mt-5">
                 <ResponsiveContainer height={400}>
@@ -192,6 +319,7 @@ function Burnup() {
                         <CartesianGrid stroke="#ccc" />
                         <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
                         <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
+                        <Line type="linear" dataKey="avg" stroke="#f00" strokeWidth={2} />
                         <XAxis dataKey="name" />
                         <YAxis />
                     </LineChart>

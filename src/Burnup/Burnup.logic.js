@@ -53,6 +53,7 @@ const getScope = (sprints, history) => {
         scope[i].value = (scope[i - 1] ? scope[i - 1].value + elementValue : elementValue);
     });
 
+    console.log("SCOPE:",scope)
     return scope;
 }
 
@@ -132,6 +133,8 @@ const getChartDataBegin = (chartDataSet, startSprint) => {
     ));
     return chartDataSet.slice(sliceStart);
 }
+
+
 
 
 /**

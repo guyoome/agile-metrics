@@ -24,7 +24,11 @@ function Dropdown(props) {
         <div className="dropdown-container">
             <select className="dropdown" onChange={(e) => { setValue(e.target.value) }} defaultValue={placeholder}>
 
-                <option className="dropdown-item" disabled value={placeholder}>{placeholder}</option>
+                <option className="dropdown-item"
+                    disabled
+                    value={props.defaultValue ? props.defaultValue : placeholder}
+                >{placeholder}</option>
+
                 {options.map((option, i) => (
                     <option key={i} value={option}>{option}</option>
                 ))}
