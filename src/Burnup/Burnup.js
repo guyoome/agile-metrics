@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Dropdown from '../components/Dropdown';
+import Number from '../components/Number';
 import Teams from '../utils/Teams';
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import burnup from "./Burnup.logic";
@@ -118,18 +119,16 @@ function Burnup() {
                 </div>
 
                 <div className="flex-item">
-                    <Dropdown default="choose forecast"
-                        options={["1", "2", "3", "4", "5"]}
-                        value={(e) => { setForecastScope(parseInt(e, 10)) }}
-                    />
+                    <Number
+                        value={(e) => { setForecastScope(parseInt(e, 10)) }} />
                 </div>
             </div>
 
             <p>The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
                 for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
 
-            <p>From <span className="highlight">{quarterStart ? "Q" + quarterStart : "..."}</span>,</p>
-            {/* to <span className="highlight">{forecastScope ? "Q" + quarterEnd : "..."}</span> */}
+            <p>From <span className="highlight">{quarterStart ? "Q" + quarterStart : "..."}</span>,
+            forecast on  <span className="highlight">{forecastScope ? forecastScope + " Sprints" : "..."}</span></p>
 
             <div className="mt-5">
                 <ResponsiveContainer height={400}>
@@ -139,7 +138,7 @@ function Burnup() {
                         <Line type="linear" dataKey="avg" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="avgmore" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="avgless" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                        <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3}/>
+                        <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
                         <XAxis dataKey="name" />
                         <YAxis />
                     </LineChart>
