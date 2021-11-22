@@ -53,7 +53,7 @@ const getScope = (sprints, history) => {
         scope[i].value = (scope[i - 1] ? scope[i - 1].value + elementValue : elementValue);
     });
 
-    console.log("SCOPE:",scope)
+    // console.log("SCOPE:", scope)
     return scope;
 }
 
@@ -143,7 +143,7 @@ const getChartDataBegin = (chartDataSet, startSprint) => {
  * @param {Object} history - history of tickets
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
-const getChartDataSet = (sprints, history, quarterStart) => {
+const getChartDataSet = (sprints, history, quarterStart, forecast) => {
     let chartDataSet = [];
 
     const scope = getScope(sprints, history);
@@ -159,7 +159,82 @@ const getChartDataSet = (sprints, history, quarterStart) => {
 
     const startSprint = getStartSprint(quarterStart, sprints);
 
-    return getChartDataBegin(chartDataSet, startSprint);;
+    chartDataSet = getChartDataBegin(chartDataSet, startSprint);
+
+    if (forecast && sprints !== []) {
+        // let chartDataSetWithForecast = getForecast(forecast, chartDataSet, sprints, history);
+        chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
+        // chartDataSetWithForecast = chartDataSetWithForecast.slice(1);
+        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
+    }
+
+    console.log("🍊Chart Data Set🍊", chartDataSet)
+    return chartDataSet;
+}
+
+const getAverageDoneBySprint = (sprints, history, interval = 10) => {
+    const chartDataSet = getChartDataSet(sprints, history, 0);
+
+    let totalDoneIssues = 0;
+    let totalSprints = chartDataSet.length;
+
+    chartDataSet.forEach((element, i) => {
+        console.log(element.doneIssues)
+        const done = element.doneIssues - (i === 0 ? 0 : chartDataSet[i - 1].doneIssues);
+        totalDoneIssues += done;
+        if (element.doneIssues === 0) {
+            totalSprints--;
+        }
+    });
+
+    const averageDoneBySprint = totalDoneIssues / totalSprints;
+
+    return averageDoneBySprint;
+}
+
+const getForecast = (forecastScope, chartDataSet, sprints, history) => {
+    let forecast = [];
+    if (forecastScope > 0) {
+        forecast = new Array(forecastScope);
+        forecast.fill({ name: "Sprint " });
+    }
+    
+
+    
+
+    const lastSprint = sprints.slice(-1);
+    let lastSprintName
+    let lastSprintID;
+    if (lastSprint.length > 0) {
+        lastSprintName = lastSprint[0].name;
+        lastSprintID = parseInt(lastSprintName.replace(/[^0-9]/g, ""), 10);
+    }
+
+    const scope = getScope(sprints, history);
+
+    forecast.forEach((element, i) => {
+        forecast[i] = {
+            name: element.name + (lastSprintID + 1),
+            scope: scope.at(-1).value
+        }
+        lastSprintID++
+
+    });
+
+    // console.log("getAverageDoneBySprint", getAverageDoneBySprint(sprints, history));
+    const avg = getAverageDoneBySprint(sprints, history);
+
+
+    // init the first value
+    const initDoneIssues = chartDataSet.at(-1).doneIssues;
+
+    console.log("🌮Forecast🌮", forecast);
+
+    forecast.forEach((element, i) => {
+        forecast[i].avg = (i > 0 ? (forecast[i - 1].avg + avg) : (initDoneIssues + avg))
+    });
+
+    return forecast;
 }
 
 export default {
@@ -169,5 +244,6 @@ export default {
     getDoneIssues,
     getStartSprint,
     getChartDataBegin,
-    getChartDataSet
+    getChartDataSet,
+    getForecast
 }
