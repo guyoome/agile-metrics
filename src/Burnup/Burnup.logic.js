@@ -134,44 +134,6 @@ const getChartDataBegin = (chartDataSet, startSprint) => {
 }
 
 
-
-
-/**
- * Get the Data set to print a chart with Rechart
- * @param {Array} sprints - list of a team sprints
- * @param {Object} history - history of tickets
- * @param {Number} quarterStrat - The beginning of the chart data set 
- */
-const getChartDataSet = (sprints, history, quarterStart, forecast) => {
-    let chartDataSet = [];
-
-    const scope = getScope(sprints, history);
-    const doneIssues = getDoneIssues(sprints, history);
-
-    for (let i = 0; i < sprints.length; i++) {
-        chartDataSet.push({
-            name: scope[i].name,
-            scope: scope[i].value,
-            doneIssues: doneIssues[i].value
-        })
-    }
-
-    const startSprint = getStartSprint(quarterStart, sprints);
-
-    chartDataSet = getChartDataBegin(chartDataSet, startSprint);
-
-    if (forecast && sprints !== []) {
-        // let chartDataSetWithForecast = getForecast(forecast, chartDataSet, sprints, history);
-        chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
-        // chartDataSetWithForecast = chartDataSetWithForecast.slice(1);
-        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
-
-        chartDataSet = getForecastInterval(chartDataSet, 10)
-    }
-
-    return chartDataSet;
-}
-
 const getAverageDoneBySprint = (sprints, history, interval = 10) => {
     const chartDataSet = getChartDataSet(sprints, history, 0);
 
@@ -247,13 +209,48 @@ const getForecastInterval = (chartDataSet, interval) => {
     return chartDataSet;
 }
 
+
+/**
+ * Get the Data set to print a chart with Rechart
+ * @param {Array} sprints - list of a team sprints
+ * @param {Object} history - history of tickets
+ * @param {Number} quarterStrat - The beginning of the chart data set 
+ */
+ const getChartDataSet = (sprints, history, quarterStart, forecast) => {
+    let chartDataSet = [];
+
+    const scope = getScope(sprints, history);
+    const doneIssues = getDoneIssues(sprints, history);
+
+    for (let i = 0; i < sprints.length; i++) {
+        chartDataSet.push({
+            name: scope[i].name,
+            scope: scope[i].value,
+            doneIssues: doneIssues[i].value
+        })
+    }
+
+    const startSprint = getStartSprint(quarterStart, sprints);
+
+    chartDataSet = getChartDataBegin(chartDataSet, startSprint);
+
+    // Add forecast
+    if (forecast && sprints !== []) {
+        // forecast start at the end of doneIssues Line
+        chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
+
+        // Enrich with avg Forecast
+        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
+
+        // Enrich with high & low forecast
+        chartDataSet = getForecastInterval(chartDataSet, 10)
+    }
+
+    return chartDataSet;
+}
+
 export default {
     getNotDoneEpicsSummary,
     getEpicBySummary,
-    getScope,
-    getDoneIssues,
-    getStartSprint,
-    getChartDataBegin,
     getChartDataSet,
-    getForecast
 }
