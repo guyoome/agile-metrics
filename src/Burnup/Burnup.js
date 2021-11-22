@@ -78,7 +78,6 @@ function Burnup() {
                 })
                 .catch(error => console.log('error', error));
         }
-        console.log("getNotDoneEpicsSummary", burnup.getNotDoneEpicsSummary(epicList))
     }, [epic, team])
 
     /**
@@ -89,11 +88,7 @@ function Burnup() {
         const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope);
         setChartData(chartDataSet);
 
-        // if (forecastScope && sprints !== []) {
-        //     console.log("🎈getForecast🎈", getForecast(forecastScope, sprints, history))
-        // }
-
-    }, [history, sprints, quarterStart])
+    }, [history, sprints, quarterStart, forecastScope])
 
 
     return (
