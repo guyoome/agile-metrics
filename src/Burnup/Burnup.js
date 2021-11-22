@@ -141,8 +141,10 @@ function Burnup() {
                     <LineChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
                         <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
-                        <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
-                        <Line type="linear" dataKey="avg" stroke="#f00" strokeWidth={2} />
+                        <Line type="linear" dataKey="avg" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="avgmore" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="avgless" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3}/>
                         <XAxis dataKey="name" />
                         <YAxis />
                     </LineChart>

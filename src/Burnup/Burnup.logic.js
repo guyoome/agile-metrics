@@ -166,6 +166,8 @@ const getChartDataSet = (sprints, history, quarterStart, forecast) => {
         chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
         // chartDataSetWithForecast = chartDataSetWithForecast.slice(1);
         chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
+
+        chartDataSet = getForecastInterval(chartDataSet, 10)
     }
 
     console.log("🍊Chart Data Set🍊", chartDataSet)
@@ -198,9 +200,9 @@ const getForecast = (forecastScope, chartDataSet, sprints, history) => {
         forecast = new Array(forecastScope);
         forecast.fill({ name: "Sprint " });
     }
-    
 
-    
+
+
 
     const lastSprint = sprints.slice(-1);
     let lastSprintName
@@ -235,6 +237,23 @@ const getForecast = (forecastScope, chartDataSet, sprints, history) => {
     });
 
     return forecast;
+}
+
+const getForecastInterval = (chartDataSet, interval) => {
+    chartDataSet.forEach((element, i) => {
+        if (element.avg) {
+            if (element.avg !== element.doneIssues) {
+                chartDataSet[i].avgless = element.avg * (1 - interval / 100);
+                chartDataSet[i].avgmore = element.avg * (1 + interval / 100);
+
+            } else {
+                chartDataSet[i].avgless = element.doneIssues;
+                chartDataSet[i].avgmore = element.doneIssues;
+            }
+        }
+    });
+
+    return chartDataSet;
 }
 
 export default {
