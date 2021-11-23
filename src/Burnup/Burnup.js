@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import * as Input from "../components/Input";
 import Teams from '../utils/Teams';
-import { ResponsiveContainer, LineChart, ComposedChart, Bar, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
-import burnup from "./Burnup.logic";
+import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend } from 'recharts';
+import * as burnup from "./Burnup.logic";
 
 import "./Burnup.css"
 
@@ -15,7 +15,7 @@ import "./Burnup.css"
 function Burnup() {
     const [team, setTeam] = useState({});
     const [epic, setEpic] = useState([]);
-    const [quarterStart, setQuarterStart] = useState();
+    const [sprintStart, setSprintStart] = useState();
     const [forecastScope, setForecastScope] = useState(0);
 
     const [chartData, setChartData] = useState([]);
@@ -25,6 +25,8 @@ function Burnup() {
     const [epicList, setEpicList] = useState([])
 
     const [isQuarterShown, setIsQuarterShown] = useState(false);
+
+    const [showLegend, setShowLegend] = useState(false);
 
     /**
      * Fetch Epic List
@@ -87,10 +89,12 @@ function Burnup() {
      * @hook
      */
     useEffect(() => {
-        const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
+        // const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
+        const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, isQuarterShown);
+
         setChartData(chartDataSet);
 
-    }, [history, sprints, quarterStart, forecastScope,isQuarterShown])
+    }, [history, sprints, sprintStart, forecastScope, isQuarterShown])
 
 
     return (
@@ -113,9 +117,13 @@ function Burnup() {
             </div>
             <div className="flex-container mt-5">
                 <div className="flex-item">
-                    <Input.Dropdown default="choose start Quarter"
+                    {/* <Input.Dropdown default="choose start Quarter"
                         options={["1", "2", "3", "4"]}
                         value={(e) => { setQuarterStart(parseInt(e, 10)) }}
+                    /> */}
+                    <Input.Dropdown default="choose start Sprint"
+                        options={burnup.getSprints(sprints)}
+                        value={(e) => { setSprintStart(e) }}
                     />
                 </div>
 
@@ -128,14 +136,21 @@ function Burnup() {
             <p>The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
                 for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
 
-            <p>From <span className="highlight">{quarterStart ? "Q" + quarterStart : "..."}</span>,
-                forecast on  <span className="highlight">{forecastScope ? forecastScope + " Sprints" : "..."}</span></p>
+            <p>From <span className="highlight">{sprintStart ? sprintStart : "..."}</span>,
+                with a forecast on  <span className="highlight">{forecastScope ? forecastScope + " Sprints" : "..."}</span></p>
 
             <div className="mt-5">
                 <ResponsiveContainer height={400}>
                     <ComposedChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
-                        <Bar dataKey="quarter" barSize={20} fill="#FAC9C1" />
+                        {!!showLegend ?
+                            <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+                            : ""
+                        }
+
+                        <Bar dataKey="quarter" barSize={40} fill="#FAC9C1" >
+                            <LabelList dataKey="quarterlabel" fill="#ed1c24" fontWeight="bold" position="insideTop" />
+                        </Bar>
                         <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
                         <Line type="linear" dataKey="avg" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="avgmore" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
@@ -153,7 +168,13 @@ function Burnup() {
                 <div className="flex-item">
                     <p>Show Quarters
                         <Input.Checkbox
-                            value={(e) => {setIsQuarterShown(e) }} />
+                            value={(e) => { setIsQuarterShown(e) }} />
+                    </p>
+                </div>
+                <div className="flex-item">
+                    <p>Show Burnup Legend
+                        <Input.Checkbox
+                            value={(e) => { setShowLegend(e) }} />
                     </p>
                 </div>
             </div>

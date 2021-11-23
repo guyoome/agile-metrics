@@ -104,6 +104,8 @@ const getStartSprint = (quarter, sprints) => {
             firstDayOfQuarter = new Date(today.getFullYear(), 3).getTime()
             // return 01/04/today.year 
             break;
+        default:
+            break;
     }
 
     let startSprint = sprints[0];
@@ -209,6 +211,13 @@ const getForecastInterval = (chartDataSet, interval) => {
     return chartDataSet;
 }
 
+const getSprints = (sprintsList) => {
+    const sprints = [];
+    sprintsList.forEach(element => {
+        sprints.push(element.name)
+    });
+    return sprints;
+}
 
 
 /**
@@ -217,7 +226,9 @@ const getForecastInterval = (chartDataSet, interval) => {
  * @param {Object} history - history of tickets
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
-const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShown) => {
+// const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShown) => {
+const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown) => {
+
     let chartDataSet = [];
 
     const scope = getScope(sprints, history);
@@ -231,9 +242,13 @@ const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShow
         })
     }
 
-    const startSprint = getStartSprint(quarterStart, sprints);
 
-    chartDataSet = getChartDataBegin(chartDataSet, startSprint);
+    // const startSprint = getStartSprint(quarterStart, sprints);
+    //     chartDataSet = getChartDataBegin(chartDataSet, startSprint);
+    if (sprintStart) {
+        chartDataSet = getChartDataBegin(chartDataSet, { name: sprintStart });
+    }
+
 
     // Add forecast
     if (forecast && sprints !== []) {
@@ -248,7 +263,7 @@ const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShow
     }
 
     if (isQuarterShown) {
-        const firstsSprintQuarter= []
+        const firstsSprintQuarter = []
         for (let index = 0; index < 4; index++) {
             firstsSprintQuarter.push(getStartSprint(index + 1, sprints))
         }
@@ -258,9 +273,10 @@ const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShow
 
             for (let j = 0; j < firstsSprintQuarter.length; j++) {
                 const firstSprintQuarter = firstsSprintQuarter[j];
-                
+
                 if (firstSprintQuarter.name === sprint.name) {
-                    chartDataSet[i].quarter = Math.max.apply(Math, chartDataSet.map(function(o) { return o.scope; }))
+                    chartDataSet[i].quarter = Math.max.apply(Math, chartDataSet.map(function (o) { return o.scope; }));
+                    chartDataSet[i].quarterlabel = "Q".concat(j + 1);
                 }
             }
         }
@@ -269,8 +285,9 @@ const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShow
     return chartDataSet;
 }
 
-export default {
+export {
     getNotDoneEpicsSummary,
     getEpicBySummary,
     getChartDataSet,
+    getSprints
 }
