@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import Dropdown from '../components/Dropdown';
-// import Number from '../components/Number';
 import * as Input from "../components/Input";
 import Teams from '../utils/Teams';
 import { ResponsiveContainer, LineChart, ComposedChart, Bar, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
@@ -25,6 +23,8 @@ function Burnup() {
     const [history, setHistory] = useState({});
     const [sprints, setSprints] = useState([]);
     const [epicList, setEpicList] = useState([])
+
+    const [isQuarterShown, setIsQuarterShown] = useState(false);
 
     /**
      * Fetch Epic List
@@ -87,10 +87,10 @@ function Burnup() {
      * @hook
      */
     useEffect(() => {
-        const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope);
+        const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
         setChartData(chartDataSet);
 
-    }, [history, sprints, quarterStart, forecastScope])
+    }, [history, sprints, quarterStart, forecastScope,isQuarterShown])
 
 
     return (
@@ -135,12 +135,12 @@ function Burnup() {
                 <ResponsiveContainer height={400}>
                     <ComposedChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
+                        <Bar dataKey="quarter" barSize={20} fill="#413ea033" />
                         <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
                         <Line type="linear" dataKey="avg" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="avgmore" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="avgless" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
-                        <Bar dataKey="doneIssues" barSize={20} fill="#413ea0" />
                         <XAxis dataKey="name" />
                         <YAxis />
                     </ComposedChart >
@@ -152,11 +152,9 @@ function Burnup() {
 
                 <div className="flex-item">
                     <p>Show Quarters
-                        <input type="checkbox" id="scales" name="scales" ></input>
+                        <Input.Checkbox
+                            value={(e) => {setIsQuarterShown(e) }} />
                     </p>
-                    {/* <Dropdown default="choose a team"
-                        options={Teams.getTags()}
-                        value={(e) => { setTeam(Teams.getTeamByTag(e)) }} /> */}
                 </div>
             </div>
 

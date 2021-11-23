@@ -210,13 +210,14 @@ const getForecastInterval = (chartDataSet, interval) => {
 }
 
 
+
 /**
  * Get the Data set to print a chart with Rechart
  * @param {Array} sprints - list of a team sprints
  * @param {Object} history - history of tickets
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
- const getChartDataSet = (sprints, history, quarterStart, forecast) => {
+const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShown) => {
     let chartDataSet = [];
 
     const scope = getScope(sprints, history);
@@ -244,6 +245,25 @@ const getForecastInterval = (chartDataSet, interval) => {
 
         // Enrich with high & low forecast
         chartDataSet = getForecastInterval(chartDataSet, 10)
+    }
+
+    if (isQuarterShown) {
+        const firstsSprintQuarter= []
+        for (let index = 0; index < 4; index++) {
+            firstsSprintQuarter.push(getStartSprint(index + 1, sprints))
+        }
+
+        for (let i = 0; i < chartDataSet.length; i++) {
+            const sprint = chartDataSet[i];
+
+            for (let j = 0; j < firstsSprintQuarter.length; j++) {
+                const firstSprintQuarter = firstsSprintQuarter[j];
+                
+                if (firstSprintQuarter.name === sprint.name) {
+                    chartDataSet[i].quarter = Math.max.apply(Math, chartDataSet.map(function(o) { return o.scope; }))
+                }
+            }
+        }
     }
 
     return chartDataSet;
