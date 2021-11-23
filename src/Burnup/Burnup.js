@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Dropdown from '../components/Dropdown';
-import Number from '../components/Number';
+// import Dropdown from '../components/Dropdown';
+// import Number from '../components/Number';
+import * as Input from "../components/Input";
 import Teams from '../utils/Teams';
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { ResponsiveContainer, LineChart, ComposedChart, Bar, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import burnup from "./Burnup.logic";
 
 import "./Burnup.css"
@@ -97,13 +98,13 @@ function Burnup() {
             <div className="flex-container">
 
                 <div className="flex-item">
-                    <Dropdown default="choose a team"
+                    <Input.Dropdown default="choose a team"
                         options={Teams.getTags()}
                         value={(e) => { setTeam(Teams.getTeamByTag(e)) }} />
                 </div>
 
                 <div className="flex-item">
-                    <Dropdown default="choose an epic"
+                    <Input.Dropdown default="choose an epic"
                         options={burnup.getNotDoneEpicsSummary(epicList)}
                         value={(e) => { setEpic(burnup.getEpicBySummary(epicList, e)) }}
                     />
@@ -112,14 +113,14 @@ function Burnup() {
             </div>
             <div className="flex-container mt-5">
                 <div className="flex-item">
-                    <Dropdown default="choose start Quarter"
+                    <Input.Dropdown default="choose start Quarter"
                         options={["1", "2", "3", "4"]}
                         value={(e) => { setQuarterStart(parseInt(e, 10)) }}
                     />
                 </div>
 
                 <div className="flex-item">
-                    <Number
+                    <Input.Number
                         value={(e) => { setForecastScope(parseInt(e, 10)) }} />
                 </div>
             </div>
@@ -128,22 +129,37 @@ function Burnup() {
                 for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
 
             <p>From <span className="highlight">{quarterStart ? "Q" + quarterStart : "..."}</span>,
-            forecast on  <span className="highlight">{forecastScope ? forecastScope + " Sprints" : "..."}</span></p>
+                forecast on  <span className="highlight">{forecastScope ? forecastScope + " Sprints" : "..."}</span></p>
 
             <div className="mt-5">
                 <ResponsiveContainer height={400}>
-                    <LineChart data={chartData}>
+                    <ComposedChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
                         <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
                         <Line type="linear" dataKey="avg" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="avgmore" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="avgless" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
+                        <Bar dataKey="doneIssues" barSize={20} fill="#413ea0" />
                         <XAxis dataKey="name" />
                         <YAxis />
-                    </LineChart>
+                    </ComposedChart >
                 </ResponsiveContainer>
             </div>
+
+
+            <div className="flex-container mt-5">
+
+                <div className="flex-item">
+                    <p>Show Quarters
+                        <input type="checkbox" id="scales" name="scales" ></input>
+                    </p>
+                    {/* <Dropdown default="choose a team"
+                        options={Teams.getTags()}
+                        value={(e) => { setTeam(Teams.getTeamByTag(e)) }} /> */}
+                </div>
+            </div>
+
         </div>
     );
 }
