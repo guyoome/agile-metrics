@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as Input from "../components/Input";
 import Teams from '../utils/Teams';
-import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend } from 'recharts';
+import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as burnup from "./Burnup.logic";
 
 import "./Burnup.css"
@@ -143,6 +143,7 @@ function Burnup() {
                 <ResponsiveContainer height={400}>
                     <ComposedChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
+                        <Tooltip />
                         {!!showLegend ?
                             <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
                             : ""
