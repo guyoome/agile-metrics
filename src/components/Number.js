@@ -12,7 +12,7 @@ function Number(props) {
     return (
         <div className="number-container">
             <input className="number" type="number" id="tentacles" name="tentacles"
-                min="0" max="20"
+                min="0" max="20" disabled={props.disabled}
                 onChange={(e) => { setValue(e.target.value) }}></input>
         </div>
     );

@@ -117,10 +117,6 @@ function Burnup() {
             </div>
             <div className="flex-container mt-5">
                 <div className="flex-item">
-                    {/* <Input.Dropdown default="choose start Quarter"
-                        options={["1", "2", "3", "4"]}
-                        value={(e) => { setQuarterStart(parseInt(e, 10)) }}
-                    /> */}
                     <Input.Dropdown default="choose start Sprint"
                         options={burnup.getSprints(sprints)}
                         value={(e) => { setSprintStart(e) }}
@@ -129,6 +125,7 @@ function Burnup() {
 
                 <div className="flex-item">
                     <Input.Number
+                        disabled={sprints.length ? false : true}
                         value={(e) => { setForecastScope(parseInt(e, 10)) }} />
                 </div>
             </div>
