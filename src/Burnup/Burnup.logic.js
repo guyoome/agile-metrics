@@ -81,7 +81,7 @@ const getDoneIssues = (sprints, history) => {
     return doneIssues;
 }
 
-const getStartSprint = (quarter, sprints) => {
+const getStartSprint = (quarter, sprints, date = new Date()) => {
     // quarter === 1/2/3/4
     // 1 - Janvier/Fevrier/Mars
     // 2 - Avril/Mai/Juin
@@ -89,19 +89,19 @@ const getStartSprint = (quarter, sprints) => {
     // 4 - Octobre/Novembre/Decembre
     // new Date(year,monthID,day)
 
-    const today = new Date();
-    let firstDayOfQuarter = new Date(today.getFullYear(), 0).getTime()
+    // const date = new Date();
+    let firstDayOfQuarter = new Date(date.getFullYear(), 0).getTime()
     switch (quarter) {
         case 4:
-            firstDayOfQuarter = new Date(today.getFullYear(), 9).getTime()
+            firstDayOfQuarter = new Date(date.getFullYear(), 9).getTime()
             // return 01/10/today.year
             break;
         case 3:
-            firstDayOfQuarter = new Date(today.getFullYear(), 6).getTime()
+            firstDayOfQuarter = new Date(date.getFullYear(), 6).getTime()
             // return 01/07/today.year
             break;
         case 2:
-            firstDayOfQuarter = new Date(today.getFullYear(), 3).getTime()
+            firstDayOfQuarter = new Date(date.getFullYear(), 3).getTime()
             // return 01/04/today.year 
             break;
         default:
@@ -172,10 +172,15 @@ const getForecast = (forecastScope, chartDataSet, sprints, history) => {
 
     const scope = getScope(sprints, history);
 
+    const initStartTime = chartDataSet.at(-1).startTime;
+    // console.log("⏱initStartTime", initStartTime)
+    // console.log("⏱initStartTime+2weeks", initStartTime + 1209600000)
+
     forecast.forEach((element, i) => {
         forecast[i] = {
             name: element.name + (lastSprintID + 1),
-            scope: scope.at(-1).value
+            scope: scope.at(-1).value,
+            startTime: initStartTime + 1209600000 * (i + 1),
         }
         lastSprintID++
 
@@ -238,7 +243,8 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
         chartDataSet.push({
             name: scope[i].name,
             scope: scope[i].value,
-            doneIssues: doneIssues[i].value
+            doneIssues: doneIssues[i].value,
+            startTime: sprints[i].startTime
         })
     }
 
@@ -264,9 +270,27 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
 
     if (isQuarterShown) {
         const firstsSprintQuarter = []
-        for (let index = 0; index < 4; index++) {
-            firstsSprintQuarter.push(getStartSprint(index + 1, sprints))
+        const years = [];
+        console.log("🎃🎊🎃", chartDataSet)
+        chartDataSet.forEach(element => {
+            const elementYear = new Date(element.startTime).getFullYear();
+            if (years.indexOf(elementYear.toString()) === -1) {
+                years.push(elementYear.toString());
+            }
+        });
+
+        // console.log("🎆Years",years)
+        
+        
+        for (let j = 0; j < years.length; j++) {
+            for (let index = 0; index < 4; index++) {
+                firstsSprintQuarter.push(getStartSprint(index + 1, chartDataSet, new Date(years[j])))
+                // firstsSprintQuarter.push(getStartSprint(index + 1, sprints))
+                
+            }
         }
+        
+        // console.log("🎆firstsSprintQuarter",firstsSprintQuarter)
 
         for (let i = 0; i < chartDataSet.length; i++) {
             const sprint = chartDataSet[i];
@@ -276,7 +300,7 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
 
                 if (firstSprintQuarter.name === sprint.name) {
                     chartDataSet[i].quarter = Math.max.apply(Math, chartDataSet.map(function (o) { return o.scope; }));
-                    chartDataSet[i].quarterlabel = "Q".concat(j + 1);
+                    chartDataSet[i].quarterlabel = "Q".concat(j % 4 + 1);
                 }
             }
         }
