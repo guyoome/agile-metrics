@@ -155,7 +155,7 @@ const getAverageDoneBySprint = (sprints, history, interval = 10) => {
     return averageDoneBySprint;
 }
 
-const getForecast = (forecastScope, chartDataSet, sprints, history) => {
+const getForecast = (forecastScope, chartDataSet, sprints, history,velocity) => {
     let forecast = [];
     if (forecastScope > 0) {
         forecast = new Array(forecastScope);
@@ -193,7 +193,9 @@ const getForecast = (forecastScope, chartDataSet, sprints, history) => {
     const initDoneIssues = chartDataSet.at(-1).doneIssues;
 
     forecast.forEach((element, i) => {
+        // forecast[i].avg = (i > 0 ? (forecast[i - 1].avg + velocity) : (initDoneIssues + velocity))
         forecast[i].avg = (i > 0 ? (forecast[i - 1].avg + avg) : (initDoneIssues + avg))
+
     });
 
     return forecast;
@@ -232,7 +234,7 @@ const getSprints = (sprintsList) => {
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
 // const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShown) => {
-const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown) => {
+const getChartDataSet = (sprints, history, sprintStart, forecast,velocity, isQuarterShown) => {
 
     let chartDataSet = [];
 
@@ -257,12 +259,12 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
 
 
     // Add forecast
-    if (forecast && sprints !== []) {
+    if (forecast && sprints !== [] && velocity) {
         // forecast start at the end of doneIssues Line
         chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
 
         // Enrich with avg Forecast
-        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
+        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history,velocity))
 
         // Enrich with high & low forecast
         chartDataSet = getForecastInterval(chartDataSet, 10)
@@ -271,7 +273,7 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
     if (isQuarterShown) {
         const firstsSprintQuarter = []
         const years = [];
-        console.log("🎃🎊🎃", chartDataSet)
+        // console.log("🎃🎊🎃", chartDataSet)
         chartDataSet.forEach(element => {
             const elementYear = new Date(element.startTime).getFullYear();
             if (years.indexOf(elementYear.toString()) === -1) {
@@ -292,7 +294,7 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
         
         // console.log("🎆firstsSprintQuarter",firstsSprintQuarter)
 
-        for (let i = 0; i < chartDataSet.length; i++) {
+        for (let i = 1; i < chartDataSet.length; i++) {
             const sprint = chartDataSet[i];
 
             for (let j = 0; j < firstsSprintQuarter.length; j++) {
