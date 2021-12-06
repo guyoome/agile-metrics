@@ -36,7 +36,9 @@ const getScope = (sprints, history) => {
     scope.fill(0);
 
     Object.entries(history).forEach(([key, value]) => {
+        // console.log("😎",value)
         if (value[0].added) {
+            // console.log("😍",value[0].added)
             sprints.forEach((sprint, i) => {
                 if (key >= sprint.startTime && key < (typeof sprints[i + 1] !== 'undefined' ? sprints[i + 1].startTime : sprint.endTime)) {
                     scope[i]++;

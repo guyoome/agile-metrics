@@ -4,32 +4,7 @@ import Teams from '../utils/Teams';
 import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as burnup from "./Burnup.logic";
 
-import "./Burnup.css";
-
-import backlog from "./backlog.json";
-
-const sanitizeBacklog = (backlog) => {
-    const sanitizeBacklog = backlog.columnChanges;
-
-    Object.entries(sanitizeBacklog).forEach(([key, value]) => {
-        if (value[0].statusTo) {
-            switch (value[0].statusTo) {
-                case "10000":
-                    value[0].added = true;
-                    break;
-                case "10300":
-                case "10001":
-                    value[0].column = { done: true };
-                    break;
-                default:
-                    break;
-            }
-        }
-    })
-
-    console.log("🤩", sanitizeBacklog)
-    return sanitizeBacklog;
-}
+import "./Burnup.css"
 
 
 const calcVelocity = (data) => {
@@ -159,10 +134,7 @@ function Burnup() {
      */
     useEffect(() => {
         // const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
-        // const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, velocity, isQuarterShown);
-        const cleanBacklog = sanitizeBacklog(backlog);
-        const chartDataSet = burnup.getChartDataSet(sprints, cleanBacklog, sprintStart, forecastScope, velocity, isQuarterShown);
-
+        const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, velocity, isQuarterShown);
 
         setChartData(chartDataSet);
 
