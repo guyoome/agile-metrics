@@ -89,7 +89,6 @@ const getStartSprint = (quarter, sprints, date = new Date()) => {
     // 4 - Octobre/Novembre/Decembre
     // new Date(year,monthID,day)
 
-    // const date = new Date();
     let firstDayOfQuarter = new Date(date.getFullYear(), 0).getTime()
     switch (quarter) {
         case 4:
@@ -173,8 +172,6 @@ const getForecast = (forecastScope, chartDataSet, sprints, history,velocity) => 
     const scope = getScope(sprints, history);
 
     const initStartTime = chartDataSet.at(-1).startTime;
-    // console.log("⏱initStartTime", initStartTime)
-    // console.log("⏱initStartTime+2weeks", initStartTime + 1209600000)
 
     forecast.forEach((element, i) => {
         forecast[i] = {
@@ -193,9 +190,7 @@ const getForecast = (forecastScope, chartDataSet, sprints, history,velocity) => 
     const initDoneIssues = chartDataSet.at(-1).doneIssues;
 
     forecast.forEach((element, i) => {
-        // forecast[i].avg = (i > 0 ? (forecast[i - 1].avg + velocity) : (initDoneIssues + velocity))
         forecast[i].avg = (i > 0 ? (forecast[i - 1].avg + avg) : (initDoneIssues + avg))
-
     });
 
     return forecast;
@@ -233,7 +228,6 @@ const getSprints = (sprintsList) => {
  * @param {Object} history - history of tickets
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
-// const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShown) => {
 const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown) => {
 
     let chartDataSet = [];
@@ -251,8 +245,6 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
     }
 
 
-    // const startSprint = getStartSprint(quarterStart, sprints);
-    //     chartDataSet = getChartDataBegin(chartDataSet, startSprint);
     if (sprintStart) {
         chartDataSet = getChartDataBegin(chartDataSet, { name: sprintStart });
     }
@@ -273,7 +265,6 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
     if (isQuarterShown) {
         const firstsSprintQuarter = []
         const years = [];
-        // console.log("🎃🎊🎃", chartDataSet)
         chartDataSet.forEach(element => {
             const elementYear = new Date(element.startTime).getFullYear();
             if (years.indexOf(elementYear.toString()) === -1) {
@@ -281,18 +272,15 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
             }
         });
 
-        // console.log("🎆Years",years)
         
         
         for (let j = 0; j < years.length; j++) {
             for (let index = 0; index < 4; index++) {
                 firstsSprintQuarter.push(getStartSprint(index + 1, chartDataSet, new Date(years[j])))
-                // firstsSprintQuarter.push(getStartSprint(index + 1, sprints))
                 
             }
         }
         
-        // console.log("🎆firstsSprintQuarter",firstsSprintQuarter)
 
         for (let i = 1; i < chartDataSet.length; i++) {
             const sprint = chartDataSet[i];
