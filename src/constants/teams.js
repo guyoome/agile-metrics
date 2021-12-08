@@ -28,7 +28,12 @@ const TEAMS = [
         tag: "OPS",
         name: "Tech Ops",
         id: "28"
+    },    {
+        tag: "SHT",
+        name: "Shanghai Team",
+        id: "29"
     },
+
 ]
 
 export default TEAMS;
