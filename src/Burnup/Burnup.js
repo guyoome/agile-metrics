@@ -92,12 +92,25 @@ function Burnup() {
      */
     useEffect(() => {
         let chartDataSet;
-        chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, isQuarterShown);
+        
+        chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart);
 
+        // If sprintStart is set, slice the chart data set with sprintStart as begining of data set 
+        if (sprintStart) {
+            chartDataSet = burnup.getChartDataBegin(chartDataSet, { name: sprintStart });
+        }
+
+        // If Forecast is set, get data set with forecast
         if (forecastScope && sprints !== []) {
             chartDataSet = burnup.getChartDataSetWithForecast(sprints, history, chartDataSet, forecastScope);
         }
 
+        // If Quarter need to be display, get data set with quarter 
+        if (isQuarterShown) {
+            chartDataSet = burnup.getChartDataSetWithQuarter(chartDataSet);
+        }
+
+        // set chart data state, to display the burnup
         setChartData(chartDataSet);
 
     }, [history, sprints, sprintStart, forecastScope, isQuarterShown])

@@ -131,6 +131,7 @@ const getChartDataBegin = (chartDataSet, startSprint) => {
     const sliceStart = chartDataSet.findIndex((element) => (
         element.name === startSprint.name
     ));
+    
     return chartDataSet.slice(sliceStart);
 }
 
@@ -221,7 +222,7 @@ const getSprints = (sprintsList) => {
     return sprints;
 }
 
-const getChartDataSetWithForecast = (sprints, history,chartDataSet, forecast = 0) => {
+const getChartDataSetWithForecast = (sprints, history, chartDataSet, forecast = 0) => {
     let chartDataSetWithForecast = chartDataSet;
     // forecast start at the end of doneIssues Line
     chartDataSetWithForecast.at(-1).avg = chartDataSet.at(-1).doneIssues;
@@ -235,6 +236,47 @@ const getChartDataSetWithForecast = (sprints, history,chartDataSet, forecast = 0
     return chartDataSetWithForecast;
 }
 
+const getChartDataSetWithQuarter = (chartDataSet) => {
+    let chartDataSetWithQuarter;
+
+    chartDataSetWithQuarter = chartDataSet;
+
+    const firstsSprintQuarter = []
+    const years = [];
+
+    chartDataSetWithQuarter.forEach(element => {
+        const elementYear = new Date(element.startTime).getFullYear();
+        if (years.indexOf(elementYear.toString()) === -1) {
+            years.push(elementYear.toString());
+        }
+    });
+
+
+
+    for (let j = 0; j < years.length; j++) {
+        for (let index = 0; index < 4; index++) {
+            firstsSprintQuarter.push(getStartSprint(index + 1, chartDataSetWithQuarter, new Date(years[j])))
+
+        }
+    }
+
+
+    for (let i = 1; i < chartDataSetWithQuarter.length; i++) {
+        const sprint = chartDataSetWithQuarter[i];
+
+        for (let j = 0; j < firstsSprintQuarter.length; j++) {
+            const firstSprintQuarter = firstsSprintQuarter[j];
+
+            if (firstSprintQuarter.name === sprint.name) {
+                chartDataSetWithQuarter[i].quarter = Math.max.apply(Math, chartDataSetWithQuarter.map(function (o) { return o.scope; }));
+                chartDataSetWithQuarter[i].quarterlabel = "Q".concat(j % 4 + 1);
+            }
+        }
+    }
+
+    return chartDataSetWithQuarter;
+}
+
 
 /**
  * Get the Data set to print a chart with Rechart
@@ -242,7 +284,7 @@ const getChartDataSetWithForecast = (sprints, history,chartDataSet, forecast = 0
  * @param {Object} history - history of tickets
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
-const getChartDataSet = (sprints, history, sprintStart, isQuarterShown) => {
+const getChartDataSet = (sprints, history) => {
 
     let chartDataSet = [];
 
@@ -259,64 +301,19 @@ const getChartDataSet = (sprints, history, sprintStart, isQuarterShown) => {
     }
 
 
-    if (sprintStart) {
-        chartDataSet = getChartDataBegin(chartDataSet, { name: sprintStart });
-    }
-
-
-    // Add forecast
-    // if (forecast && sprints !== []) {
-    //     // forecast start at the end of doneIssues Line
-    //     chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
-
-    //     // Enrich with avg Forecast
-    //     chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
-
-    //     // Enrich with high & low forecast
-    //     chartDataSet = getForecastInterval(chartDataSet, 10)
+    // if (sprintStart) {
+    //     chartDataSet = getChartDataBegin(chartDataSet, { name: sprintStart });
     // }
-
-    if (isQuarterShown) {
-        const firstsSprintQuarter = []
-        const years = [];
-        chartDataSet.forEach(element => {
-            const elementYear = new Date(element.startTime).getFullYear();
-            if (years.indexOf(elementYear.toString()) === -1) {
-                years.push(elementYear.toString());
-            }
-        });
-
-
-
-        for (let j = 0; j < years.length; j++) {
-            for (let index = 0; index < 4; index++) {
-                firstsSprintQuarter.push(getStartSprint(index + 1, chartDataSet, new Date(years[j])))
-
-            }
-        }
-
-
-        for (let i = 1; i < chartDataSet.length; i++) {
-            const sprint = chartDataSet[i];
-
-            for (let j = 0; j < firstsSprintQuarter.length; j++) {
-                const firstSprintQuarter = firstsSprintQuarter[j];
-
-                if (firstSprintQuarter.name === sprint.name) {
-                    chartDataSet[i].quarter = Math.max.apply(Math, chartDataSet.map(function (o) { return o.scope; }));
-                    chartDataSet[i].quarterlabel = "Q".concat(j % 4 + 1);
-                }
-            }
-        }
-    }
 
     return chartDataSet;
 }
 
 export {
+    getSprints,
     getNotDoneEpicsSummary,
     getEpicBySummary,
     getChartDataSet,
-    getSprints,
-    getChartDataSetWithForecast
+    getChartDataBegin,
+    getChartDataSetWithForecast,
+    getChartDataSetWithQuarter
 }
