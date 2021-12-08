@@ -30,6 +30,7 @@ function Burnup() {
 
     /**
      * Fetch Epic List
+     * It's trigger on update of [team]
      * @hook
      */
     useEffect(() => {
@@ -58,6 +59,7 @@ function Burnup() {
 
     /**
      * Fetch Epic History & Sprints
+     * It's trigger on update of [epic, team]
      * @hook
      */
     useEffect(() => {
@@ -86,6 +88,7 @@ function Burnup() {
 
     /**
      * Set Chart Data
+     * It's trigger on update of [history, sprints, sprintStart, forecastScope, isQuarterShown]
      * @hook
      */
     useEffect(() => {
@@ -167,9 +170,9 @@ function Burnup() {
                             <LabelList dataKey="quarterlabel" fill="#ed1c24" fontWeight="bold" position="insideTop" />
                         </Bar>
                         <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
-                        <Line type="linear" dataKey="avg" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                        <Line type="linear" dataKey="avgmore" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                        <Line type="linear" dataKey="avgless" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="forecast" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="forecastHigh" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="forecastLow" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
                         <XAxis dataKey="name" />
                         <YAxis />

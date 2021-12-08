@@ -37,12 +37,14 @@ const getScope = (sprints, history) => {
 
     Object.entries(history).forEach(([key, value]) => {
         if (value[0].added) {
-            sprints.forEach((sprint, i) => {
+            for (let i = 0; i < sprints.length; i++) {
+                const sprint = sprints[i];
+                
                 if (key >= sprint.startTime && key < (typeof sprints[i + 1] !== 'undefined' ? sprints[i + 1].startTime : sprint.endTime)) {
                     scope[i]++;
-                    // We can add abreak here /!\
+                    break;
                 }
-            });
+            }
         }
     })
 
@@ -63,12 +65,13 @@ const getDoneIssues = (sprints, history) => {
 
     Object.entries(history).forEach(([key, value]) => {
         if ((typeof value[0].column !== 'undefined') && (value[0].column.done)) {
-            sprints.forEach((sprint, i) => {
+            for (let i = 0; i < sprints.length; i++) {
+                const sprint = sprints[i];
                 if (key >= sprint.startTime && key < (typeof sprints[i + 1] !== 'undefined' ? sprints[i + 1].startTime : sprint.endTime)) {
                     doneIssues[i]++;
-                    // We can add abreak here /!\
-                }
-            });
+                    break;
+                }  
+            }
         }
     })
 
@@ -109,12 +112,14 @@ const getStartSprint = (quarter, sprints, date = new Date()) => {
 
     let startSprint = sprints[0];
 
-    sprints.forEach((sprint, i) => {
+    for (let i = 0; i < sprints.length; i++) {
+        const sprint = sprints[i];
+
         if (firstDayOfQuarter <= sprint.startTime && firstDayOfQuarter > (typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1].startTime : sprint.startTime)) {
             startSprint = sprint;
-            // We can add abreak here /!\
+            break;
         }
-    });
+    }
 
     return startSprint;
 }
@@ -191,7 +196,8 @@ const getForecast = (forecastScope, chartDataSet, sprints, history, velocity) =>
     const initDoneIssues = chartDataSet.at(-1).doneIssues;
 
     forecast.forEach((element, i) => {
-        forecast[i].avg = (i > 0 ? (forecast[i - 1].avg + avg) : (initDoneIssues + avg))
+        forecast[i].forecast = (i > 0 ? (forecast[i - 1].forecast + avg) : (initDoneIssues + avg))
+        forecast[i].forecast = Math.round(forecast[i].forecast)
     });
 
     return forecast;
@@ -199,14 +205,17 @@ const getForecast = (forecastScope, chartDataSet, sprints, history, velocity) =>
 
 const getForecastInterval = (chartDataSet, interval) => {
     chartDataSet.forEach((element, i) => {
-        if (element.avg) {
-            if (element.avg !== element.doneIssues) {
-                chartDataSet[i].avgless = element.avg * (1 - interval / 100);
-                chartDataSet[i].avgmore = element.avg * (1 + interval / 100);
+        if (element.forecast) {
+            if (element.forecast !== element.doneIssues) {
+                chartDataSet[i].forecastLow = element.forecast * (1 - interval / 100);
+                chartDataSet[i].forecastLow = Math.round(chartDataSet[i].forecastLow);
+
+                chartDataSet[i].forecastHigh = element.forecast * (1 + interval / 100);
+                chartDataSet[i].forecastHigh = Math.round(chartDataSet[i].forecastHigh);
 
             } else {
-                chartDataSet[i].avgless = element.doneIssues;
-                chartDataSet[i].avgmore = element.doneIssues;
+                chartDataSet[i].forecastLow = element.doneIssues;
+                chartDataSet[i].forecastHigh = element.doneIssues;
             }
         }
     });
@@ -225,7 +234,7 @@ const getSprints = (sprintsList) => {
 const getChartDataSetWithForecast = (sprints, history, chartDataSet, forecast = 0) => {
     let chartDataSetWithForecast = chartDataSet;
     // forecast start at the end of doneIssues Line
-    chartDataSetWithForecast.at(-1).avg = chartDataSet.at(-1).doneIssues;
+    chartDataSetWithForecast.at(-1).forecast = chartDataSet.at(-1).doneIssues;
 
     // Enrich with avg Forecast
     chartDataSetWithForecast = chartDataSetWithForecast.concat(getForecast(forecast, chartDataSetWithForecast, sprints, history));
