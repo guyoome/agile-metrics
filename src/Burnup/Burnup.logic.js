@@ -39,7 +39,7 @@ const getScope = (sprints, history) => {
         if (value[0].added) {
             for (let i = 0; i < sprints.length; i++) {
                 const sprint = sprints[i];
-                
+
                 if (key >= sprint.startTime && key < (typeof sprints[i + 1] !== 'undefined' ? sprints[i + 1].startTime : sprint.endTime)) {
                     scope[i]++;
                     break;
@@ -70,7 +70,7 @@ const getDoneIssues = (sprints, history) => {
                 if (key >= sprint.startTime && key < (typeof sprints[i + 1] !== 'undefined' ? sprints[i + 1].startTime : sprint.endTime)) {
                     doneIssues[i]++;
                     break;
-                }  
+                }
             }
         }
     })
@@ -136,12 +136,12 @@ const getChartDataBegin = (chartDataSet, startSprint) => {
     const sliceStart = chartDataSet.findIndex((element) => (
         element.name === startSprint.name
     ));
-    
+
     return chartDataSet.slice(sliceStart);
 }
 
 
-const getAverageDoneBySprint = (sprints, history, interval = 10) => {
+const getAverageDoneBySprint = (sprints, history, interval = 5) => {
     const chartDataSet = getChartDataSet(sprints, history, 0);
 
     let totalDoneIssues = 0;
@@ -203,14 +203,64 @@ const getForecast = (forecastScope, chartDataSet, sprints, history, velocity) =>
     return forecast;
 }
 
-const getForecastInterval = (chartDataSet, interval) => {
+const sum = (array) => {
+    return array.reduce((a, b) => a + b, 0);
+}
+
+const average = (array) => {
+    // const tot = sum(array);
+    return (sum(array) / array.length) || 0;
+}
+
+const getForecastInterval = (chartDataSet, interval, forecast, sprints, history) => {
+    console.log("🤑chartDataSet in getForecastInterval🤑", chartDataSet);
+
+    const avg = getAverageDoneBySprint(sprints, history);
+
+    // Get 5 last sprints
+    const removeForecast = chartDataSet.slice(0, -forecast);
+    let deviation = removeForecast.slice(-interval);
+    console.log("🤑Get 5 last sprints🤑", deviation);
+
+    // Avg of 5 last sprints - µ
+    let calcDeviation = [];
+    deviation.forEach(element => {
+        calcDeviation.push(element.doneIssues);
+    });
+    deviation = calcDeviation;
+    calcDeviation = [];
+
+    const mu = average(deviation);
+    console.log("🤑Avg of 5 last sprints - µ🤑", mu);
+
+    // |xi - µ|²
+    deviation.forEach((element, i) => {
+        const calc = element - mu;
+        calcDeviation.push(calc * calc)
+    });
+    console.log("🤑|xi - µ|²🤑", calcDeviation);
+
+    // Sum |xi - µ|²
+    const sumCalcDeviation = sum(calcDeviation);
+    console.log("🤑Sum |xi - µ|²🤑", sumCalcDeviation);
+
+    // Sum |xi - µ|² / Tot(5)
+    const avgSumCalcDeviation = sumCalcDeviation / deviation.length;
+    console.log("🤑 Sum |xi - µ|² / Tot(5)🤑", avgSumCalcDeviation);
+
+    // sqrt(Sum |xi - µ|² / Tot(5))
+    deviation = Math.sqrt(avgSumCalcDeviation);
+    console.log("🤑 Deviation 🤑", deviation);
+
     chartDataSet.forEach((element, i) => {
         if (element.forecast) {
             if (element.forecast !== element.doneIssues) {
-                chartDataSet[i].forecastLow = element.forecast * (1 - interval / 100);
+                // chartDataSet[i].forecastLow = element.forecast * (1 - interval / 100);
+                chartDataSet[i].forecastLow = chartDataSet[i - 1].forecastLow - (avg - deviation);
                 chartDataSet[i].forecastLow = Math.round(chartDataSet[i].forecastLow);
 
-                chartDataSet[i].forecastHigh = element.forecast * (1 + interval / 100);
+                // chartDataSet[i].forecastHigh = element.forecast * (1 + interval / 100);
+                chartDataSet[i].forecastHigh = chartDataSet[i - 1].forecastHigh + (avg + deviation);
                 chartDataSet[i].forecastHigh = Math.round(chartDataSet[i].forecastHigh);
 
             } else {
@@ -241,7 +291,7 @@ const getChartDataSetWithForecast = (sprints, history, chartDataSet, forecast = 
     chartDataSetWithForecast = chartDataSetWithForecast.concat(getForecast(forecast, chartDataSetWithForecast, sprints, history));
 
     // Enrich with high & low forecast
-    chartDataSetWithForecast = getForecastInterval(chartDataSetWithForecast, 10);
+    chartDataSetWithForecast = getForecastInterval(chartDataSetWithForecast, 5, forecast, sprints, history);
 
     return chartDataSetWithForecast;
 }
