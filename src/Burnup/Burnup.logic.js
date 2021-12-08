@@ -140,19 +140,20 @@ const getChartDataBegin = (chartDataSet, startSprint) => {
     return chartDataSet.slice(sliceStart);
 }
 
-
-const getAverageDoneBySprint = (sprints, history, interval = 5) => {
-    const chartDataSet = getChartDataSet(sprints, history, 0);
-
-    let totalDoneIssues = 0;
-    let totalSprints = chartDataSet.length;
+const getAverageDoneBySprint = (sprints, history) => {
+    let chartDataSet = getChartDataSet(sprints, history, 0);
 
     chartDataSet.forEach((element, i) => {
-        const done = element.doneIssues - (i === 0 ? 0 : chartDataSet[i - 1].doneIssues);
-        totalDoneIssues += done;
-        if (element.doneIssues === 0) {
-            totalSprints--;
+        if (i !== 0) {
+            chartDataSet[i].done = element.doneIssues - chartDataSet[i - 1].doneIssues;
         }
+    });
+
+    chartDataSet = chartDataSet.slice(-5);
+    let totalDoneIssues = 0;
+    let totalSprints = chartDataSet.length;
+    chartDataSet.forEach(element => {
+        totalDoneIssues += element.done;
     });
 
     const averageDoneBySprint = totalDoneIssues / totalSprints;
@@ -208,19 +209,16 @@ const sum = (array) => {
 }
 
 const average = (array) => {
-    // const tot = sum(array);
     return (sum(array) / array.length) || 0;
 }
 
 const getForecastInterval = (chartDataSet, interval, forecast, sprints, history) => {
-    console.log("🤑chartDataSet in getForecastInterval🤑", chartDataSet);
 
     const avg = getAverageDoneBySprint(sprints, history);
 
     // Get 5 last sprints
     const removeForecast = chartDataSet.slice(0, -forecast);
     let deviation = removeForecast.slice(-interval);
-    console.log("🤑Get 5 last sprints🤑", deviation);
 
     // Avg of 5 last sprints - µ
     let calcDeviation = [];
@@ -231,35 +229,28 @@ const getForecastInterval = (chartDataSet, interval, forecast, sprints, history)
     calcDeviation = [];
 
     const mu = average(deviation);
-    console.log("🤑Avg of 5 last sprints - µ🤑", mu);
 
     // |xi - µ|²
     deviation.forEach((element, i) => {
         const calc = element - mu;
         calcDeviation.push(calc * calc)
     });
-    console.log("🤑|xi - µ|²🤑", calcDeviation);
 
     // Sum |xi - µ|²
     const sumCalcDeviation = sum(calcDeviation);
-    console.log("🤑Sum |xi - µ|²🤑", sumCalcDeviation);
 
     // Sum |xi - µ|² / Tot(5)
     const avgSumCalcDeviation = sumCalcDeviation / deviation.length;
-    console.log("🤑 Sum |xi - µ|² / Tot(5)🤑", avgSumCalcDeviation);
 
     // sqrt(Sum |xi - µ|² / Tot(5))
     deviation = Math.sqrt(avgSumCalcDeviation);
-    console.log("🤑 Deviation 🤑", deviation);
 
     chartDataSet.forEach((element, i) => {
         if (element.forecast) {
             if (element.forecast !== element.doneIssues) {
-                // chartDataSet[i].forecastLow = element.forecast * (1 - interval / 100);
                 chartDataSet[i].forecastLow = chartDataSet[i - 1].forecastLow - (avg - deviation);
                 chartDataSet[i].forecastLow = Math.round(chartDataSet[i].forecastLow);
 
-                // chartDataSet[i].forecastHigh = element.forecast * (1 + interval / 100);
                 chartDataSet[i].forecastHigh = chartDataSet[i - 1].forecastHigh + (avg + deviation);
                 chartDataSet[i].forecastHigh = Math.round(chartDataSet[i].forecastHigh);
 
