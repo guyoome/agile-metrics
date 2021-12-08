@@ -36,8 +36,8 @@ function Burnup() {
         if (team.id !== undefined) {
 
             var myHeaders = new Headers();
-            myHeaders.append("Authorization", "Basic Z21hdXJpbkBzcGxpby5jb206b280cFE5VzBYTDdJbExJblk0U3k5MDc5");
-            myHeaders.append("Cookie", "atlassian.xsrf.token=BNWZ-WAR4-YNI8-IQN1_739802b74faefc4635c22ea101562fd664a25d54_lin");
+            myHeaders.append("Authorization", `Basic ${process.env.REACT_APP_ATLASSIAN_AUTH}`);
+            myHeaders.append("Cookie", `atlassian.xsrf.token=${process.env.REACT_APP_TOKEN}`);
             myHeaders.append("Accept", "application/json")
 
             var requestOptions = {
@@ -46,14 +46,12 @@ function Burnup() {
                 redirect: 'follow'
             };
 
-            fetch(`https://maur-proxy.herokuapp.com/https://spolio.atlassian.net/rest/greenhopper/1.0/xboard/plan/backlog/epics.json?rapidViewId=${team.id}`, requestOptions)
+            fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/greenhopper/1.0/xboard/plan/backlog/epics.json?rapidViewId=${team.id}`, requestOptions)
                 .then(res => res.json())
                 .then(result => {
                     setEpicList(result.epics);
                 })
                 .catch(error => console.log('error', error));
-
-            console.log("🎁Velocity🎁", Teams.getVelocityOf(team.tag))
         }
 
     }, [team])
@@ -66,8 +64,8 @@ function Burnup() {
         if (team.id !== undefined & epic.id !== undefined) {
 
             var myHeaders = new Headers();
-            myHeaders.append("Authorization", "Basic Z21hdXJpbkBzcGxpby5jb206b280cFE5VzBYTDdJbExJblk0U3k5MDc5");
-            myHeaders.append("Cookie", "atlassian.xsrf.token=BNWZ-WAR4-YNI8-IQN1_739802b74faefc4635c22ea101562fd664a25d54_lin");
+            myHeaders.append("Authorization", `Basic ${process.env.REACT_APP_ATLASSIAN_AUTH}`);
+            myHeaders.append("Cookie", `atlassian.xsrf.token=${process.env.REACT_APP_TOKEN}`);
             myHeaders.append("Accept", "application/json")
 
             var requestOptions = {
@@ -76,7 +74,7 @@ function Burnup() {
                 redirect: 'follow'
             };
 
-            fetch(`https://maur-proxy.herokuapp.com/https://spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/epicburndownchart?rapidViewId=${team.id}&epicKey=${epic.id}`, requestOptions)
+            fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/epicburndownchart?rapidViewId=${team.id}&epicKey=${epic.id}`, requestOptions)
                 .then(res => res.json())
                 .then(result => {
                     setHistory(result.changes);
@@ -153,7 +151,7 @@ function Burnup() {
                 for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
 
             <p>From <span className="highlight">{sprintStart ? sprintStart : "..."}</span>,
-                with a forecast on  <span className="highlight">{forecastScope ? forecastScope + " Sprints" : "..."}</span></p>
+                with a forecast on  <span className="highlight">{forecastScope ? forecastScope : "..."}</span> Sprints</p>
 
             <div className="mt-5">
                 <ResponsiveContainer height={400}>
