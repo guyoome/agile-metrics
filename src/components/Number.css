@@ -1,9 +1,8 @@
 .number-container{
-
+    width: 280px;
 }
 
 .number{
-    width: 100%;
     height: 40px;
     border-radius: 8px;
     border-style: 1;
