@@ -92,7 +92,7 @@ function Burnup() {
      */
     useEffect(() => {
         let chartDataSet;
-        
+
         chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart);
 
         // If sprintStart is set, slice the chart data set with sprintStart as begining of data set 
