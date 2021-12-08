@@ -228,7 +228,8 @@ const getSprints = (sprintsList) => {
     sprintsList.forEach(element => {
         sprints.push(element.name)
     });
-    return sprints;
+
+    return sprints.slice(-20);
 }
 
 const getChartDataSetWithForecast = (sprints, history, chartDataSet, forecast = 0) => {
