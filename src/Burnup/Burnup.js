@@ -7,23 +7,6 @@ import * as burnup from "./Burnup.logic";
 import "./Burnup.css"
 
 
-const calcVelocity = (data) => {
-    // const velocity = 0;
-    let sum = 0;
-    const velocityStatEntries = data.velocityStatEntries;
-    for (const [key, value] of Object.entries(velocityStatEntries)) {
-        // console.log(`${key}: ${value}`);
-        console.log(value.allConsideredIssueKeys.length);
-        sum += value.allConsideredIssueKeys.length;
-        sum -= 1 //to remove maintenance ticket
-    }
-
-
-    return sum / Object.keys(velocityStatEntries).length;
-}
-
-
-
 /**
  * Component for showing an Epic Burnup chart of a Team.
  *
@@ -44,8 +27,6 @@ function Burnup() {
     const [isQuarterShown, setIsQuarterShown] = useState(false);
 
     const [showLegend, setShowLegend] = useState(false);
-
-    const [velocity, setVelocity] = useState();
 
     /**
      * Fetch Epic List
@@ -104,37 +85,13 @@ function Burnup() {
                 .catch(error => console.log('error', error));
         }
     }, [epic, team])
-
-    useEffect(() => {
-        if (team.id !== undefined) {
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", "Basic Z21hdXJpbkBzcGxpby5jb206b280cFE5VzBYTDdJbExJblk0U3k5MDc5");
-            myHeaders.append("Cookie", "atlassian.xsrf.token=BNWZ-WAR4-YNI8-IQN1_739802b74faefc4635c22ea101562fd664a25d54_lin");
-            myHeaders.append("Accept", "application/json")
-
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-
-            fetch(`https://maur-proxy.herokuapp.com/https://spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/velocity.json?rapidViewId=${team.id}`, requestOptions)
-                .then(res => res.json())
-                .then(result => {
-                    setVelocity(calcVelocity(result));
-                })
-                .catch(error => console.log('error', error));
-        }
-    }, [team])
-
-
+    
     /**
      * Set Chart Data
      * @hook
      */
     useEffect(() => {
-        // const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
-        const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, velocity, isQuarterShown);
+        const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, isQuarterShown);
 
         setChartData(chartDataSet);
 
@@ -174,7 +131,7 @@ function Burnup() {
                 </div>
             </div>
 
-            <p>The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
+            <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
                 for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
 
             <p>From <span className="highlight">{sprintStart ? sprintStart : "..."}</span>,
@@ -206,7 +163,6 @@ function Burnup() {
 
 
             <div className="flex-container mt-5">
-                {/* {velocity} */}
                 <div className="flex-item">
                     <p>Show Quarters
                         <Input.Checkbox

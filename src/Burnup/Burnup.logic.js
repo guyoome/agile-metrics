@@ -234,7 +234,7 @@ const getSprints = (sprintsList) => {
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
 // const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShown) => {
-const getChartDataSet = (sprints, history, sprintStart, forecast,velocity, isQuarterShown) => {
+const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown) => {
 
     let chartDataSet = [];
 
@@ -259,12 +259,12 @@ const getChartDataSet = (sprints, history, sprintStart, forecast,velocity, isQua
 
 
     // Add forecast
-    if (forecast && sprints !== [] && velocity) {
+    if (forecast && sprints !== [] ) {
         // forecast start at the end of doneIssues Line
         chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
 
         // Enrich with avg Forecast
-        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history,velocity))
+        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
 
         // Enrich with high & low forecast
         chartDataSet = getForecastInterval(chartDataSet, 10)
