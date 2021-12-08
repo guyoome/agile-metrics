@@ -154,7 +154,7 @@ const getAverageDoneBySprint = (sprints, history, interval = 10) => {
     return averageDoneBySprint;
 }
 
-const getForecast = (forecastScope, chartDataSet, sprints, history,velocity) => {
+const getForecast = (forecastScope, chartDataSet, sprints, history, velocity) => {
     let forecast = [];
     if (forecastScope > 0) {
         forecast = new Array(forecastScope);
@@ -221,6 +221,20 @@ const getSprints = (sprintsList) => {
     return sprints;
 }
 
+const getChartDataSetWithForecast = (sprints, history,chartDataSet, forecast = 0) => {
+    let chartDataSetWithForecast = chartDataSet;
+    // forecast start at the end of doneIssues Line
+    chartDataSetWithForecast.at(-1).avg = chartDataSet.at(-1).doneIssues;
+
+    // Enrich with avg Forecast
+    chartDataSetWithForecast = chartDataSetWithForecast.concat(getForecast(forecast, chartDataSetWithForecast, sprints, history));
+
+    // Enrich with high & low forecast
+    chartDataSetWithForecast = getForecastInterval(chartDataSetWithForecast, 10);
+
+    return chartDataSetWithForecast;
+}
+
 
 /**
  * Get the Data set to print a chart with Rechart
@@ -228,7 +242,7 @@ const getSprints = (sprintsList) => {
  * @param {Object} history - history of tickets
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
-const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown) => {
+const getChartDataSet = (sprints, history, sprintStart, isQuarterShown) => {
 
     let chartDataSet = [];
 
@@ -251,16 +265,16 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
 
 
     // Add forecast
-    if (forecast && sprints !== [] ) {
-        // forecast start at the end of doneIssues Line
-        chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
+    // if (forecast && sprints !== []) {
+    //     // forecast start at the end of doneIssues Line
+    //     chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
 
-        // Enrich with avg Forecast
-        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
+    //     // Enrich with avg Forecast
+    //     chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history))
 
-        // Enrich with high & low forecast
-        chartDataSet = getForecastInterval(chartDataSet, 10)
-    }
+    //     // Enrich with high & low forecast
+    //     chartDataSet = getForecastInterval(chartDataSet, 10)
+    // }
 
     if (isQuarterShown) {
         const firstsSprintQuarter = []
@@ -272,15 +286,15 @@ const getChartDataSet = (sprints, history, sprintStart, forecast, isQuarterShown
             }
         });
 
-        
-        
+
+
         for (let j = 0; j < years.length; j++) {
             for (let index = 0; index < 4; index++) {
                 firstsSprintQuarter.push(getStartSprint(index + 1, chartDataSet, new Date(years[j])))
-                
+
             }
         }
-        
+
 
         for (let i = 1; i < chartDataSet.length; i++) {
             const sprint = chartDataSet[i];
@@ -303,5 +317,6 @@ export {
     getNotDoneEpicsSummary,
     getEpicBySummary,
     getChartDataSet,
-    getSprints
+    getSprints,
+    getChartDataSetWithForecast
 }

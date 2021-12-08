@@ -85,13 +85,18 @@ function Burnup() {
                 .catch(error => console.log('error', error));
         }
     }, [epic, team])
-    
+
     /**
      * Set Chart Data
      * @hook
      */
     useEffect(() => {
-        const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, isQuarterShown);
+        let chartDataSet;
+        chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, isQuarterShown);
+
+        if (forecastScope && sprints !== []) {
+            chartDataSet = burnup.getChartDataSetWithForecast(sprints, history, chartDataSet, forecastScope);
+        }
 
         setChartData(chartDataSet);
 
