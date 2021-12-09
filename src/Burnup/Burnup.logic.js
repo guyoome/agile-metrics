@@ -198,7 +198,7 @@ const getForecast = (forecastScope, chartDataSet, sprints, history, velocity) =>
 
     forecast.forEach((element, i) => {
         forecast[i].forecast = (i > 0 ? (forecast[i - 1].forecast + avg) : (initDoneIssues + avg))
-        forecast[i].forecast = Math.round(forecast[i].forecast)
+        forecast[i].forecast = Math.round(forecast[i].forecast*100)/100;
     });
 
     return forecast;
@@ -248,11 +248,11 @@ const getForecastInterval = (chartDataSet, interval, forecast, sprints, history)
     chartDataSet.forEach((element, i) => {
         if (element.forecast) {
             if (element.forecast !== element.doneIssues) {
-                chartDataSet[i].forecastLow = chartDataSet[i - 1].forecastLow - (avg - deviation);
-                chartDataSet[i].forecastLow = Math.round(chartDataSet[i].forecastLow);
+                chartDataSet[i].forecastLow = chartDataSet[i - 1].forecastLow + Math.abs(avg - deviation);
+                chartDataSet[i].forecastLow = Math.round(chartDataSet[i].forecastLow*100)/100;
 
                 chartDataSet[i].forecastHigh = chartDataSet[i - 1].forecastHigh + (avg + deviation);
-                chartDataSet[i].forecastHigh = Math.round(chartDataSet[i].forecastHigh);
+                chartDataSet[i].forecastHigh = Math.round(chartDataSet[i].forecastHigh*100)/100;
 
             } else {
                 chartDataSet[i].forecastLow = element.doneIssues;
