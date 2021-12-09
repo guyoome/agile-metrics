@@ -1,3 +1,26 @@
+const sanitizeBacklog = (backlog) => {
+    const sanitizeBacklog = backlog.columnChanges;
+
+    Object.entries(sanitizeBacklog).forEach(([key, value]) => {
+        if (value[0].statusTo) {
+            switch (value[0].statusTo) {
+                case "10000":
+                    value[0].added = true;
+                    break;
+                case "10300":
+                case "10001":
+                    value[0].column = { done: true };
+                    break;
+                default:
+                    break;
+            }
+        }
+    })
+
+    return sanitizeBacklog;
+}
+
+
 /**
  * Get the list of epic summaries not done
  * @param {Array} epics - List of epics
@@ -36,6 +59,7 @@ const getScope = (sprints, history) => {
     scope.fill(0);
 
     Object.entries(history).forEach(([key, value]) => {
+        // console.log("😎",value)
         if (value[0].added) {
             for (let i = 0; i < sprints.length; i++) {
                 const sprint = sprints[i];
@@ -366,5 +390,6 @@ export {
     getChartDataSet,
     getChartDataBegin,
     getChartDataSetWithForecast,
-    getChartDataSetWithQuarter
+    getChartDataSetWithQuarter,
+    sanitizeBacklog
 }
