@@ -55,6 +55,8 @@ function Burnup() {
 
     const [showLegend, setShowLegend] = useState(false);
 
+    const [showBacklogBurnup, setShowBacklogBurnup] = useState(false);
+
     /**
      * Fetch Epic List
      * It's trigger on update of [team]
@@ -74,12 +76,15 @@ function Burnup() {
                 redirect: 'follow'
             };
 
+            // Get Epic list
             fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/greenhopper/1.0/xboard/plan/backlog/epics.json?rapidViewId=${team.id}`, requestOptions)
                 .then(res => res.json())
                 .then(result => {
                     setEpicList(result.epics);
                 })
                 .catch(error => console.log('error', error));
+
+            
         }
 
     }, [team])
@@ -110,6 +115,14 @@ function Burnup() {
                     setSprints(result.sprints);
                 })
                 .catch(error => console.log('error', error));
+
+            // Get Backlog infos
+            // fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/greenhopper/1.0/xboard/plan/backlog/epics.json?rapidViewId=${team.id}`, requestOptions)
+            //     .then(res => res.json())
+            //     .then(result => {
+            //         setEpicList(result.epics);
+            //     })
+            //     .catch(error => console.log('error', error));
         }
     }, [epic, team])
 
@@ -120,8 +133,15 @@ function Burnup() {
      */
     useEffect(() => {
         let chartDataSet;
+        let activity;
+        if (showBacklogBurnup) {
+            activity = sanitizeBacklog(backlog);
+            chartDataSet = burnup.getChartDataSet(sprints, activity);
+        } else {
+            activity = history
+            chartDataSet = burnup.getChartDataSet(sprints, activity);
+        }
 
-        chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart);
 
         // If sprintStart is set, slice the chart data set with sprintStart as begining of data set 
         if (sprintStart) {
@@ -130,13 +150,11 @@ function Burnup() {
 
         // If Forecast is set, get data set with forecast
         if (forecastScope && sprints !== []) {
-            chartDataSet = burnup.getChartDataSetWithForecast(sprints, history, chartDataSet, forecastScope);
+            chartDataSet = burnup.getChartDataSetWithForecast(sprints, activity, chartDataSet, forecastScope);
         }
 
         // const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
         // const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, velocity, isQuarterShown);
-        const cleanBacklog = sanitizeBacklog(backlog);
-        chartDataSet = burnup.getChartDataSet(sprints, cleanBacklog, sprintStart, forecastScope, isQuarterShown);
 
         // If Quarter need to be display, get data set with quarter 
         if (isQuarterShown) {
@@ -146,7 +164,7 @@ function Burnup() {
         // set chart data state, to display the burnup
         setChartData(chartDataSet);
 
-    }, [history, sprints, sprintStart, forecastScope, isQuarterShown])
+    }, [history, sprints, sprintStart, forecastScope, isQuarterShown, showBacklogBurnup])
 
 
     return (
@@ -183,7 +201,12 @@ function Burnup() {
             </div>
 
             <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
-                for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
+                {!!showBacklogBurnup ?
+                    <span>, <span className="highlight">Backlog</span></span>
+                    :
+                    <span>for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</span>
+                }
+            </p>
 
             <p>From <span className="highlight">{sprintStart ? sprintStart : "..."}</span>,
                 with a forecast on  <span className="highlight">{forecastScope ? forecastScope : "..."}</span> Sprints</p>
@@ -193,10 +216,7 @@ function Burnup() {
                     <ComposedChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
                         <Tooltip />
-                        {!!showLegend ?
-                            <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
-                            : ""
-                        }
+                        {!!showLegend && <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />}
 
                         <Bar dataKey="quarter" barSize={40} fill="#FAC9C1" >
                             <LabelList dataKey="quarterlabel" fill="#ed1c24" fontWeight="bold" position="insideTop" />
@@ -224,6 +244,12 @@ function Burnup() {
                     <p>Show Burnup Legend
                         <Input.Checkbox
                             value={(e) => { setShowLegend(e) }} />
+                    </p>
+                </div>
+                <div className="flex-item">
+                    <p>Show Backlog Burnup
+                        <Input.Checkbox
+                            value={(e) => { setShowBacklogBurnup(e) }} />
                     </p>
                 </div>
             </div>
