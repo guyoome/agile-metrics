@@ -193,8 +193,8 @@ function Burnup() {
                             <LabelList dataKey="quarterlabel" fill="#ed1c24" fontWeight="bold" position="insideTop" />
                         </Bar>
                         <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
-                        <Line type="linear" dataKey="forecast" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="forecastHigh" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="forecast" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="forecastLow" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
                         <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
                         <XAxis dataKey="name" />
