@@ -1,3 +1,4 @@
+/** @type [Object] */
 const TEAMS = [
     {
         tag: "CMP",

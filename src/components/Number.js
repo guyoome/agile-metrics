@@ -2,6 +2,16 @@ import React, { useEffect, useState } from 'react';
 
 import './Number.css';
 
+/**
+ * Form Number 
+ * 
+ * @typedef Props
+ * @property {string} value
+ * @property {boolean} disabled
+ *
+ * @param {Props} props
+ * @returns {React.ReactNode}
+ */
 function Number(props) {
     const [value, setValue] = useState();
 
