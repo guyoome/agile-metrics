@@ -6,32 +6,6 @@ import * as burnup from "./Burnup.logic";
 
 import "./Burnup.css";
 
-// import backlog from "./backlog.json";
-
-const sanitizeBacklog = (backlog) => {
-    const sanitizeBacklog = backlog.columnChanges;
-
-    Object.entries(sanitizeBacklog).forEach(([key, value]) => {
-        if (value[0].statusTo) {
-            switch (value[0].statusTo) {
-                case "10000":
-                    value[0].added = true;
-                    break;
-                case "10300":
-                case "10001":
-                    value[0].column = { done: true };
-                    break;
-                default:
-                    break;
-            }
-        }
-    })
-
-    console.log("🤩", sanitizeBacklog)
-    return sanitizeBacklog;
-}
-
-
 /**
  * Component for showing an Epic Burnup chart of a Team.
  *
@@ -86,13 +60,13 @@ function Burnup() {
                 })
                 .catch(error => console.log('error', error));
 
-                 // Get Backlog infos
+            // Get Backlog infos
             fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/cumulativeflowdiagram.json?rapidViewId=${team.id}&swimlaneId=${team.swimlaneId}&columnId=${team.columnId[0]}&columnId=${team.columnId[1]}`, requestOptions)
-            .then(res => res.json())
-            .then(result => {
-                setBacklog(result);
-            })
-            .catch(error => console.log('error', error));
+                .then(res => res.json())
+                .then(result => {
+                    setBacklog(result);
+                })
+                .catch(error => console.log('error', error));
         }
     }, [team])
 
@@ -123,7 +97,7 @@ function Burnup() {
                 })
                 .catch(error => console.log('error', error));
 
-           
+
         }
     }, [epic, team])
 
@@ -136,7 +110,7 @@ function Burnup() {
         let chartDataSet;
         let activity;
         if (showBacklogBurnup) {
-            activity = sanitizeBacklog(backlog);
+            activity = burnup.sanitizeBacklog(backlog);
             chartDataSet = burnup.getChartDataSet(sprints, activity);
         } else {
             activity = history
@@ -154,9 +128,6 @@ function Burnup() {
             chartDataSet = burnup.getChartDataSetWithForecast(sprints, activity, chartDataSet, forecastScope);
         }
 
-        // const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
-        // const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, velocity, isQuarterShown);
-
         // If Quarter need to be display, get data set with quarter 
         if (isQuarterShown) {
             chartDataSet = burnup.getChartDataSetWithQuarter(chartDataSet);
@@ -165,8 +136,7 @@ function Burnup() {
         // set chart data state, to display the burnup
         setChartData(chartDataSet);
 
-    }, [history, sprints, sprintStart, forecastScope, isQuarterShown, showBacklogBurnup])
-
+    }, [history, sprints, sprintStart, forecastScope, showBacklogBurnup, backlog,isQuarterShown])
 
     return (
         <div >
