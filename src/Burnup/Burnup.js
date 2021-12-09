@@ -6,7 +6,7 @@ import * as burnup from "./Burnup.logic";
 
 import "./Burnup.css";
 
-import backlog from "./backlog.json";
+// import backlog from "./backlog.json";
 
 const sanitizeBacklog = (backlog) => {
     const sanitizeBacklog = backlog.columnChanges;
@@ -57,6 +57,8 @@ function Burnup() {
 
     const [showBacklogBurnup, setShowBacklogBurnup] = useState(false);
 
+    const [backlog, setBacklog] = useState();
+
     /**
      * Fetch Epic List
      * It's trigger on update of [team]
@@ -84,9 +86,14 @@ function Burnup() {
                 })
                 .catch(error => console.log('error', error));
 
-            
+                 // Get Backlog infos
+            fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/cumulativeflowdiagram.json?rapidViewId=${team.id}&swimlaneId=${team.swimlaneId}&columnId=${team.columnId[0]}&columnId=${team.columnId[1]}`, requestOptions)
+            .then(res => res.json())
+            .then(result => {
+                setBacklog(result);
+            })
+            .catch(error => console.log('error', error));
         }
-
     }, [team])
 
     /**
@@ -116,13 +123,7 @@ function Burnup() {
                 })
                 .catch(error => console.log('error', error));
 
-            // Get Backlog infos
-            // fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/greenhopper/1.0/xboard/plan/backlog/epics.json?rapidViewId=${team.id}`, requestOptions)
-            //     .then(res => res.json())
-            //     .then(result => {
-            //         setEpicList(result.epics);
-            //     })
-            //     .catch(error => console.log('error', error));
+           
         }
     }, [epic, team])
 
