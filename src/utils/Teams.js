@@ -1,4 +1,4 @@
-import TEAMS from "../constants/TEAMS";
+import TEAMS from "../constants/teams";
 
 const Teams = {
     list: TEAMS,

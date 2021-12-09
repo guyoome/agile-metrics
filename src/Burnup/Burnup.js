@@ -39,6 +39,7 @@ const sanitizeBacklog = (backlog) => {
  */
 function Burnup() {
 
+
     const [team, setTeam] = useState({});
     const [epic, setEpic] = useState([]);
     const [sprintStart, setSprintStart] = useState();
@@ -132,109 +133,104 @@ function Burnup() {
             chartDataSet = burnup.getChartDataSetWithForecast(sprints, history, chartDataSet, forecastScope);
         }
 
-        /**
-         * Set Chart Data
-         * @hook
-         */
-        useEffect(() => {
-            // const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
-            // const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, velocity, isQuarterShown);
-            const cleanBacklog = sanitizeBacklog(backlog);
-            const chartDataSet = burnup.getChartDataSet(sprints, cleanBacklog, sprintStart, forecastScope, velocity, isQuarterShown);
+        // const chartDataSet = burnup.getChartDataSet(sprints, history, quarterStart, forecastScope, isQuarterShown);
+        // const chartDataSet = burnup.getChartDataSet(sprints, history, sprintStart, forecastScope, velocity, isQuarterShown);
+        const cleanBacklog = sanitizeBacklog(backlog);
+        chartDataSet = burnup.getChartDataSet(sprints, cleanBacklog, sprintStart, forecastScope, isQuarterShown);
 
-            // If Quarter need to be display, get data set with quarter 
-            if (isQuarterShown) {
-                chartDataSet = burnup.getChartDataSetWithQuarter(chartDataSet);
-            }
+        // If Quarter need to be display, get data set with quarter 
+        if (isQuarterShown) {
+            chartDataSet = burnup.getChartDataSetWithQuarter(chartDataSet);
+        }
 
-            // set chart data state, to display the burnup
-            setChartData(chartDataSet);
+        // set chart data state, to display the burnup
+        setChartData(chartDataSet);
 
-        }, [history, sprints, sprintStart, forecastScope, isQuarterShown])
+    }, [history, sprints, sprintStart, forecastScope, isQuarterShown])
 
 
-        return (
-            <div >
-                <div className="flex-container">
+    return (
+        <div >
+            <div className="flex-container">
 
-                    <div className="flex-item">
-                        <Input.Dropdown default="choose a team"
-                            options={Teams.getTags()}
-                            value={(e) => { setTeam(Teams.getTeamByTag(e)) }} />
-                    </div>
-
-                    <div className="flex-item">
-                        <Input.Dropdown default="choose an epic"
-                            options={burnup.getNotDoneEpicsSummary(epicList)}
-                            value={(e) => { setEpic(burnup.getEpicBySummary(epicList, e)) }}
-                        />
-                    </div>
-
-                </div>
-                <div className="flex-container mt-5">
-                    <div className="flex-item">
-                        <Input.Dropdown default="choose start Sprint"
-                            options={burnup.getSprints(sprints)}
-                            value={(e) => { setSprintStart(e) }}
-                        />
-                    </div>
-
-                    <div className="flex-item">
-                        <Input.Number
-                            disabled={sprints.length ? false : true}
-                            value={(e) => { setForecastScope(parseInt(e, 10)) }} />
-                    </div>
+                <div className="flex-item">
+                    <Input.Dropdown default="choose a team"
+                        options={Teams.getTags()}
+                        value={(e) => { setTeam(Teams.getTeamByTag(e)) }} />
                 </div>
 
-                <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
-                    for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
-
-                <p>From <span className="highlight">{sprintStart ? sprintStart : "..."}</span>,
-                    with a forecast on  <span className="highlight">{forecastScope ? forecastScope : "..."}</span> Sprints</p>
-
-                <div className="mt-5">
-                    <ResponsiveContainer height={400}>
-                        <ComposedChart data={chartData}>
-                            <CartesianGrid stroke="#ccc" />
-                            <Tooltip />
-                            {!!showLegend ?
-                                <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
-                                : ""
-                            }
-
-                            <Bar dataKey="quarter" barSize={40} fill="#FAC9C1" >
-                                <LabelList dataKey="quarterlabel" fill="#ed1c24" fontWeight="bold" position="insideTop" />
-                            </Bar>
-                            <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
-                            <Line type="linear" dataKey="forecast" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                            <Line type="linear" dataKey="forecastHigh" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                            <Line type="linear" dataKey="forecastLow" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                            <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                        </ComposedChart >
-                    </ResponsiveContainer>
-                </div>
-
-
-                <div className="flex-container mt-5">
-                    <div className="flex-item">
-                        <p>Show Quarters
-                            <Input.Checkbox
-                                value={(e) => { setIsQuarterShown(e) }} />
-                        </p>
-                    </div>
-                    <div className="flex-item">
-                        <p>Show Burnup Legend
-                            <Input.Checkbox
-                                value={(e) => { setShowLegend(e) }} />
-                        </p>
-                    </div>
+                <div className="flex-item">
+                    <Input.Dropdown default="choose an epic"
+                        options={burnup.getNotDoneEpicsSummary(epicList)}
+                        value={(e) => { setEpic(burnup.getEpicBySummary(epicList, e)) }}
+                    />
                 </div>
 
             </div>
-        );
-    }
+            <div className="flex-container mt-5">
+                <div className="flex-item">
+                    <Input.Dropdown default="choose start Sprint"
+                        options={burnup.getSprints(sprints)}
+                        value={(e) => { setSprintStart(e) }}
+                    />
+                </div>
+
+                <div className="flex-item">
+                    <Input.Number
+                        disabled={sprints.length ? false : true}
+                        value={(e) => { setForecastScope(parseInt(e, 10)) }} />
+                </div>
+            </div>
+
+            <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
+                for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</p>
+
+            <p>From <span className="highlight">{sprintStart ? sprintStart : "..."}</span>,
+                with a forecast on  <span className="highlight">{forecastScope ? forecastScope : "..."}</span> Sprints</p>
+
+            <div className="mt-5">
+                <ResponsiveContainer height={400}>
+                    <ComposedChart data={chartData}>
+                        <CartesianGrid stroke="#ccc" />
+                        <Tooltip />
+                        {!!showLegend ?
+                            <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+                            : ""
+                        }
+
+                        <Bar dataKey="quarter" barSize={40} fill="#FAC9C1" >
+                            <LabelList dataKey="quarterlabel" fill="#ed1c24" fontWeight="bold" position="insideTop" />
+                        </Bar>
+                        <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
+                        <Line type="linear" dataKey="forecast" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="forecastHigh" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="forecastLow" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                        <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                    </ComposedChart >
+                </ResponsiveContainer>
+            </div>
+
+
+            <div className="flex-container mt-5">
+                <div className="flex-item">
+                    <p>Show Quarters
+                        <Input.Checkbox
+                            value={(e) => { setIsQuarterShown(e) }} />
+                    </p>
+                </div>
+                <div className="flex-item">
+                    <p>Show Burnup Legend
+                        <Input.Checkbox
+                            value={(e) => { setShowLegend(e) }} />
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    );
 }
+
 
 export default Burnup;
