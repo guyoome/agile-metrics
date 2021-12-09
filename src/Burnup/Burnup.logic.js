@@ -38,13 +38,14 @@ const getScope = (sprints, history) => {
     Object.entries(history).forEach(([key, value]) => {
         // console.log("😎",value)
         if (value[0].added) {
-            // console.log("😍",value[0].added)
-            sprints.forEach((sprint, i) => {
+            for (let i = 0; i < sprints.length; i++) {
+                const sprint = sprints[i];
+
                 if (key >= sprint.startTime && key < (typeof sprints[i + 1] !== 'undefined' ? sprints[i + 1].startTime : sprint.endTime)) {
                     scope[i]++;
-                    // We can add abreak here /!\
+                    break;
                 }
-            });
+            }
         }
     })
 
@@ -65,12 +66,13 @@ const getDoneIssues = (sprints, history) => {
 
     Object.entries(history).forEach(([key, value]) => {
         if ((typeof value[0].column !== 'undefined') && (value[0].column.done)) {
-            sprints.forEach((sprint, i) => {
+            for (let i = 0; i < sprints.length; i++) {
+                const sprint = sprints[i];
                 if (key >= sprint.startTime && key < (typeof sprints[i + 1] !== 'undefined' ? sprints[i + 1].startTime : sprint.endTime)) {
                     doneIssues[i]++;
-                    // We can add abreak here /!\
+                    break;
                 }
-            });
+            }
         }
     })
 
@@ -91,7 +93,6 @@ const getStartSprint = (quarter, sprints, date = new Date()) => {
     // 4 - Octobre/Novembre/Decembre
     // new Date(year,monthID,day)
 
-    // const date = new Date();
     let firstDayOfQuarter = new Date(date.getFullYear(), 0).getTime()
     switch (quarter) {
         case 4:
@@ -112,12 +113,14 @@ const getStartSprint = (quarter, sprints, date = new Date()) => {
 
     let startSprint = sprints[0];
 
-    sprints.forEach((sprint, i) => {
+    for (let i = 0; i < sprints.length; i++) {
+        const sprint = sprints[i];
+
         if (firstDayOfQuarter <= sprint.startTime && firstDayOfQuarter > (typeof sprints[i - 1] !== 'undefined' ? sprints[i - 1].startTime : sprint.startTime)) {
             startSprint = sprint;
-            // We can add abreak here /!\
+            break;
         }
-    });
+    }
 
     return startSprint;
 }
@@ -134,22 +137,24 @@ const getChartDataBegin = (chartDataSet, startSprint) => {
     const sliceStart = chartDataSet.findIndex((element) => (
         element.name === startSprint.name
     ));
+
     return chartDataSet.slice(sliceStart);
 }
 
-
-const getAverageDoneBySprint = (sprints, history, interval = 10) => {
-    const chartDataSet = getChartDataSet(sprints, history, 0);
-
-    let totalDoneIssues = 0;
-    let totalSprints = chartDataSet.length;
+const getAverageDoneBySprint = (sprints, history) => {
+    let chartDataSet = getChartDataSet(sprints, history, 0);
 
     chartDataSet.forEach((element, i) => {
-        const done = element.doneIssues - (i === 0 ? 0 : chartDataSet[i - 1].doneIssues);
-        totalDoneIssues += done;
-        if (element.doneIssues === 0) {
-            totalSprints--;
+        if (i !== 0) {
+            chartDataSet[i].done = element.doneIssues - chartDataSet[i - 1].doneIssues;
         }
+    });
+
+    chartDataSet = chartDataSet.slice(-5);
+    let totalDoneIssues = 0;
+    let totalSprints = chartDataSet.length;
+    chartDataSet.forEach(element => {
+        totalDoneIssues += element.done;
     });
 
     const averageDoneBySprint = totalDoneIssues / totalSprints;
@@ -157,7 +162,7 @@ const getAverageDoneBySprint = (sprints, history, interval = 10) => {
     return averageDoneBySprint;
 }
 
-const getForecast = (forecastScope, chartDataSet, sprints, history,velocity) => {
+const getForecast = (forecastScope, chartDataSet, sprints, history, velocity) => {
     let forecast = [];
     if (forecastScope > 0) {
         forecast = new Array(forecastScope);
@@ -175,8 +180,6 @@ const getForecast = (forecastScope, chartDataSet, sprints, history,velocity) => 
     const scope = getScope(sprints, history);
 
     const initStartTime = chartDataSet.at(-1).startTime;
-    // console.log("⏱initStartTime", initStartTime)
-    // console.log("⏱initStartTime+2weeks", initStartTime + 1209600000)
 
     forecast.forEach((element, i) => {
         forecast[i] = {
@@ -195,24 +198,66 @@ const getForecast = (forecastScope, chartDataSet, sprints, history,velocity) => 
     const initDoneIssues = chartDataSet.at(-1).doneIssues;
 
     forecast.forEach((element, i) => {
-        // forecast[i].avg = (i > 0 ? (forecast[i - 1].avg + velocity) : (initDoneIssues + velocity))
-        forecast[i].avg = (i > 0 ? (forecast[i - 1].avg + avg) : (initDoneIssues + avg))
-
+        forecast[i].forecast = (i > 0 ? (forecast[i - 1].forecast + avg) : (initDoneIssues + avg))
+        forecast[i].forecast = Math.round(forecast[i].forecast*100)/100;
     });
 
     return forecast;
 }
 
-const getForecastInterval = (chartDataSet, interval) => {
+const sum = (array) => {
+    return array.reduce((a, b) => a + b, 0);
+}
+
+const average = (array) => {
+    return (sum(array) / array.length) || 0;
+}
+
+const getForecastInterval = (chartDataSet, interval, forecast, sprints, history) => {
+
+    const avg = getAverageDoneBySprint(sprints, history);
+
+    // Get 5 last sprints
+    const removeForecast = chartDataSet.slice(0, -forecast);
+    let deviation = removeForecast.slice(-interval);
+
+    // Avg of 5 last sprints - µ
+    let calcDeviation = [];
+    deviation.forEach(element => {
+        calcDeviation.push(element.doneIssues);
+    });
+    deviation = calcDeviation;
+    calcDeviation = [];
+
+    const mu = average(deviation);
+
+    // |xi - µ|²
+    deviation.forEach((element, i) => {
+        const calc = element - mu;
+        calcDeviation.push(calc * calc)
+    });
+
+    // Sum |xi - µ|²
+    const sumCalcDeviation = sum(calcDeviation);
+
+    // Sum |xi - µ|² / Tot(5)
+    const avgSumCalcDeviation = sumCalcDeviation / deviation.length;
+
+    // sqrt(Sum |xi - µ|² / Tot(5))
+    deviation = Math.sqrt(avgSumCalcDeviation);
+
     chartDataSet.forEach((element, i) => {
-        if (element.avg) {
-            if (element.avg !== element.doneIssues) {
-                chartDataSet[i].avgless = element.avg * (1 - interval / 100);
-                chartDataSet[i].avgmore = element.avg * (1 + interval / 100);
+        if (element.forecast) {
+            if (element.forecast !== element.doneIssues) {
+                chartDataSet[i].forecastLow = chartDataSet[i - 1].forecastLow + Math.abs(avg - deviation);
+                chartDataSet[i].forecastLow = Math.round(chartDataSet[i].forecastLow*100)/100;
+
+                chartDataSet[i].forecastHigh = chartDataSet[i - 1].forecastHigh + (avg + deviation);
+                chartDataSet[i].forecastHigh = Math.round(chartDataSet[i].forecastHigh*100)/100;
 
             } else {
-                chartDataSet[i].avgless = element.doneIssues;
-                chartDataSet[i].avgmore = element.doneIssues;
+                chartDataSet[i].forecastLow = element.doneIssues;
+                chartDataSet[i].forecastHigh = element.doneIssues;
             }
         }
     });
@@ -225,7 +270,63 @@ const getSprints = (sprintsList) => {
     sprintsList.forEach(element => {
         sprints.push(element.name)
     });
-    return sprints;
+
+    return sprints.slice(-20);
+}
+
+const getChartDataSetWithForecast = (sprints, history, chartDataSet, forecast = 0) => {
+    let chartDataSetWithForecast = chartDataSet;
+    // forecast start at the end of doneIssues Line
+    chartDataSetWithForecast.at(-1).forecast = chartDataSet.at(-1).doneIssues;
+
+    // Enrich with avg Forecast
+    chartDataSetWithForecast = chartDataSetWithForecast.concat(getForecast(forecast, chartDataSetWithForecast, sprints, history));
+
+    // Enrich with high & low forecast
+    chartDataSetWithForecast = getForecastInterval(chartDataSetWithForecast, 5, forecast, sprints, history);
+
+    return chartDataSetWithForecast;
+}
+
+const getChartDataSetWithQuarter = (chartDataSet) => {
+    let chartDataSetWithQuarter;
+
+    chartDataSetWithQuarter = chartDataSet;
+
+    const firstsSprintQuarter = []
+    const years = [];
+
+    chartDataSetWithQuarter.forEach(element => {
+        const elementYear = new Date(element.startTime).getFullYear();
+        if (years.indexOf(elementYear.toString()) === -1) {
+            years.push(elementYear.toString());
+        }
+    });
+
+
+
+    for (let j = 0; j < years.length; j++) {
+        for (let index = 0; index < 4; index++) {
+            firstsSprintQuarter.push(getStartSprint(index + 1, chartDataSetWithQuarter, new Date(years[j])))
+
+        }
+    }
+
+
+    for (let i = 1; i < chartDataSetWithQuarter.length; i++) {
+        const sprint = chartDataSetWithQuarter[i];
+
+        for (let j = 0; j < firstsSprintQuarter.length; j++) {
+            const firstSprintQuarter = firstsSprintQuarter[j];
+
+            if (firstSprintQuarter.name === sprint.name) {
+                chartDataSetWithQuarter[i].quarter = Math.max.apply(Math, chartDataSetWithQuarter.map(function (o) { return o.scope; }));
+                chartDataSetWithQuarter[i].quarterlabel = "Q".concat(j % 4 + 1);
+            }
+        }
+    }
+
+    return chartDataSetWithQuarter;
 }
 
 
@@ -235,8 +336,7 @@ const getSprints = (sprintsList) => {
  * @param {Object} history - history of tickets
  * @param {Number} quarterStrat - The beginning of the chart data set 
  */
-// const getChartDataSet = (sprints, history, quarterStart, forecast, isQuarterShown) => {
-const getChartDataSet = (sprints, history, sprintStart, forecast,velocity, isQuarterShown) => {
+const getChartDataSet = (sprints, history) => {
 
     let chartDataSet = [];
 
@@ -253,69 +353,19 @@ const getChartDataSet = (sprints, history, sprintStart, forecast,velocity, isQua
     }
 
 
-    // const startSprint = getStartSprint(quarterStart, sprints);
-    //     chartDataSet = getChartDataBegin(chartDataSet, startSprint);
-    if (sprintStart) {
-        chartDataSet = getChartDataBegin(chartDataSet, { name: sprintStart });
-    }
-
-
-    // Add forecast
-    if (forecast && sprints !== [] && velocity) {
-        // forecast start at the end of doneIssues Line
-        chartDataSet.at(-1).avg = chartDataSet.at(-1).doneIssues;
-
-        // Enrich with avg Forecast
-        chartDataSet = chartDataSet.concat(getForecast(forecast, chartDataSet, sprints, history,velocity))
-
-        // Enrich with high & low forecast
-        chartDataSet = getForecastInterval(chartDataSet, 10)
-    }
-
-    if (isQuarterShown) {
-        const firstsSprintQuarter = []
-        const years = [];
-        // console.log("🎃🎊🎃", chartDataSet)
-        chartDataSet.forEach(element => {
-            const elementYear = new Date(element.startTime).getFullYear();
-            if (years.indexOf(elementYear.toString()) === -1) {
-                years.push(elementYear.toString());
-            }
-        });
-
-        // console.log("🎆Years",years)
-        
-        
-        for (let j = 0; j < years.length; j++) {
-            for (let index = 0; index < 4; index++) {
-                firstsSprintQuarter.push(getStartSprint(index + 1, chartDataSet, new Date(years[j])))
-                // firstsSprintQuarter.push(getStartSprint(index + 1, sprints))
-                
-            }
-        }
-        
-        // console.log("🎆firstsSprintQuarter",firstsSprintQuarter)
-
-        for (let i = 1; i < chartDataSet.length; i++) {
-            const sprint = chartDataSet[i];
-
-            for (let j = 0; j < firstsSprintQuarter.length; j++) {
-                const firstSprintQuarter = firstsSprintQuarter[j];
-
-                if (firstSprintQuarter.name === sprint.name) {
-                    chartDataSet[i].quarter = Math.max.apply(Math, chartDataSet.map(function (o) { return o.scope; }));
-                    chartDataSet[i].quarterlabel = "Q".concat(j % 4 + 1);
-                }
-            }
-        }
-    }
+    // if (sprintStart) {
+    //     chartDataSet = getChartDataBegin(chartDataSet, { name: sprintStart });
+    // }
 
     return chartDataSet;
 }
 
 export {
+    getSprints,
     getNotDoneEpicsSummary,
     getEpicBySummary,
     getChartDataSet,
-    getSprints
+    getChartDataBegin,
+    getChartDataSetWithForecast,
+    getChartDataSetWithQuarter
 }
