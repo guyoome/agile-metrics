@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import domtoimage from 'dom-to-image';
 import "./HealthCheck.css";
 
 import glossary from "./glossary.json";
@@ -115,7 +116,7 @@ function HealthCheck() {
             </textarea>
             <p style={{ color: "red" }}>{errorJson}</p>
             <div></div>
-            <div className='data-table'>
+            <div className='data-table' id='my-node'>
                 <table >
                     <thead>
                         <tr>
@@ -145,6 +146,18 @@ function HealthCheck() {
 
                 </table>
             </div>
+            <button onClick={() => {
+                domtoimage.toPng(document.getElementById('my-node'))
+                    .then(function (dataUrl) {
+                        var link = document.createElement('a');
+                        link.download = 'my-image-name.png';
+                        link.href = dataUrl;
+                        link.click();
+                    })
+                    .catch(function (error) {
+                        console.error('oops, something went wrong!', error);
+                    });
+            }}>Save as an img</button>
         </div>
     );
 }

@@ -3,6 +3,7 @@
     border-radius: 4px;
     display: inline-flex;
     cursor:default;
+    background-color: #fff;
 }
 
 table {
