@@ -1,0 +1,16 @@
+{
+    "R": "Easy to Release",
+    "SP": "Suitable Process",
+    "T": "Teamwork",
+    "S": "Speed",
+    "H": "Health of Codebase",
+    "M": "Mission",
+    "L": "Learning",
+    "D": "Delivering Value",
+    "PoP": "Pawns or Players",
+    "Crappy": "red",
+    "Meh...": "orange",
+    "Awesome": "green",
+    "Trend Up": "up",
+    "Trend Down":"down"
+}

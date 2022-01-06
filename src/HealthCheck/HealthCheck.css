@@ -1,0 +1,33 @@
+.data-table {
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-radius: 4px;
+    display: inline-flex;
+    cursor:default;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+tr {
+    height: 56px;
+}
+
+tbody tr {
+    border-top: 1px solid rgba(0, 0, 0, .12);
+}
+
+tbody tr:hover {
+    background-color: rgba(0, 0, 0, .04);
+}
+
+td,
+th {
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: left;
+}
+
+.emoji {
+    font-weight: 100;
+}
