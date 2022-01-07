@@ -39,6 +39,7 @@ const getDataTable = (categories, json) => {
             orange: 0,
             green: 0,
             up: 0,
+            stable: 0,
             down: 0,
             result: ""
         })
@@ -68,9 +69,10 @@ const getDataTable = (categories, json) => {
         result.push(color === "green" ? "🟢" : color === "orange" ? "🟠" : "🔴");
         const trend = getHigher({
             down: element.down,
+            stable: element.stable,
             up: element.up
         });
-        result.push(trend === "up" ? "🔼" : "🔽");
+        result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
         element.result = result[0] + result[1];
     });
 
@@ -113,7 +115,7 @@ function HealthCheck() {
             <h1>Agile Health Check</h1>
             <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank">Link to MetroRetro template</a></p>
             <input type="text" placeholder='Team Name'
-            onChange={(e)=>{setTeam(e.target.value)}}></input>
+                onChange={(e) => { setTeam(e.target.value) }}></input>
             <div className='mt-5'></div>
             <textarea rows="5" cols="33"
                 placeholder='Export MetroRetro to JSON'
@@ -123,7 +125,7 @@ function HealthCheck() {
                 }}>
             </textarea>
             <p style={{ color: "red" }}>{errorJson}</p>
-          
+
             <Button.SaveAsPNG icon="💾" text="Download Table" node="agile-health-check-table" fileName="agile-health-check-table" />
 
             <div className='mt-5'></div>
@@ -135,7 +137,7 @@ function HealthCheck() {
                             <th>Red <span className='emoji'>🔴</span></th>
                             <th>Orange <span className='emoji'>🟠</span></th>
                             <th>Green <span className='emoji'>🟢</span></th>
-                            <th>Trend (<span className='emoji'>🔼</span>/<span className='emoji'>🔽</span>)</th>
+                            <th>Trend (<span className='emoji'>🔼</span>/<span className='emoji'>⏸</span>/<span className='emoji'>🔽</span>)</th>
                             <th>Result</th>
                         </tr>
                     </thead>
@@ -148,7 +150,7 @@ function HealthCheck() {
                                 <td>{element.red}</td>
                                 <td>{element.orange}</td>
                                 <td>{element.green}</td>
-                                <td>{element.up}/{element.down}</td>
+                                <td>{element.up}/{element.stable}/{element.down}</td>
                                 <td>{element.result}</td>
                             </tr>
                         )

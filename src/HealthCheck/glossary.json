@@ -8,9 +8,12 @@
     "L": "Learning",
     "D": "Delivering Value",
     "PoP": "Pawns or Players",
+    "HaW": "Happy at Work",
+    "SPT": "Support",
     "Crappy": "red",
     "Meh...": "orange",
     "Awesome": "green",
     "Trend Up": "up",
-    "Trend Down":"down"
+    "Trend Down":"down",
+    "Trend Stable":"stable"
 }
