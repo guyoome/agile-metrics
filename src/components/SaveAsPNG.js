@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import domtoimage from 'dom-to-image';
-import './Input.css';
+import './Button.css';
 
-function SaveButton(props) {
+function SaveAsPNG(props) {
 
     return (
         <button onClick={() => {
@@ -20,4 +20,4 @@ function SaveButton(props) {
     );
 }
 
-export default SaveButton;
+export default SaveAsPNG;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as Input from "../components/Input";
+import * as Button from "../components/Button";
 import Teams from '../utils/Teams';
 import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as burnup from "./Burnup.logic";
-import SaveButton from '../components/SaveButton';
 
 import "./Burnup.css";
 
@@ -205,7 +205,7 @@ function Burnup() {
                 </div>
             </div>
         
-            <SaveButton icon="💾" text="Download Burnup" node="burnup-chart" fileName="burnup-chart" />
+            <Button.SaveAsPNG icon="💾" text="Download Burnup" node="burnup-chart" fileName="burnup-chart" />
 
             <div className="flex-container mt-5">
                 <div className="flex-item">

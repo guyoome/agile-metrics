@@ -375,11 +375,6 @@ const getChartDataSet = (sprints, history) => {
         })
     }
 
-
-    // if (sprintStart) {
-    //     chartDataSet = getChartDataBegin(chartDataSet, { name: sprintStart });
-    // }
-
     return chartDataSet;
 }
 

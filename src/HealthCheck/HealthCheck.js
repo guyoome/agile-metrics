@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SaveButton from '../components/SaveButton';
+import * as Button from "../components/Button";
 import "./HealthCheck.css";
 
 import glossary from "./glossary.json";
@@ -124,7 +124,7 @@ function HealthCheck() {
             </textarea>
             <p style={{ color: "red" }}>{errorJson}</p>
           
-            <SaveButton icon="💾" text="Download Table" node="agile-health-check-table" fileName="agile-health-check-table" />
+            <Button.SaveAsPNG icon="💾" text="Download Table" node="agile-health-check-table" fileName="agile-health-check-table" />
 
             <div className='mt-5'></div>
             <div className='data-table' id='agile-health-check-table'>
