@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import './Number.css';
+import './Input.css';
 
 function Number(props) {
     const [value, setValue] = useState();

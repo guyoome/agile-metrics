@@ -3,6 +3,7 @@ import * as Input from "../components/Input";
 import Teams from '../utils/Teams';
 import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as burnup from "./Burnup.logic";
+import SaveButton from '../components/SaveButton';
 
 import "./Burnup.css";
 
@@ -136,7 +137,7 @@ function Burnup() {
         // set chart data state, to display the burnup
         setChartData(chartDataSet);
 
-    }, [history, sprints, sprintStart, forecastScope, showBacklogBurnup, backlog,isQuarterShown])
+    }, [history, sprints, sprintStart, forecastScope, showBacklogBurnup, backlog, isQuarterShown])
 
     return (
         <div >
@@ -170,39 +171,41 @@ function Burnup() {
                         value={(e) => { setForecastScope(parseInt(e, 10)) }} />
                 </div>
             </div>
+            <div id='burnup-chart'>
+                <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
+                    {!!showBacklogBurnup ?
+                        <span>, <span className="highlight">Backlog</span></span>
+                        :
+                        <span>for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</span>
+                    }
+                </p>
 
-            <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
-                {!!showBacklogBurnup ?
-                    <span>, <span className="highlight">Backlog</span></span>
-                    :
-                    <span>for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</span>
-                }
-            </p>
+                <p>From <span className="highlight">{sprintStart ? sprintStart : "..."}</span>,
+                    with a forecast on  <span className="highlight">{forecastScope ? forecastScope : "..."}</span> Sprints</p>
 
-            <p>From <span className="highlight">{sprintStart ? sprintStart : "..."}</span>,
-                with a forecast on  <span className="highlight">{forecastScope ? forecastScope : "..."}</span> Sprints</p>
+                <div className="mt-5">
+                    <ResponsiveContainer height={400}>
+                        <ComposedChart data={chartData}>
+                            <CartesianGrid stroke="#ccc" />
+                            <Tooltip />
+                            {!!showLegend && <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />}
 
-            <div className="mt-5">
-                <ResponsiveContainer height={400}>
-                    <ComposedChart data={chartData}>
-                        <CartesianGrid stroke="#ccc" />
-                        <Tooltip />
-                        {!!showLegend && <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />}
-
-                        <Bar dataKey="quarter" barSize={40} fill="#FAC9C1" >
-                            <LabelList dataKey="quarterlabel" fill="#ed1c24" fontWeight="bold" position="insideTop" />
-                        </Bar>
-                        <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
-                        <Line type="linear" dataKey="forecastHigh" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                        <Line type="linear" dataKey="forecast" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                        <Line type="linear" dataKey="forecastLow" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
-                        <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                    </ComposedChart >
-                </ResponsiveContainer>
+                            <Bar dataKey="quarter" barSize={40} fill="#FAC9C1" >
+                                <LabelList dataKey="quarterlabel" fill="#ed1c24" fontWeight="bold" position="insideTop" />
+                            </Bar>
+                            <Line type="linear" dataKey="scope" stroke="#ffba49" dot={false} strokeWidth={4} />
+                            <Line type="linear" dataKey="forecastHigh" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                            <Line type="linear" dataKey="forecast" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                            <Line type="linear" dataKey="forecastLow" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" />
+                            <Line type="linear" dataKey="doneIssues" stroke="#00c39e" strokeWidth={3} />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                        </ComposedChart >
+                    </ResponsiveContainer>
+                </div>
             </div>
-
+        
+            <SaveButton icon="💾" text="Download Burnup" node="burnup-chart" fileName="burnup-chart" />
 
             <div className="flex-container mt-5">
                 <div className="flex-item">

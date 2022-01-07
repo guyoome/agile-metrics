@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import './Checkbox.css';
+import './Input.css';
+
 
 function Checkbox(props) {
     const [value, setValue] = useState();

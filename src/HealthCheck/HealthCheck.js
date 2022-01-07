@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import domtoimage from 'dom-to-image';
+import SaveButton from '../components/SaveButton';
 import "./HealthCheck.css";
 
 import glossary from "./glossary.json";
@@ -83,6 +83,7 @@ function HealthCheck() {
     const [categories, setCategories] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [errorJson, setErrorJson] = useState();
+    const [team, setTeam] = useState("<team name>");
 
     useEffect(() => {
         try {
@@ -110,17 +111,27 @@ function HealthCheck() {
     return (
         <div>
             <h1>Agile Health Check</h1>
-            <textarea id="story" name="story"
-                rows="5" cols="33" onChange={(e) => { try { setJson(JSON.parse(e.target.value)); setErrorJson() } catch (error) { setErrorJson(error.message) } }}>
-
+            <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank">Link to MetroRetro template</a></p>
+            <input type="text" placeholder='Team Name'
+            onChange={(e)=>{setTeam(e.target.value)}}></input>
+            <div className='mt-5'></div>
+            <textarea rows="5" cols="33"
+                placeholder='Export MetroRetro to JSON'
+                onChange={(e) => {
+                    try { setJson(JSON.parse(e.target.value)); setErrorJson() }
+                    catch (error) { setErrorJson(error.message) }
+                }}>
             </textarea>
             <p style={{ color: "red" }}>{errorJson}</p>
-            <div></div>
-            <div className='data-table' id='my-node'>
+          
+            <SaveButton icon="💾" text="Download Table" node="agile-health-check-table" fileName="agile-health-check-table" />
+
+            <div className='mt-5'></div>
+            <div className='data-table' id='agile-health-check-table'>
                 <table >
                     <thead>
                         <tr>
-                            <th>ORC - Q4</th>
+                            <th>{team}</th>
                             <th>Red <span className='emoji'>🔴</span></th>
                             <th>Orange <span className='emoji'>🟠</span></th>
                             <th>Green <span className='emoji'>🟢</span></th>
@@ -146,18 +157,7 @@ function HealthCheck() {
 
                 </table>
             </div>
-            <button onClick={() => {
-                domtoimage.toPng(document.getElementById('my-node'))
-                    .then(function (dataUrl) {
-                        var link = document.createElement('a');
-                        link.download = 'my-image-name.png';
-                        link.href = dataUrl;
-                        link.click();
-                    })
-                    .catch(function (error) {
-                        console.error('oops, something went wrong!', error);
-                    });
-            }}>Save as an img</button>
+
         </div>
     );
 }

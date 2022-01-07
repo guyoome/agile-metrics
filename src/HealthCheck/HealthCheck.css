@@ -32,3 +32,32 @@ th {
 .emoji {
     font-weight: 100;
 }
+
+
+
+textarea{
+    min-width: 280px;
+    min-height: 96px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-radius: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+textarea:hover{
+    background-color: rgba(0, 0, 0, .04);
+}
+
+input[type=text]{
+    min-width: 280px;
+    min-height: 48px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-radius: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+input[type=text]:hover{
+    background-color: rgba(0, 0, 0, .04);
+
+}
