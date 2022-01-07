@@ -8,8 +8,8 @@ function SaveAsPNG(props) {
             <div className='navbar-container'>
                 <div className='logo'>🎈 Agile Metrics.</div>
                 <ul>
-                    <li> <a>Burnup</a> </li>
-                    <li> <a>Agile Health Check</a> </li>
+                    <li> <a>📈 Burnup</a> </li>
+                    <li> <a>🩺 Agile Health Check</a> </li>
                 </ul>
             </div>
         </nav>
