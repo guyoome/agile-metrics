@@ -5,12 +5,12 @@
     /* background-color: brown; */
 }
 
-nav{
+nav {
     /* background-color: cadetblue; */
     position: fixed;
     width: 100%;
     top: 0;
-    border-bottom: 1px solid rgba(0,0,0,0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     background-color: #fff;
     z-index: 999;
 }
@@ -26,22 +26,54 @@ nav ul {
     align-items: center;
 }
 
-nav li{
+nav li {
     display: flex;
     padding: 0 24px;
     font-weight: bold;
     color: #27416b;
 }
 
-nav li:hover{
-    text-decoration: underline;
-}
-
-nav .logo{
+nav .logo {
     display: flex;
     align-items: center;
     justify-content: start;
     font-weight: 700;
     font-size: larger;
     color: #27416b;
+}
+
+nav a {
+    color: inherit;
+    display: block;
+    position: relative;
+    cursor: pointer;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.1em;
+    background-color: #27416b;
+    opacity: 0;
+    transition: opacity 300ms, transform 300ms;
+}
+
+nav a::after {
+    opacity: 1;
+    transform: scale(0);
+    transform-origin: center;
+}
+
+/* nav a:hover::after,
+a:focus::after {
+  opacity: 1;
+  transform: translate3d(0, 0.2em, 0);
+} */
+
+nav a:hover::after,
+nav a:focus::after{
+  transform: scale(1);
 }
