@@ -104,8 +104,9 @@ function HealthCheck() {
             // setDataTable(getResults(categories, json));
             setErrorJson();
         } catch (error) {
-            setErrorJson(error.message)
-            console.log("💫", error.message)
+            setDataTable([]);
+            setErrorJson(error.message);
+            console.log("💫", error.message);
         }
 
     }, [categories])
@@ -121,7 +122,7 @@ function HealthCheck() {
                 placeholder='Export MetroRetro to JSON'
                 onChange={(e) => {
                     try { setJson(JSON.parse(e.target.value)); setErrorJson() }
-                    catch (error) { setErrorJson(error.message) }
+                    catch (error) { setErrorJson(error.message); setDataTable([]); }
                 }}>
             </textarea>
             <p style={{ color: "red" }}>{errorJson}</p>
@@ -137,24 +138,22 @@ function HealthCheck() {
                             <th>Red <span className='emoji'>🔴</span></th>
                             <th>Orange <span className='emoji'>🟠</span></th>
                             <th>Green <span className='emoji'>🟢</span></th>
-                            <th>Trend (<span className='emoji'>🔼</span>/<span className='emoji'>⏸</span>/<span className='emoji'>🔽</span>)</th>
+                            <th>Trend (<span className='emoji'>🔽</span>/<span className='emoji'>⏸</span>/<span className='emoji'>🔼</span>)</th>
                             <th>Result</th>
                         </tr>
                     </thead>
 
                     <tbody className='am-data-table__content'>
-                        {dataTable.map((element, i) =>
-                        (
+                        {dataTable.map((element, i) =>(
                             <tr key={i}>
                                 <td>{element.category}</td>
                                 <td>{element.red}</td>
                                 <td>{element.orange}</td>
                                 <td>{element.green}</td>
-                                <td>{element.up}/{element.stable}/{element.down}</td>
+                                <td>{element.down}/{element.stable}/{element.up}</td>
                                 <td>{element.result}</td>
                             </tr>
-                        )
-                        )}
+                        ))}
                     </tbody>
 
                 </table>
