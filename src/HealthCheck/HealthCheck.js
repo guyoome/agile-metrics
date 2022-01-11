@@ -112,52 +112,56 @@ function HealthCheck() {
     }, [categories])
 
     return (
-        <div>
-            <h1>Agile Health Check</h1>
-            <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank">Link to MetroRetro template</a></p>
-            <input type="text" placeholder='Team Name'
-                onChange={(e) => { setTeam(e.target.value) }}></input>
-            <div className='mt-5'></div>
-            <textarea rows="5" cols="33"
-                placeholder='Export MetroRetro to JSON'
-                onChange={(e) => {
-                    try { setJson(JSON.parse(e.target.value)); setErrorJson() }
-                    catch (error) { setErrorJson(error.message); setDataTable([]); }
-                }}>
-            </textarea>
-            <p style={{ color: "red" }}>{errorJson}</p>
-
-            <Button.SaveAsPNG icon="💾" text="Download Table" node="agile-health-check-table" fileName="agile-health-check-table" />
-
-            <div className='mt-5'></div>
-            <div className='data-table' id='agile-health-check-table'>
-                <table >
-                    <thead>
-                        <tr>
-                            <th>{team}</th>
-                            <th>Red <span className='emoji'>🔴</span></th>
-                            <th>Orange <span className='emoji'>🟠</span></th>
-                            <th>Green <span className='emoji'>🟢</span></th>
-                            <th>Trend (<span className='emoji'>🔽</span>/<span className='emoji'>⏸</span>/<span className='emoji'>🔼</span>)</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-
-                    <tbody className='am-data-table__content'>
-                        {dataTable.map((element, i) =>(
-                            <tr key={i}>
-                                <td>{element.category}</td>
-                                <td>{element.red}</td>
-                                <td>{element.orange}</td>
-                                <td>{element.green}</td>
-                                <td>{element.down}/{element.stable}/{element.up}</td>
-                                <td>{element.result}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-
-                </table>
+        <div className='container'>
+            <div className='left'>
+                {/* <h1 style={{color:"#27416b"}}>Agile Health Check</h1> */}
+                <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank">Link to MetroRetro template</a></p>
+                <input type="text" placeholder='Team Name'
+                    onChange={(e) => { setTeam(e.target.value) }}></input>
+                <div className='mt-5'></div>
+                <textarea rows="5" cols="33"
+                    placeholder='Export MetroRetro to JSON'
+                    onChange={(e) => {
+                        try { setJson(JSON.parse(e.target.value)); setErrorJson() }
+                        catch (error) { setErrorJson(error.message); setDataTable([]); }
+                    }}>
+                </textarea>
+                <p style={{ color: "red" }}>{errorJson}</p>
             </div>
+            <div className='right'>
+                <Button.SaveAsPNG icon="💾" text="Download Table" node="agile-health-check-table" fileName="agile-health-check-table" />
+
+                <div className='mt-5'></div>
+                <div className='data-table' id='agile-health-check-table'>
+                    <table >
+                        <thead>
+                            <tr>
+                                <th>{team}</th>
+                                <th>Red <span className='emoji'>🔴</span></th>
+                                <th>Orange <span className='emoji'>🟠</span></th>
+                                <th>Green <span className='emoji'>🟢</span></th>
+                                <th>Trend (<span className='emoji'>🔽</span>/<span className='emoji'>⏸</span>/<span className='emoji'>🔼</span>)</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+
+                        <tbody className='am-data-table__content'>
+                            {dataTable.map((element, i) => (
+                                <tr key={i}>
+                                    <td>{element.category}</td>
+                                    <td>{element.red}</td>
+                                    <td>{element.orange}</td>
+                                    <td>{element.green}</td>
+                                    <td>{element.down}/{element.stable}/{element.up}</td>
+                                    <td>{element.result}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
 
         </div>
     );
