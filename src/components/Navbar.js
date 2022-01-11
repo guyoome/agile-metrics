@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import './Navbar.css';
 
 function SaveAsPNG(props) {
-
+    const navigate = useNavigate();
     return (
         <nav>
             <div className='navbar-container'>
-                <div className='logo'>🎈 Agile Metrics.</div>
+                <div className='logo' onClick={()=> navigate("/")}>🎈 Agile Metrics.</div>
                 <ul>
-                    <li> <a>📈 Burnup</a> </li>
-                    <li> <a>🩺 Agile Health Check</a> </li>
+                    <li> <a onClick={()=> navigate("/burnup")}>📈 Burnup</a> </li>
+                    <li> <a onClick={()=> navigate("/health-check")}>🩺 Agile Health Check</a> </li>
                 </ul>
             </div>
         </nav>

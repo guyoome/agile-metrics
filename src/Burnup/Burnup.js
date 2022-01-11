@@ -140,7 +140,7 @@ function Burnup() {
     }, [history, sprints, sprintStart, forecastScope, showBacklogBurnup, backlog, isQuarterShown])
 
     return (
-        <div >
+        <div>
             <div className="flex-container">
 
                 <div className="flex-item">
