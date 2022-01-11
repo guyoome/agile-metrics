@@ -174,9 +174,9 @@ function Burnup() {
             <div id='burnup-chart'>
                 <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
                     {!!showBacklogBurnup ?
-                        <span>, <span className="highlight">Backlog</span></span>
+                        <span>, <span className="highlight"> Backlog</span></span>
                         :
-                        <span>for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</span>
+                        <span> for <span className="highlight">{epic.summary ? epic.summary : "..."}</span> epic.</span>
                     }
                 </p>
 
