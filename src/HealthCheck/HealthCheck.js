@@ -126,7 +126,7 @@ function HealthCheck() {
                         catch (error) { setErrorJson(error.message); setDataTable([]); }
                     }}>
                 </textarea>
-                <p style={{ color: "red" }}>{errorJson}</p>
+                <p style={{ color: "red" }}>{errorJson ? "Invalid JSON" : ""}</p>
             </div>
             <div className='right'>
                 <Button.SaveAsPNG icon="💾" text="Download Table" node="agile-health-check-table" fileName="agile-health-check-table" />
