@@ -10,20 +10,25 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Burnup from './Burnup/Burnup';
 import HealthCheck from './HealthCheck/HealthCheck';
+import GlobalHealthCheck from './HealthCheck/GlobalHealthCheck';
 
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />}>
-            <Route index element={<Burnup />} />
-            <Route path="burnup" element={<Burnup />}/>
-            <Route path="health-check" element={<HealthCheck />}/>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<Burnup />} />
+          <Route path="burnup" element={<Burnup />} />
+          <Route path="health-check" element={<HealthCheck />} />
+          <Route path="health-check-multi" element={<GlobalHealthCheck />}>
+            {/* <Route path="mono" element={<HealthCheck />} /> */}
+            {/* <Route path="multi" element={<GlobalHealthCheck />} /> */}
           </Route>
-        </Routes>
-      </BrowserRouter>
-    
+        </Route>
+      </Routes>
+    </BrowserRouter>
+
   </React.StrictMode>,
   document.getElementById('root')
 );

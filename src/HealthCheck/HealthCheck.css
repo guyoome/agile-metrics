@@ -73,3 +73,7 @@ input[type=text]:hover{
     align-items: stretch;
     /* background-color: khaki; */
  }
+
+ .container.--grid-1{
+    grid-template-columns: 1fr 1fr 1fr;
+ }
