@@ -24,8 +24,21 @@ const getKeyByValue = (object, value) => {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-const getHigher = (obj) => {
-    return Object.keys(obj).reduce((a, b) => obj[a] >= obj[b] ? a : b);
+const getHigher = (obj, param) => {
+    // get all entries in the object and rank them by how they appears
+    const ranking = (param === "trend" ? ["down", "stable", "up"] : ["red", "orange", "green"]);
+    let avg = 0;
+    let tot = 0;
+    for (const key in obj) {
+        if (obj.hasOwnProperty.call(obj, key)) {
+            const element = obj[key];
+            const coef = (key === ranking[2] ? 3 : key === ranking[1] ? 2 : 1)
+            avg += element * coef;
+            tot += element;
+        }
+    }
+    avg = Math.round(avg / tot);
+    return ranking[avg - 1];
 }
 
 
@@ -71,7 +84,7 @@ const getDataTable = (categories, json) => {
             down: element.down,
             stable: element.stable,
             up: element.up
-        });
+        }, "trend");
         result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
         element.result = result[0] + result[1];
     });
@@ -92,9 +105,7 @@ function HealthCheck() {
 
 
     useEffect(() => {
-        console.log("🎈UPDATE");
         try {
-            // const json = teams[0].json;
             setCategories(getCategories(teams[0].json));
 
             setErrorJson();
@@ -106,31 +117,15 @@ function HealthCheck() {
     }, [update]);
 
     useEffect(() => {
-        console.log("🎈Result#1", teams);
-        console.log("🎈Result#2", categories);
-
-    }, [categories])
-
-    useEffect(() => {
-        console.log("🎃categories:", categories)
         try {
-            // setDataTable(getDataTable(categories, json));
             const newTeams = teams;
-            // for (let index = 0; index < newTeams.length; index++) {
-                // const element = array[index];
-                // newTeams[index].result = getDataTable(categories, newTeams.json).result;
-                // }
-                teams.forEach((team, id) => {
-                    // newTeams[id].result = getDataTable(categories, newTeams[id].json);
-                    const dataTable = getDataTable(categories, newTeams[id].json);
-                    const result = dataTable;
-                    console.log("😋result", result)
-
+            teams.forEach((team, id) => {
+                const dataTable = getDataTable(categories, newTeams[id].json);
+                const result = dataTable;
                 newTeams[id].result = result;
             });
             setTeams(newTeams);
             setUpdate();
-            console.log("🎏newTeams:", newTeams)
             setErrorJson();
         } catch (error) {
             setDataTable([]);
@@ -144,22 +139,19 @@ function HealthCheck() {
         const newTeams = teams;
         newTeams[id].name = e.target.value;
         setTeams(newTeams);
-        console.log("🎈teams:", teams);
     }
 
     const setJson = (id, e) => {
         const newTeams = teams;
         newTeams[id].json = JSON.parse(e.target.value);
         setTeams(newTeams);
-        console.log("🎈teams:", teams);
     }
 
     return (
-        // <div className='container --grid-1'>
         <div>
             <div className='container --grid-1'>
-                {/* <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank">Link to MetroRetro template</a></p> */}
                 <div>
+                    <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank">Link to MetroRetro template</a></p>
                     <button
                         onClick={() => { setTeams(teams.concat({ name: "", result: [], json: "" })) }}>
                         <span className='emoji'>➕</span> Add a team</button>
@@ -210,14 +202,9 @@ function HealthCheck() {
                             {categories.map((category, i) => (
                                 <tr key={i}>
                                     <td>{category}</td>
-                                    {teams.map((team, id)=>(
+                                    {teams.map((team, id) => (
                                         <td key={id}>{team.result[i] ? team.result[i].result : ""}</td>
                                     ))}
-                                    {/* <td>{element.red}</td>
-                                    <td>{element.orange}</td>
-                                    <td>{element.green}</td>
-                                    <td>{element.down}/{element.stable}/{element.up}</td>
-                                    <td>{element.result}</td> */}
                                 </tr>
                             ))}
                         </tbody>

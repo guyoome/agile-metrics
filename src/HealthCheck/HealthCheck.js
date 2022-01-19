@@ -24,8 +24,21 @@ const getKeyByValue = (object, value) => {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-const getHigher = (obj) => {
-    return Object.keys(obj).reduce((a, b) => obj[a] >= obj[b] ? a : b);
+const getHigher = (obj, param) => {
+    const ranking = (param === "trend" ? ["down", "stable", "up"] : ["red", "orange", "green"]);
+    let avg = 0;
+    let tot = 0;
+    for (const key in obj) {
+        if (obj.hasOwnProperty.call(obj, key)) {
+            const element = obj[key];
+            const coef = (key === ranking[2] ? 3 : key === ranking[1] ? 2 : 1)
+            avg += element * coef;
+            tot += element;
+        }
+    }
+    // avg should be 1/2/3
+    avg = Math.round(avg / tot);
+    return ranking[avg - 1];
 }
 
 
@@ -71,7 +84,7 @@ const getDataTable = (categories, json) => {
             down: element.down,
             stable: element.stable,
             up: element.up
-        });
+        }, "trend");
         result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
         element.result = result[0] + result[1];
     });
