@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Navbar.css';
 
-function SaveAsPNG(props) {
+function Navbar(props) {
     const navigate = useNavigate();
     return (
         <nav>
@@ -17,4 +17,4 @@ function SaveAsPNG(props) {
     );
 }
 
-export default SaveAsPNG;
+export default Navbar;
