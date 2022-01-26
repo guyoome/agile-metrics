@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import './Input.css';
-
-
 function Checkbox(props) {
     const [value, setValue] = useState();
 
@@ -11,11 +8,8 @@ function Checkbox(props) {
     }, [props, value]);
 
     return (
-        // <div className="number-container">
-        // <div>
-            <input type="checkbox" id="scales" name="scales"
-                onClick={(e) => {setValue(e.target.checked) }}></input>
-        // </div>
+        <input type="checkbox" id="scales" name="scales"
+            onClick={(e) => { setValue(e.target.checked) }}></input>
     );
 }
 

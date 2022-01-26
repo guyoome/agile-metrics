@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import Theme from '../utils/Theme';
 
-import './Input.css';
+const getContainerStyle = () => ({
+    maxWidth: "280px",
+    width: "280px"
+})
 
+const getSelectStyle = () => ({
+    width: "100%",
+    height: "40px",
+    borderRadius: `${Theme.borderRadius}px`,
+    padding: "0 10px 0 10px",
+    borderColor: "#CBD6E6",
+    color: `${Theme.color.primary}`
+})
 
-function Dropdown(props) {
+const Dropdown = (props) => {
     const [options, setOptions] = useState([]);
     const [placeholder, setPlaceholder] = useState("--Please choose an option--");
     const [value, setValue] = useState();
@@ -22,10 +34,9 @@ function Dropdown(props) {
     }, [props, value]);
 
     return (
-        <div className="dropdown-container">
-            <select className="dropdown" onChange={(e) => { setValue(e.target.value) }} defaultValue={placeholder}>
-
-                <option className="dropdown-item"
+        <div style={getContainerStyle()}>
+            <select style={getSelectStyle()} onChange={(e) => { setValue(e.target.value) }} defaultValue={placeholder}>
+                <option
                     disabled
                     value={props.defaultValue ? props.defaultValue : placeholder}
                 >{placeholder}</option>
