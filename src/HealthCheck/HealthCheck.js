@@ -41,7 +41,6 @@ const getHigher = (obj, param) => {
     return ranking[avg - 1];
 }
 
-
 const getDataTable = (categories, json) => {
     const dataTable = [];
     categories.forEach(category => {

@@ -92,6 +92,49 @@ const getDataTable = (categories, json) => {
     return dataTable;
 }
 
+const getGlobalResult = (teams, categories) => {
+    console.log("teams in getGlobalResult:", teams)
+    // console.log("categories in getGlobalResult:", categories)
+    const globalResults = [];
+    // init globalResults
+    categories.forEach(category => {
+        globalResults.push({category})
+    });
+    console.log("global result",globalResults)
+
+    for (let i = 0; i < teams.length; i++) {
+        const team = teams[i];
+        const teamResults = team.result;
+
+        for (let j = 0; j < teamResults.length; j++) {
+            const result = teamResults[j];
+            
+        }
+    }
+    console.log("global result #2",globalResults)
+
+
+    // dataTable.forEach(element => {
+    //     const result = [];
+
+    //     const color = getHigher({
+    //         red: element.red,
+    //         orange: element.orange,
+    //         green: element.green
+    //     });
+    //     result.push(color === "green" ? "🟢" : color === "orange" ? "🟠" : "🔴");
+    //     const trend = getHigher({
+    //         down: element.down,
+    //         stable: element.stable,
+    //         up: element.up
+    //     }, "trend");
+    //     result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
+    //     element.result = result[0] + result[1];
+    // });
+
+
+}
+
 function HealthCheck() {
 
     // const [json, setJson] = useState();
@@ -100,7 +143,7 @@ function HealthCheck() {
     const [errorJson, setErrorJson] = useState();
     const [team, setTeam] = useState("<team name>");
     const [teams, setTeams] = useState([{ name: "", result: [], json: "" }])
-
+    const [globalResults, setGlobalResults] = useState([]);
     const [update, setUpdate] = useState();
 
 
@@ -125,6 +168,7 @@ function HealthCheck() {
                 newTeams[id].result = result;
             });
             setTeams(newTeams);
+            getGlobalResult(newTeams, categories);
             setUpdate();
             setErrorJson();
         } catch (error) {
