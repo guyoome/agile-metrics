@@ -141,7 +141,7 @@ function HealthCheck() {
     const [categories, setCategories] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [errorJson, setErrorJson] = useState();
-    const [team, setTeam] = useState("<team name>");
+    const [tableName, setTableName] = useState("<team name>");
     const [teams, setTeams] = useState([{ name: "", result: [], json: "" }])
     const [globalResults, setGlobalResults] = useState([]);
     const [update, setUpdate] = useState();
@@ -195,6 +195,8 @@ function HealthCheck() {
         <div>
             <div className='container --grid-1'>
                 <div>
+                <input type="text" placeholder='Table Name'
+                            onChange={(e) => { setTableName(e.target.value) }}></input>
                     <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank" rel="noreferrer">Link to MetroRetro template</a></p>
                     <button
                         onClick={() => { setTeams(teams.concat({ name: "", result: [], json: "" })) }}>
@@ -234,7 +236,7 @@ function HealthCheck() {
                     <table >
                         <thead>
                             <tr>
-                                <th>{team}</th>
+                                <th>{tableName}</th>
                                 {teams.map((team, id) => (
                                     <th key={`th-${id}`}>{team.name}</th>
                                 ))}
