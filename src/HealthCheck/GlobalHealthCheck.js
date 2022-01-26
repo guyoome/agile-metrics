@@ -195,7 +195,7 @@ function HealthCheck() {
         <div>
             <div className='container --grid-1'>
                 <div>
-                    <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank">Link to MetroRetro template</a></p>
+                    <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank" rel="noreferrer">Link to MetroRetro template</a></p>
                     <button
                         onClick={() => { setTeams(teams.concat({ name: "", result: [], json: "" })) }}>
                         <span className='emoji'>➕</span> Add a team</button>

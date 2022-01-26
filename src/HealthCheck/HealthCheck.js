@@ -121,13 +121,13 @@ function HealthCheck() {
             console.log("💫", error.message);
         }
 
-    }, [categories])
+    }, [categories, json])
 
     return (
         <div className='container'>
             <div className='left'>
                 {/* <h1 style={{color:"#27416b"}}>Agile Health Check</h1> */}
-                <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank">Link to MetroRetro template</a></p>
+                <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank" rel="noreferrer">Link to MetroRetro template</a></p>
                 <input type="text" placeholder='Team Name'
                     onChange={(e) => { setTeam(e.target.value) }}></input>
                 <div className='mt-5'></div>
@@ -169,12 +169,9 @@ function HealthCheck() {
                                 </tr>
                             ))}
                         </tbody>
-
                     </table>
                 </div>
             </div>
-
-
         </div>
     );
 }
