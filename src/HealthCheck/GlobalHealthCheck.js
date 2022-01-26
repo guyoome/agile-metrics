@@ -98,9 +98,9 @@ const getGlobalResult = (teams, categories) => {
     const globalResults = [];
     // init globalResults
     categories.forEach(category => {
-        globalResults.push({category})
+        globalResults.push({ category })
     });
-    console.log("global result",globalResults)
+    console.log("global result", globalResults)
 
     for (let i = 0; i < teams.length; i++) {
         const team = teams[i];
@@ -108,10 +108,10 @@ const getGlobalResult = (teams, categories) => {
 
         for (let j = 0; j < teamResults.length; j++) {
             const result = teamResults[j];
-            
+
         }
     }
-    console.log("global result #2",globalResults)
+    console.log("global result #2", globalResults)
 
 
     // dataTable.forEach(element => {
@@ -195,8 +195,8 @@ function HealthCheck() {
         <div>
             <div className='container --grid-1'>
                 <div>
-                <input type="text" placeholder='Table Name'
-                            onChange={(e) => { setTableName(e.target.value) }}></input>
+                    <input type="text" placeholder='Table Name'
+                        onChange={(e) => { setTableName(e.target.value) }}></input>
                     <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank" rel="noreferrer">Link to MetroRetro template</a></p>
                     <button
                         onClick={() => { setTeams(teams.concat({ name: "", result: [], json: "" })) }}>
