@@ -247,7 +247,7 @@ function HealthCheck() {
                     <table >
                         <thead>
                             <tr>
-                                <th>{tableName}</th>
+                                <th>🚦 {tableName}</th>
                                 {teams.map((team, id) => (
                                     <th key={`th-${id}`}>{team.name}</th>
                                 ))}
