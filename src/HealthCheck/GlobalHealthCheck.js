@@ -93,14 +93,13 @@ const getDataTable = (categories, json) => {
 }
 
 const getGlobalResult = (teams, categories) => {
-    console.log("teams in getGlobalResult:", teams)
-    // console.log("categories in getGlobalResult:", categories)
+    
     const globalResults = [];
+
     // init globalResults
     categories.forEach(category => {
         globalResults.push({ category, down: 0, stable: 0, up: 0, red: 0, orange: 0, green: 0 })
     });
-    console.log("global result", globalResults)
 
     // Create the table of result by adding every teams vote
     for (let i = 0; i < teams.length; i++) {
@@ -118,8 +117,6 @@ const getGlobalResult = (teams, categories) => {
 
         }
     }
-    console.log("global result #2", globalResults)
-
 
     globalResults.forEach(element => {
         const result = [];
@@ -138,7 +135,6 @@ const getGlobalResult = (teams, categories) => {
         result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
         element.result = result[0] + result[1];
     });
-    console.log("global result #3", globalResults)
     return globalResults;
 
 }
@@ -231,11 +227,10 @@ function HealthCheck() {
                         <p style={{ color: "red" }}>{errorJson ? "Invalid JSON" : ""}</p>
                     </div>
                 ))}
-
-
             </div>
+
             <div className='right'>
-                <Button.SaveAsPNG icon="💾" text="Download Table" node="agile-health-check-table" fileName="agile-health-check-table" />
+                <Button.SaveAsPNG icon="💾" text="Download Table" node="agile-health-check-table" fileName={`${tableName} agile-health-check-table`} />
 
                 <div className='mt-5'></div>
                 <div className='data-table' id='agile-health-check-table'>
@@ -263,12 +258,9 @@ function HealthCheck() {
                                 </tr>
                             ))}
                         </tbody>
-
                     </table>
                 </div>
             </div>
-
-
         </div>
     );
 }

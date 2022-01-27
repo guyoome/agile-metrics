@@ -59,7 +59,6 @@ const getScope = (sprints, history) => {
     scope.fill(0);
 
     Object.entries(history).forEach(([key, value]) => {
-        // console.log("😎",value)
         if (value[0].added) {
             for (let i = 0; i < sprints.length; i++) {
                 const sprint = sprints[i];
