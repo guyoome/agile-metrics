@@ -98,40 +98,48 @@ const getGlobalResult = (teams, categories) => {
     const globalResults = [];
     // init globalResults
     categories.forEach(category => {
-        globalResults.push({ category, down: 0, up: 0, red: 0, orange: 0, green: 0 })
+        globalResults.push({ category, down: 0, stable: 0, up: 0, red: 0, orange: 0, green: 0 })
     });
     console.log("global result", globalResults)
 
-    // for (let i = 0; i < teams.length; i++) {
-    //     const team = teams[i];
-    //     const teamResults = team.result;
+    // Create the table of result by adding every teams vote
+    for (let i = 0; i < teams.length; i++) {
+        const team = teams[i];
+        const teamResults = team.result;
 
-    //     for (let j = 0; j < teamResults.length; j++) {
-    //         const result = teamResults[j];
+        for (let j = 0; j < teamResults.length; j++) {
+            const result = teamResults[j];
+            globalResults[j].down += result.down;
+            globalResults[j].stable += result.stable;
+            globalResults[j].up += result.up;
+            globalResults[j].red += result.red;
+            globalResults[j].orange += result.orange;
+            globalResults[j].green += result.green;
 
-    //     }
-    // }
+        }
+    }
     console.log("global result #2", globalResults)
 
 
-    // dataTable.forEach(element => {
-    //     const result = [];
+    globalResults.forEach(element => {
+        const result = [];
 
-    //     const color = getHigher({
-    //         red: element.red,
-    //         orange: element.orange,
-    //         green: element.green
-    //     });
-    //     result.push(color === "green" ? "🟢" : color === "orange" ? "🟡" : "🔴");
-    //     const trend = getHigher({
-    //         down: element.down,
-    //         stable: element.stable,
-    //         up: element.up
-    //     }, "trend");
-    //     result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
-    //     element.result = result[0] + result[1];
-    // });
-
+        const color = getHigher({
+            red: element.red,
+            orange: element.orange,
+            green: element.green
+        });
+        result.push(color === "green" ? "🟢" : color === "orange" ? "🟡" : "🔴");
+        const trend = getHigher({
+            down: element.down,
+            stable: element.stable,
+            up: element.up
+        }, "trend");
+        result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
+        element.result = result[0] + result[1];
+    });
+    console.log("global result #3", globalResults)
+    return globalResults;
 
 }
 
@@ -141,7 +149,7 @@ function HealthCheck() {
     const [errorJson, setErrorJson] = useState();
     const [tableName, setTableName] = useState("<team name>");
     const [teams, setTeams] = useState([{ name: "", result: [], json: "" }])
-    const [globalResults, setGlobalResults] = useState([]);
+    const [globalResults, setGlobalResults] = useState([{ result: "" }]);
     const [update, setUpdate] = useState();
 
 
@@ -166,7 +174,7 @@ function HealthCheck() {
                 newTeams[id].result = result;
             });
             setTeams(newTeams);
-            getGlobalResult(newTeams, categories);
+            setGlobalResults(getGlobalResult(newTeams, categories));
             setUpdate();
             setErrorJson();
         } catch (error) {
@@ -238,6 +246,8 @@ function HealthCheck() {
                                 {teams.map((team, id) => (
                                     <th key={`th-${id}`}>{team.name}</th>
                                 ))}
+                                <th></th>
+                                <th>{tableName} Result</th>
                             </tr>
                         </thead>
 
@@ -248,6 +258,8 @@ function HealthCheck() {
                                     {teams.map((team, id) => (
                                         <td key={id}>{team.result[i] ? team.result[i].result : ""}</td>
                                     ))}
+                                    <td></td>
+                                    {globalResults[i] && <td>{globalResults[i].result}</td>}
                                 </tr>
                             ))}
                         </tbody>
