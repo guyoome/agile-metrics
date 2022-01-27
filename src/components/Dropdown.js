@@ -17,7 +17,7 @@ const getSelectStyle = () => ({
 
 const Dropdown = (props) => {
     const [options, setOptions] = useState([]);
-    const [placeholder, setPlaceholder] = useState("--Please choose an option--");
+    const [placeholder, setPlaceholder] = useState("--Choose an option--");
     const [value, setValue] = useState();
 
     useEffect(() => {

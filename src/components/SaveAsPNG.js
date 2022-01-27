@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import domtoimage from 'dom-to-image';
 import './Button.css';
 

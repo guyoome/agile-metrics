@@ -146,13 +146,13 @@ function Burnup() {
             <div className="flex-container">
 
                 <div className="flex-item">
-                    <Input.Dropdown default="choose a team"
+                    <Input.Dropdown default="--Choose a team--"
                         options={Teams.getTags()}
                         value={(e) => { setTeam(Teams.getTeamByTag(e)) }} />
                 </div>
 
                 <div className="flex-item">
-                    <Input.Dropdown default="choose an epic"
+                    <Input.Dropdown default="--Choose an epic--"
                         options={burnup.getNotDoneEpicsSummary(epicList)}
                         value={(e) => { setEpic(burnup.getEpicBySummary(epicList, e)) }}
                     />
@@ -161,7 +161,7 @@ function Burnup() {
             </div>
             <div className="flex-container mt-5">
                 <div className="flex-item">
-                    <Input.Dropdown default="choose start Sprint"
+                    <Input.Dropdown default="--Choose start Sprint--"
                         options={burnup.getSprints(sprints)}
                         value={(e) => { setSprintStart(e) }}
                     />
