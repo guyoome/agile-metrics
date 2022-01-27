@@ -4,6 +4,16 @@ import "./HealthCheck.css";
 
 import glossary from "./glossary.json";
 
+const getLayoutStyle = () => ({
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr 1fr",
+    gridTemplateRows: "1fr",
+    gridColumnGap: "16px",
+    gridRowGap: "16px",
+    justifyItems: "stretch",
+    alignItems: "stretch"
+})
+
 const getCategories = (json) => {
     const categories = [];
     const keyFound = [];
@@ -93,7 +103,7 @@ const getDataTable = (categories, json) => {
 }
 
 const getGlobalResult = (teams, categories) => {
-    
+
     const globalResults = [];
 
     // init globalResults
@@ -195,7 +205,7 @@ function HealthCheck() {
 
     return (
         <div>
-            <div className='container --grid-1'>
+            <div style={getLayoutStyle()}>
                 <div>
                     <input type="text" placeholder='Table Name'
                         onChange={(e) => { setTableName(e.target.value) }}></input>

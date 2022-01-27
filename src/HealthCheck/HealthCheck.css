@@ -64,14 +64,12 @@ input[type=text]:hover{
 
 .container {
     display: grid;
-    /* grid-template-columns: minmax(max-content,1fr) minmax(max-content,2fr); */
     grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr;
     grid-column-gap: 16px;
     grid-row-gap: 16px;
     justify-items: stretch;
     align-items: stretch;
-    /* background-color: khaki; */
  }
 
  .container.--grid-1{
