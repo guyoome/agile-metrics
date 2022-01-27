@@ -27,7 +27,7 @@ const Navbar = () => {
                 <div className='logo' onClick={() => navigate("/")}>🎈 Agile Metrics.</div>
                 <ul>
                     <li> <a onClick={() => navigate("/burnup")}>📈 Burnup</a> </li>
-                    <li> <a onClick={() => navigate("/health-check")}>🩺 Agile Health Check</a> </li>
+                    <li> <a onClick={() => navigate("/health-check-multi")}>🩺 Agile Health Check</a> </li>
                 </ul>
             </div>
         </nav>
