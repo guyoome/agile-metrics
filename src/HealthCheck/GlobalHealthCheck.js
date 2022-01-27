@@ -79,7 +79,7 @@ const getDataTable = (categories, json) => {
             orange: element.orange,
             green: element.green
         });
-        result.push(color === "green" ? "🟢" : color === "orange" ? "🟠" : "🔴");
+        result.push(color === "green" ? "🟢" : color === "orange" ? "🟡" : "🔴");
         const trend = getHigher({
             down: element.down,
             stable: element.stable,
@@ -98,19 +98,19 @@ const getGlobalResult = (teams, categories) => {
     const globalResults = [];
     // init globalResults
     categories.forEach(category => {
-        globalResults.push({ category })
+        globalResults.push({ category, down: 0, up: 0, red: 0, orange: 0, green: 0 })
     });
     console.log("global result", globalResults)
 
-    for (let i = 0; i < teams.length; i++) {
-        const team = teams[i];
-        const teamResults = team.result;
+    // for (let i = 0; i < teams.length; i++) {
+    //     const team = teams[i];
+    //     const teamResults = team.result;
 
-        for (let j = 0; j < teamResults.length; j++) {
-            const result = teamResults[j];
+    //     for (let j = 0; j < teamResults.length; j++) {
+    //         const result = teamResults[j];
 
-        }
-    }
+    //     }
+    // }
     console.log("global result #2", globalResults)
 
 
@@ -122,7 +122,7 @@ const getGlobalResult = (teams, categories) => {
     //         orange: element.orange,
     //         green: element.green
     //     });
-    //     result.push(color === "green" ? "🟢" : color === "orange" ? "🟠" : "🔴");
+    //     result.push(color === "green" ? "🟢" : color === "orange" ? "🟡" : "🔴");
     //     const trend = getHigher({
     //         down: element.down,
     //         stable: element.stable,
@@ -136,8 +136,6 @@ const getGlobalResult = (teams, categories) => {
 }
 
 function HealthCheck() {
-
-    // const [json, setJson] = useState();
     const [categories, setCategories] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [errorJson, setErrorJson] = useState();
@@ -240,7 +238,6 @@ function HealthCheck() {
                                 {teams.map((team, id) => (
                                     <th key={`th-${id}`}>{team.name}</th>
                                 ))}
-                                {/* <th>Result</th> */}
                             </tr>
                         </thead>
 

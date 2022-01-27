@@ -78,7 +78,7 @@ const getDataTable = (categories, json) => {
             orange: element.orange,
             green: element.green
         });
-        result.push(color === "green" ? "🟢" : color === "orange" ? "🟠" : "🔴");
+        result.push(color === "green" ? "🟢" : color === "orange" ? "🟡" : "🔴");
         const trend = getHigher({
             down: element.down,
             stable: element.stable,
@@ -150,7 +150,7 @@ function HealthCheck() {
                             <tr>
                                 <th>{team}</th>
                                 <th>Red <span className='emoji'>🔴</span></th>
-                                <th>Orange <span className='emoji'>🟠</span></th>
+                                <th>Orange <span className='emoji'>🟡</span></th>
                                 <th>Green <span className='emoji'>🟢</span></th>
                                 <th>Trend (<span className='emoji'>🔽</span>/<span className='emoji'>⏸</span>/<span className='emoji'>🔼</span>)</th>
                                 <th>Result</th>
