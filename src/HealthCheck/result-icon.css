@@ -1,0 +1,95 @@
+.result-icon {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    margin: auto;
+    text-align: initial;
+  }
+  
+  .circle {
+    position: absolute;
+    bottom: calc(50% - 13px);
+    left: calc(50% - 13px);
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid #000;
+  }
+  
+  .--red {
+    background-color: #E81224;
+  }
+  
+  .--orange {
+    background-color: #FFF100;
+  }
+  
+  .--green {
+    background-color: #16C60C;
+  }
+  
+  .trend {
+    position: absolute;
+    width: 8px;
+    height: 20px;
+    z-index: 1;
+    left: calc(50% - 4px);
+    background-color: #000;
+  }
+  
+  .trend.--up {
+    top: 4px;
+  }
+  
+  .trend.--down {
+    bottom: 4px;
+  }
+  
+  .triangle {
+    position: absolute;
+    left: calc(50% - 0.3em);
+    z-index: 9;
+    background-color: #000;
+  }
+  .triangle-before,
+  .triangle-after {
+    content: "";
+    position: absolute;
+    background-color: inherit;
+  }
+  .triangle,
+  .triangle-before,
+  .triangle-after {
+    width: 0.6em;
+    height: 0.6em;
+    border-top-right-radius: 30%;
+  }
+  
+  .triangle {
+    transform: rotate(-60deg) skewX(-30deg) scale(1, 0.866);
+  }
+  .triangle-before {
+    transform: rotate(-135deg) skewX(-45deg) scale(1.414, 0.707)
+      translate(0, -50%);
+  }
+  .triangle-after {
+    transform: rotate(135deg) skewY(-45deg) scale(0.707, 1.414) translate(50%);
+  }
+  
+  .--up > .triangle {
+    top: 0px;
+  }
+  
+  .--down {
+    transform: rotate(180deg);
+    bottom: 0;
+  }
+  
+  .--down > .triangle {
+    bottom:46px;
+  }
+  
+  .--stable{
+    display:none;
+  }
