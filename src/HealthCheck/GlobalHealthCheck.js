@@ -3,6 +3,7 @@ import * as Button from "../components/Button";
 import "./HealthCheck.css";
 
 import glossary from "./glossary.json";
+import ResultIcon from './ResultIcon';
 
 const getLayoutStyle = () => ({
     display: "grid",
@@ -96,7 +97,9 @@ const getDataTable = (categories, json) => {
             up: element.up
         }, "trend");
         result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
-        element.result = result[0] + result[1];
+        // element.result = result[0] + result[1];
+        element.result = { color, trend };
+
     });
 
     return dataTable;
@@ -143,7 +146,8 @@ const getGlobalResult = (teams, categories) => {
             up: element.up
         }, "trend");
         result.push(trend === "up" ? "🔼" : trend === "stable" ? "⏸" : "🔽");
-        element.result = result[0] + result[1];
+        // element.result = result[0] + result[1];
+        element.result = { color, trend }
     });
     return globalResults;
 
@@ -207,6 +211,7 @@ function HealthCheck() {
         <div>
             <div style={getLayoutStyle()}>
                 <div>
+
                     <input type="text" placeholder='Table Name'
                         onChange={(e) => { setTableName(e.target.value) }}></input>
                     <p>🔗<a href='https://metroretro.io/board/LBPH2U7G29TC' target="_blank" rel="noreferrer">Link to MetroRetro template</a></p>
@@ -261,10 +266,17 @@ function HealthCheck() {
                                 <tr key={i}>
                                     <td>{category}</td>
                                     {teams.map((team, id) => (
-                                        <td key={id}>{team.result[i] ? team.result[i].result : ""}</td>
+                                        // <td key={id}>{team.result[i] ? team.result[i].result : ""}</td>
+                                        <td key={id}>{team.result[i] ?
+                                            <ResultIcon color={team.result[i].result.color} trend={team.result[i].result.trend} />
+                                            : ""}</td>
                                     ))}
                                     <td></td>
-                                    {globalResults[i] && <td>{globalResults[i].result}</td>}
+                                    {globalResults[i] && <td>
+                                        <ResultIcon color={globalResults[i].result.color} trend={globalResults[i].result.trend} />
+                                        {/* {globalResults[i].result} */}
+                                    </td>}
+                                    {/* {globalResults[i] && <td>{globalResults[i].result}</td>} */}
                                 </tr>
                             ))}
                         </tbody>
