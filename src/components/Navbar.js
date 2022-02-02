@@ -26,8 +26,8 @@ const Navbar = () => {
             <div style={getContainerStyle()}>
                 <div className='logo' onClick={() => navigate("/")}>🎈 Agile Metrics.</div>
                 <ul>
-                    <li> <a onClick={() => navigate("/burnup")}>📈 Burnup</a> </li>
-                    <li> <a onClick={() => navigate("/health-check-multi")}>🩺 Agile Health Check</a> </li>
+                    <li> <span  onClick={() => navigate("/burnup")}>📈 Burnup</span> </li>
+                    <li> <span onClick={() => navigate("/health-check-multi")}>🩺 Agile Health Check</span> </li>
                 </ul>
             </div>
         </nav>

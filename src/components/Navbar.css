@@ -13,20 +13,20 @@ nav li {
 nav .logo {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     font-weight: 700;
     font-size: larger;
     color: #27416b;
 }
 
-nav a {
+nav span {
     color: inherit;
     display: block;
     position: relative;
     cursor: pointer;
 }
 
-a::after {
+span::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -38,13 +38,13 @@ a::after {
     transition: opacity 300ms, transform 300ms;
 }
 
-nav a::after {
+nav span::after {
     opacity: 1;
     transform: scale(0);
     transform-origin: center;
 }
 
-nav a:hover::after,
-nav a:focus::after{
+nav span:hover::after,
+nav span:focus::after{
   transform: scale(1);
 }
