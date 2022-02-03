@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import './result-icon.css';
 
 
-function ResultIcon({ color, trend }) {
+function ResultIcon({ color = "red", trend = "down" }) {
     return (
         <div className="result-icon">
             <div className={`circle --${color}`}></div>

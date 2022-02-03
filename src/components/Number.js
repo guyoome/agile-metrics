@@ -8,7 +8,6 @@ const getContainerStyle = () => ({
 const getInputStyle = () => ({
     height: "40px",
     borderRadius: `${Theme.borderRadius}px`,
-    borderStyle: "1",
     padding: "0 10px 0 10px",
     borderColor: "#CBD6E6",
     borderStyle: "solid",
