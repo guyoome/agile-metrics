@@ -53,33 +53,20 @@ function Commitment() {
     }, [])
 
     useEffect(() => {
-        console.log("🎆 Update", data);
-        // console.log("data:", Object.keys(data).length, " - teams:", Teams.list.length);
         if (Object.keys(data).length === Teams.list.length) {
-            console.log("🎆 Final Update");
             for (const key in data) {
                 if (Object.hasOwnProperty.call(data, key)) {
                     const team = data[key];
-                    // console.log("team:", team)
                     const teamVariance = [];
                     team.forEach(sprint => {
-                        // console.log("estimated:",sprint.estimated.value,"actual:",sprint.completed.value)
                         teamVariance.push(variance(sprint.estimated.value, sprint.completed.value))
                     });
                     setCommitment(prevCommitment => ({ ...prevCommitment, [key]: teamVariance }));
                 }
             }
-            // for (const team of data) {
-            //     console.log("team:",team)
-
-            // setCommitment(prevCommitment => ({ ...prevData, [team.tag]: result }));
-            // }
         }
     }, [data])
 
-
-    // Dynamic state
-    // setState(prevState => ({ ...prevState, [name]: value }));
     return (
         <div style={{ textAlign: "start" }}>
             <h1>Commitment</h1>
