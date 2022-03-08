@@ -80,9 +80,6 @@ function Commitment() {
     }, [data])
 
     useEffect(() => {
-        console.log("Teams list",Teams.getTags());
-        console.log("selectedTeam",selectedTeam);
-        console.log("is included?",Teams.getTags().includes(selectedTeam))
         if (Object.keys(commitment).length > 0 && Teams.getTags().includes(selectedTeam)) {
             const stats = []
             data[selectedTeam].forEach((sprint, id) => {
@@ -94,7 +91,6 @@ function Commitment() {
                 })
             });
             setChartData(stats);
-
         }
     }, [commitment, selectedTeam])
 
