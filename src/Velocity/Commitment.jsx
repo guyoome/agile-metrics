@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Teams from '../utils/Teams';
+import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
+import * as Input from "../components/Input";
 import "../HealthCheck/HealthCheck.css";
+
 
 
 const getLayoutStyle = () => ({
@@ -27,6 +30,8 @@ const sum = (a) => {
 function Commitment() {
     const [data, setData] = useState({});
     const [commitment, setCommitment] = useState({});
+    const [chartData, setChartData] = useState({});
+    const [selectedTeam, setSelectedTeam] = useState("");
 
     useEffect(() => {
         const controller = new AbortController();
@@ -74,6 +79,25 @@ function Commitment() {
         }
     }, [data])
 
+    useEffect(() => {
+        console.log("Teams list",Teams.getTags());
+        console.log("selectedTeam",selectedTeam);
+        console.log("is included?",Teams.getTags().includes(selectedTeam))
+        if (Object.keys(commitment).length > 0 && Teams.getTags().includes(selectedTeam)) {
+            const stats = []
+            data[selectedTeam].forEach((sprint, id) => {
+                stats.push({
+                    name: "Sprint -" + (data[selectedTeam].length - id),
+                    estimated: sprint.estimated.value,
+                    completed: sprint.completed.value,
+                    error: Math.round(commitment[selectedTeam][id] * 100) / 100
+                })
+            });
+            setChartData(stats);
+
+        }
+    }, [commitment, selectedTeam])
+
     return (
         <div style={{ textAlign: "start" }}>
             <h1>Commitment</h1>
@@ -95,6 +119,24 @@ function Commitment() {
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div className="flex-item mt-5">
+                <Input.Dropdown default="--Choose a team--"
+                    options={Teams.getTags()}
+                    value={(e) => { setSelectedTeam(e) }} />
+            </div>
+            <div className="mt-5">
+                <ResponsiveContainer height={400}>
+                    <ComposedChart data={chartData}>
+                        <CartesianGrid stroke="#ccc" />
+                        <Tooltip />
+                        <Bar dataKey="estimated" fill="#537dc1" />
+                        <Bar dataKey="completed" fill="#21ab92" />
+                        <Line type="monotone" dataKey="error" stroke="#fb5168" strokeWidth={4} dot={{ stroke: '#fb5168', strokeWidth: 2 }} />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                    </ComposedChart >
+                </ResponsiveContainer>
             </div>
         </div>
     );
