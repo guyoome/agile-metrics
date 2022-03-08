@@ -29,6 +29,9 @@ function Commitment() {
     const [commitment, setCommitment] = useState({});
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         let myHeaders = new Headers();
         myHeaders.append("Authorization", `Basic ${process.env.REACT_APP_ATLASSIAN_AUTH}`);
         myHeaders.append("Cookie", `atlassian.xsrf.token=${process.env.REACT_APP_TOKEN}`);
@@ -37,19 +40,23 @@ function Commitment() {
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
-            redirect: 'follow'
+            redirect: 'follow',
+            signal
         };
 
         for (const team of Teams.list) {
             fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/velocity.json?rapidViewId=${team.id}`, requestOptions)
                 .then(res => res.json())
                 .then(result => {
-                    console.log("test > id:", team.id, " > ", result);
                     setData(prevData => ({ ...prevData, [team.tag]: Object.values(result.velocityStatEntries) }));
                 })
                 .catch(error => console.log('error', error));
         }
 
+        return () => {
+            // cancel the request before component unmounts
+            controller.abort();
+        };
     }, [])
 
     useEffect(() => {
@@ -81,9 +88,11 @@ function Commitment() {
                     </thead>
 
                     <tbody className='am-data-table__content'>
-                        {Object.values(commitment).map((e, id) => (
-                            <td key={id}>{Math.round(average(e)*100)/100}</td>
-                        ))}
+                        <tr>
+                            {Object.values(commitment).map((e, id) => (
+                                <td key={id}>{Math.round(average(e) * 100) / 100}%</td>
+                            ))}
+                        </tr>
                     </tbody>
                 </table>
             </div>
