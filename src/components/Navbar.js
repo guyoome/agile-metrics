@@ -28,6 +28,7 @@ const Navbar = () => {
                 <ul>
                     <li> <span  onClick={() => navigate("/burnup")}>📈 Burnup</span> </li>
                     <li> <span onClick={() => navigate("/health-check-multi")}>🩺 Agile Health Check</span> </li>
+                    <li> <span onClick={() => navigate("/velocity")}>🦄 Velocity</span> </li>
                 </ul>
             </div>
         </nav>

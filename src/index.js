@@ -11,6 +11,7 @@ import reportWebVitals from './reportWebVitals';
 import Burnup from './Burnup/Burnup';
 import HealthCheck from './HealthCheck/HealthCheck';
 import GlobalHealthCheck from './HealthCheck/GlobalHealthCheck';
+import Commitment from './Velocity/Commitment';
 
 
 ReactDOM.render(
@@ -21,10 +22,8 @@ ReactDOM.render(
           <Route index element={<Burnup />} />
           <Route path="burnup" element={<Burnup />} />
           <Route path="health-check" element={<HealthCheck />} />
-          <Route path="health-check-multi" element={<GlobalHealthCheck />}>
-            {/* <Route path="mono" element={<HealthCheck />} /> */}
-            {/* <Route path="multi" element={<GlobalHealthCheck />} /> */}
-          </Route>
+          <Route path="health-check-multi" element={<GlobalHealthCheck />}/>
+          <Route path="velocity" element={<Commitment />}/>
         </Route>
       </Routes>
     </BrowserRouter>

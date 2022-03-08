@@ -1,0 +1,947 @@
+{
+    "sprints": [
+        {
+            "id": 705,
+            "sequence": 689,
+            "name": "Loyalty Sprint 132",
+            "state": "CLOSED",
+            "linkedPagesCount": 0,
+            "goal": "- Improve rule date management\n- First Loyalty subscription endpoint"
+        },
+        {
+            "id": 700,
+            "sequence": 688,
+            "name": "Loyalty Sprint 131",
+            "state": "CLOSED",
+            "linkedPagesCount": 0,
+            "goal": "- Plug sentry on our Apps\n- Can we use Infinitic as an orchestrator?"
+        },
+        {
+            "id": 688,
+            "sequence": 687,
+            "name": "Loyalty Sprint 130",
+            "state": "CLOSED",
+            "linkedPagesCount": 0,
+            "goal": "- Can we use Infinitic as an orchestrator?\n- Plug sentry on our Apps"
+        },
+        {
+            "id": 687,
+            "sequence": 664,
+            "name": "Loyalty Sprint 129",
+            "state": "CLOSED",
+            "linkedPagesCount": 0,
+            "goal": "- Industrialize Loyalty Subscription\n- Rules api manage membership condition"
+        },
+        {
+            "id": 664,
+            "sequence": 654,
+            "name": "Loyalty Sprint 128",
+            "state": "CLOSED",
+            "linkedPagesCount": 0,
+            "goal": "- Rules api managing Birthday event type\n- Loyalty Massive subscription pipeline in production for everyone"
+        },
+        {
+            "id": 654,
+            "sequence": 632,
+            "name": "Loyalty Sprint 127",
+            "state": "CLOSED",
+            "linkedPagesCount": 0,
+            "goal": "- Update start date of Loyalty program\n- Loyalty subscription in prod activable client by client"
+        },
+        {
+            "id": 645,
+            "sequence": 631,
+            "name": "Loyalty Sprint 126",
+            "state": "CLOSED",
+            "linkedPagesCount": 0,
+            "goal": "- Validate Loyalty Subscription flow\n- Missing webhook event handler\n- Update start date of Loyalty program"
+        }
+    ],
+    "velocityStatEntries": {
+        "688": {
+            "estimated": {
+                "value": 32.5,
+                "text": "32.5"
+            },
+            "completed": {
+                "value": 13.5,
+                "text": "13.5"
+            },
+            "allConsideredIssueKeys": [
+                "CMP-5244",
+                "CMP-5049",
+                "CMP-5246",
+                "CMP-5257",
+                "CMP-5274",
+                "CMP-5263",
+                "CMP-5262",
+                "CMP-5240",
+                "CMP-5144",
+                "CMP-5265",
+                "CMP-5264",
+                "CMP-5259",
+                "CMP-4997",
+                "CMP-5050"
+            ],
+            "estimatedEntries": [
+                {
+                    "issueKey": "CMP-5244",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5049",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5257",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5263",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5262",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5240",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5144",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5265",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5264",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5259",
+                    "value": 13.0
+                },
+                {
+                    "issueKey": "CMP-5050",
+                    "value": 1.0
+                }
+            ],
+            "completedEntries": [
+                {
+                    "issueKey": "CMP-5244",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5257",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5274",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5240",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5144",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5265",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5259",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5050",
+                    "value": 1.0
+                }
+            ]
+        },
+        "705": {
+            "estimated": {
+                "value": 33.0,
+                "text": "33.0"
+            },
+            "completed": {
+                "value": 28.0,
+                "text": "28.0"
+            },
+            "allConsideredIssueKeys": [
+                "CMP-5278",
+                "CMP-5003",
+                "CMP-5049",
+                "CMP-5324",
+                "CMP-5246",
+                "CMP-5295",
+                "CMP-5275",
+                "CMP-5319",
+                "CMP-5308",
+                "CMP-5307",
+                "CMP-4903",
+                "CMP-5237",
+                "CMP-4919",
+                "CMP-5294",
+                "CMP-5282",
+                "CMP-5183",
+                "CMP-5290"
+            ],
+            "estimatedEntries": [
+                {
+                    "issueKey": "CMP-5278",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5003",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5049",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5246",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5295",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5275",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5308",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5307",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-4903",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-4919",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5294",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5282",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5183",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5290",
+                    "value": 2.0
+                }
+            ],
+            "completedEntries": [
+                {
+                    "issueKey": "CMP-5278",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5003",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5246",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5295",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5319",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5308",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5307",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-4903",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5237",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-4919",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5294",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5183",
+                    "value": 1.0
+                }
+            ]
+        },
+        "645": {
+            "estimated": {
+                "value": 30.5,
+                "text": "30.5"
+            },
+            "completed": {
+                "value": 24.5,
+                "text": "24.5"
+            },
+            "allConsideredIssueKeys": [
+                "CMP-5167",
+                "CMP-5134",
+                "CMP-5186",
+                "CMP-5185",
+                "CMP-5067",
+                "CMP-5133",
+                "CMP-5000",
+                "CMP-5176",
+                "CMP-5187",
+                "CMP-5119",
+                "CMP-5182",
+                "CMP-5193",
+                "CMP-5151",
+                "CMP-5173",
+                "CMP-5195",
+                "CMP-5194"
+            ],
+            "estimatedEntries": [
+                {
+                    "issueKey": "CMP-5167",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5134",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5186",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5185",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5067",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5133",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5000",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5176",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5119",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5182",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5151",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5173",
+                    "value": 3.0
+                }
+            ],
+            "completedEntries": [
+                {
+                    "issueKey": "CMP-5167",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5134",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5186",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5185",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5133",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5176",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5187",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5182",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5151",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5194",
+                    "value": 3.0
+                }
+            ]
+        },
+        "664": {
+            "estimated": {
+                "value": 33.5,
+                "text": "33.5"
+            },
+            "completed": {
+                "value": 30.5,
+                "text": "30.5"
+            },
+            "allConsideredIssueKeys": [
+                "CMP-5223",
+                "CMP-5201",
+                "CMP-5233",
+                "CMP-5236",
+                "CMP-4993",
+                "CMP-5203",
+                "CMP-5213",
+                "CMP-5202",
+                "CMP-5197",
+                "CMP-5221",
+                "CMP-5232",
+                "CMP-5243",
+                "CMP-5220",
+                "CMP-5219",
+                "CMP-5205",
+                "CMP-5140"
+            ],
+            "estimatedEntries": [
+                {
+                    "issueKey": "CMP-5201",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5233",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-4993",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5203",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5213",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5202",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5197",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5232",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5220",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5219",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5205",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5140",
+                    "value": 5.0
+                }
+            ],
+            "completedEntries": [
+                {
+                    "issueKey": "CMP-5223",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5201",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5236",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-4993",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5203",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5213",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5221",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5232",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5243",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5220",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5219",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5205",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5140",
+                    "value": 5.0
+                }
+            ]
+        },
+        "700": {
+            "estimated": {
+                "value": 27.5,
+                "text": "27.5"
+            },
+            "completed": {
+                "value": 27.5,
+                "text": "27.5"
+            },
+            "allConsideredIssueKeys": [
+                "CMP-5289",
+                "CMP-5288",
+                "CMP-5258",
+                "CMP-5269",
+                "CMP-5246",
+                "CMP-5263",
+                "CMP-5285",
+                "CMP-5262",
+                "CMP-5284",
+                "CMP-5287",
+                "CMP-5286",
+                "CMP-5270"
+            ],
+            "estimatedEntries": [
+                {
+                    "issueKey": "CMP-5289",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5288",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5258",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5269",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5246",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5263",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5285",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5262",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5284",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5287",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5270",
+                    "value": 2.0
+                }
+            ],
+            "completedEntries": [
+                {
+                    "issueKey": "CMP-5289",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5288",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5258",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5269",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5263",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5285",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5262",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5284",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5287",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5286",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5270",
+                    "value": 2.0
+                }
+            ]
+        },
+        "654": {
+            "estimated": {
+                "value": 28.5,
+                "text": "28.5"
+            },
+            "completed": {
+                "value": 30.5,
+                "text": "30.5"
+            },
+            "allConsideredIssueKeys": [
+                "CMP-5222",
+                "CMP-5213",
+                "CMP-5199",
+                "CMP-5177",
+                "CMP-5000",
+                "CMP-5208",
+                "CMP-5119",
+                "CMP-5207",
+                "CMP-5217",
+                "CMP-5206",
+                "CMP-5193",
+                "CMP-5173",
+                "CMP-5195",
+                "CMP-5191"
+            ],
+            "estimatedEntries": [
+                {
+                    "issueKey": "CMP-5199",
+                    "value": 8.0
+                },
+                {
+                    "issueKey": "CMP-5177",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5000",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5119",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5207",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5206",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5193",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5173",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5195",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5191",
+                    "value": 2.0
+                }
+            ],
+            "completedEntries": [
+                {
+                    "issueKey": "CMP-5199",
+                    "value": 8.0
+                },
+                {
+                    "issueKey": "CMP-5177",
+                    "value": 0.0
+                },
+                {
+                    "issueKey": "CMP-5000",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5208",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5119",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5207",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5206",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5193",
+                    "value": 0.5
+                },
+                {
+                    "issueKey": "CMP-5173",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5195",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5191",
+                    "value": 2.0
+                }
+            ]
+        },
+        "687": {
+            "estimated": {
+                "value": 32.0,
+                "text": "32.0"
+            },
+            "completed": {
+                "value": 47.0,
+                "text": "47.0"
+            },
+            "allConsideredIssueKeys": [
+                "CMP-5245",
+                "CMP-5233",
+                "CMP-5244",
+                "CMP-5214",
+                "CMP-5247",
+                "CMP-5202",
+                "CMP-5230",
+                "CMP-5142",
+                "CMP-5197",
+                "CMP-5241",
+                "CMP-4020",
+                "CMP-5067",
+                "CMP-5231",
+                "CMP-5253",
+                "CMP-5249",
+                "CMP-5117",
+                "CMP-5238",
+                "CMP-5248",
+                "CMP-5127",
+                "CMP-5239"
+            ],
+            "estimatedEntries": [
+                {
+                    "issueKey": "CMP-5245",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5233",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5214",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5247",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5202",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5142",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5197",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-4020",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5117",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5238",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5248",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5239",
+                    "value": 0.0
+                }
+            ],
+            "completedEntries": [
+                {
+                    "issueKey": "CMP-5245",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5233",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5214",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5247",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5202",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5230",
+                    "value": 1.0
+                },
+                {
+                    "issueKey": "CMP-5142",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5197",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5241",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-4020",
+                    "value": 5.0
+                },
+                {
+                    "issueKey": "CMP-5067",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5231",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5253",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5249",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5117",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5238",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5248",
+                    "value": 3.0
+                },
+                {
+                    "issueKey": "CMP-5127",
+                    "value": 2.0
+                },
+                {
+                    "issueKey": "CMP-5239",
+                    "value": 0.0
+                }
+            ]
+        }
+    }
+}
