@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import * as Button from "../components/Button";
 import "./HealthCheck.css";
 
-import ReportHealthCheck from './ReportHealthCheck';
-
-import * as NotionPage from "../services/Notion/page";
-
 import glossary from "./glossary.json";
 import ResultIcon from './ResultIcon';
 
@@ -287,8 +283,6 @@ function HealthCheck() {
                     </table>
                 </div>
             </div>
-            <button className='mt-5' onClick={() => { NotionPage.read("1c248675a7f844019c944087eab3c351"); NotionPage.read("55d63319-8f45-4b01-a49e-1d20e7a35e0d") }}>👋 Create Notion</button>
-            <ReportHealthCheck teams={teams} />
         </div>
     );
 }
