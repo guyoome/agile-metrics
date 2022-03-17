@@ -8,7 +8,6 @@ import * as burnup from "./Burnup.logic";
 import "./Burnup.css";
 
 const startFromBottom = (history) => {
-    console.log("🤗", history)
     const chartDataSet = [];
     let remove = history[0].doneIssues;
 
