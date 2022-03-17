@@ -7,6 +7,27 @@ import * as burnup from "./Burnup.logic";
 
 import "./Burnup.css";
 
+const startFromBottom = (history) => {
+    console.log("🤗", history)
+    const chartDataSet = [];
+    let remove = history[0].doneIssues;
+
+    history.forEach(sprint => {
+        const element = { ...sprint }
+        element.quarter -= remove;
+        element.scope -= remove;
+        if (sprint.doneIssues) { element.doneIssues -= remove }
+        if (sprint.forecast) {
+            element.forecast -= remove;
+            element.forecastHigh -= remove;
+            element.forecastLow -= remove;
+        }
+
+        chartDataSet.push(element);
+    });
+    return chartDataSet;
+}
+
 /**
  * Component for showing an Epic Burnup chart of a Team.
  *
@@ -122,6 +143,7 @@ function Burnup() {
         // If sprintStart is set, slice the chart data set with sprintStart as begining of data set 
         if (sprintStart) {
             chartDataSet = burnup.getChartDataBegin(chartDataSet, { name: sprintStart });
+
         }
 
         // If Forecast is set, get data set with forecast
@@ -134,6 +156,9 @@ function Burnup() {
             chartDataSet = burnup.getChartDataSetWithQuarter(chartDataSet);
         }
 
+        if (showBacklogBurnup) {
+            chartDataSet = startFromBottom(chartDataSet);
+        }
         // set chart data state, to display the burnup
         setChartData(chartDataSet);
 
