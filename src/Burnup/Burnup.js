@@ -141,8 +141,6 @@ function Burnup() {
 
     return (
         <div>
-            {/* // <div className='container'> */}
-            {/* <div className='left'> */}
             <div className="flex-container">
 
                 <div className="flex-item">
@@ -174,9 +172,6 @@ function Burnup() {
                 </div>
             </div>
 
-            {/* </div> */}
-
-            {/* <div className='right'> */}
             <div id='burnup-chart'>
                 <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
                     {!!showBacklogBurnup ?
@@ -233,10 +228,6 @@ function Burnup() {
                     </p>
                 </div>
             </div>
-            {/* </div> */}
-
-
-
         </div>
     );
 }
