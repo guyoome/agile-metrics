@@ -89,6 +89,8 @@ function Burnup() {
                     setBacklog(result);
                 })
                 .catch(error => console.log('error', error));
+
+            setEpic("");
         }
     }, [team])
 
