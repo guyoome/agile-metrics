@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Teams from '../utils/Teams';
+import * as Button from "../components/Button";
 import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as Input from "../components/Input";
 import "../HealthCheck/HealthCheck.css";
@@ -121,11 +122,12 @@ function Commitment() {
                     options={Teams.getTags()}
                     value={(e) => { setSelectedTeam(e) }} />
             </div>
-            <div className="mt-5">
+            <div className="mt-5" id='commitment-chart'>
                 <ResponsiveContainer height={400}>
                     <ComposedChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
                         <Tooltip />
+                        <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
                         <Bar dataKey="estimated" fill="#537dc1" />
                         <Bar dataKey="completed" fill="#21ab92" />
                         <Line type="monotone" dataKey="error" stroke="#fb5168" strokeWidth={4} dot={{ stroke: '#fb5168', strokeWidth: 2 }} />
@@ -134,6 +136,7 @@ function Commitment() {
                     </ComposedChart >
                 </ResponsiveContainer>
             </div>
+            <Button.SaveAsPNG icon="💾" text="Download Chart" node="commitment-chart" fileName="commitment-chart" />
         </div>
     );
 }
