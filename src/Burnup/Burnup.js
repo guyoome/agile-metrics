@@ -198,7 +198,7 @@ function Burnup() {
                 </div>
             </div>
 
-            <div id='burnup-chart'>
+            <div classname="bg-white" id='burnup-chart'>
                 <p className="mt-5">The Burnup chart of <span className="highlight">{team.name ? team.name : "..."}</span> team
                     {!!showBacklogBurnup ?
                         <span>, <span className="highlight"> Backlog</span></span>

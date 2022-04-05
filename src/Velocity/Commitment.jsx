@@ -122,7 +122,8 @@ function Commitment() {
                     options={Teams.getTags()}
                     value={(e) => { setSelectedTeam(e) }} />
             </div>
-            <div className="mt-5" id='commitment-chart'>
+            <div className='mt-5'></div>
+            <div className="bg-white" id='commitment-chart'>
                 <ResponsiveContainer height={400}>
                     <ComposedChart data={chartData}>
                         <CartesianGrid stroke="#ccc" />
