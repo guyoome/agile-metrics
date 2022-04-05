@@ -66,7 +66,6 @@ function Commitment() {
     }, [])
 
     useEffect(() => {
-        if (Object.keys(data).length === Teams.list.length) {
             for (const key in data) {
                 if (Object.hasOwnProperty.call(data, key)) {
                     const team = data[key];
@@ -77,12 +76,11 @@ function Commitment() {
                     setCommitment(prevCommitment => ({ ...prevCommitment, [key]: teamVariance }));
                 }
             }
-        }
     }, [data])
 
     useEffect(() => {
         if (Object.keys(commitment).length > 0 && Teams.getTags().includes(selectedTeam)) {
-            const stats = []
+            const stats = [];
             data[selectedTeam].forEach((sprint, id) => {
                 stats.push({
                     name: "Sprint -" + (data[selectedTeam].length - id),
