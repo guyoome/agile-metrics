@@ -4,12 +4,6 @@
     justify-content: space-around;
 }
 
-.flex-item {
-    /* width: fit-content; */
-    /* flex-grow: 1; */
-    /* flex-shrink: 3; */
-}
-
 .mt-5 {
     margin-top: 32px;
 }
