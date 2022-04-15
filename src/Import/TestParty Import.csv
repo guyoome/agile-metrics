@@ -1,0 +1,143 @@
+IssueType, Summary, Description
+task, [API] Bulk burn with a wrong date format, "API_URL: /loyalty/v1/rewards/burn
+Expected Status: KO"
+task, [API] Bulk grant with a wrong date format, "API_URL: /loyalty/v1/rewards/burn
+Expected Status: KO"
+task, [API] Bulk grant with an already granted attribution id + not granted one, "API_URL: /loyalty/v1/rewards/burn,
+Expected Status: Partially OK"
+task, [API] Burn a reward with a burned date before granted date, "API_URL: /loyalty/v1/reward-attributions/{{attr id}}/burn
+Expected Status: KO"
+task, [API] Burn a reward with a burned date in the future, "API_URL: /loyalty/v1/reward-attributions/{{attr id}}/burn
+Expected Status: OK"
+task, [API] Burn a reward with a burned date in the past, "API_URL: /loyalty/v1/reward-attributions/{{attr id}}/burn
+Expected Status: OK"
+task, [API] Burn a reward with an unknown cardcode, "API_URL: /loyalty/v1/reward-attributions/{{attr id}}/burn
+Expected Status: KO"
+task, [API] Burn an already burned reward, "API_URL: /loyalty/v1/reward-attributions/{{attr id}}/burn
+Expected Status: KO"
+task, [API] Burn an attribution with a cardcode different than the granted one, "API_URL: /loyalty/v1/reward-attributions/{{attr id}}/burn
+Expected Status: KO"
+task, [API] Burn reward, "API_URL: /loyalty/v1/reward-attributions/{{attr id}}/burn
+Expected Status: OK"
+task, [API] Burn with a wrong date format, "API_URL: /loyalty/v1/reward-attributions/{{attr id}}/burn
+Expected Status: KO"
+task, [API] Create reward master, "API_URL: /loyalty/v1/rewards
+Expected Status: OK"
+task, [API] Generate more new instances than stock (force hot stock),"API_URL: /loyalty/rewards/{{reward_id}}/instances/generate
+Expected Status: KO"
+task, [API] Generate more new instances than stock with force option (force hot stock),"API_URL: /loyalty/rewards/{{reward_id}}/instances/generate
+Expected Status: OK"
+task, [API] Generate new instances (force hot stock),"API_URL: /loyalty/rewards/{{reward_id}}/instances/generate
+Expected Status: OK"
+task, [API] Grant & burn at the same time ,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant & burn at the same time BULK,"API_URL: /loyalty/v1/rewards/grant
+Expected Status: OK"
+task, [API] Grant RE#1 with a new attribution id,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant RE#1 with a quantity,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant RE#2 with a new attribution id,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant RE#2 with a quantity,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant RE#3 with a known attribution id (in stock),"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant RE#3 with a new attribution id,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: ?"
+task, [API] Grant RE#3 with a quantity,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant RE#4 with a known attribution id (in stock),"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant RE#4 with a new attribution id,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: ?"
+task, [API] Grant RE#4 with a quantity,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant reward & check stock,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant reward master BULK,"API_URL: /loyalty/v1/rewards/grant
+Expected Status: OK"
+task, [API] Grant reward master single,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant reward to an unknown card code,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: KO"
+task, [API] Grant reward with attribution id + quantity,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: KO"
+task, [API] Grant reward with granted date in the future,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant reward with granted date in the past,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant reward with type != '',"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: KO"
+task, [API] Grant several time the same extid in the same bulk,"API_URL: /loyalty/v1/rewards/grant,
+Expected Status: Partially OK"
+task, [API] Grant specifying expiration date,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Grant with a wrong date format,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: KO"
+task, [API] Grant with no cardcode specified,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: KO"
+task, [API] Grant with not enough points,"API_URL: /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: KO"
+task, [API] Update reward master,"PATCH /loyalty/v1/rewards/{{reward_id}}/grant
+Expected Status: OK"
+task, [API] Upload instances,"Expected Status: OK"
+task, [Datahub] Attribute reward master BULK,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Attribute reward master single,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Bulk burn with a wrong date format,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Bulk grant with a wrong date format,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Bulk grant with an already granted attribution id + not granted one,"Check logs and summary
+Expected Status: Partially OK"
+task, [Datahub] Burn a reward with a burned date before granted date,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Burn a reward with a burned date in the future,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Burn a reward with a burned date in the past,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Burn a reward with an unknown cardcode,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Burn an already burned reward,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Burn an attribution with a cardcode different than the granted one,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Burn reward,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Burn with a wrong date format,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Create reward master,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Grant & burn at the same time,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Grant & burn at the same time BULK,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Grant reward & check stock,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Grant reward to an unknown card code,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Grant reward with granted date in the future,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Grant reward with granted date in the past,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Grant reward with type != '',"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Grant several time the same extid in the same file,"Check logs and summary
+Expected Status: Partially OK"
+task, [Datahub] Grant specifying expiration date,"Check logs and summary
+Expected Status: OK"
+task, [Datahub] Grant with a wrong date format,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Grant with no cardcode specified,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Grant with not enough points,"Check logs and summary
+Expected Status: KO"
+task, [Datahub] Update reward master,"Check logs and summary
+Expected Status: KO"
+task, [Front] Create reward master,"Expected Status: OK"
+task, [Front] Grant reward by rule,"Check the json_payload on database. Should looks like {"id": 89, "type": "reward", "is_api": true, "context": {"msg": "test RE#1", "uuid": "3c2cfff4-690d-4f38-9f9d-9cfa989ce6cc", "source": "rewards_api"}},React + SCP + Loyalty engine + Rewards API
+Expected Status: OK"
+task, [Front] Grant reward master single,"Expected Status: OK"
+task, [Front] Update reward master,"Expected Status: OK"

@@ -1,0 +1,5 @@
+IssueType, Summary, Description
+task, [API] Bulk burn with a wrong date format, \"API_URL: /loyalty/v1/rewards/burn
+Expected Status: KO\"
+task, [API] Bulk grant with a wrong date format, \"API_URL: /loyalty/v1/rewards/burn
+Expected Status: KO\"

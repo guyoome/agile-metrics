@@ -22,22 +22,22 @@ const CSVToArray = (str) => {
         // If the current character is a quotation mark, and we're inside a
         // quoted field, and the next character is also a quotation mark,
         // add a quotation mark to the current column and skip the next character
-        if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
+        if (cc === '"' && quote && nc === '"') { arr[row][col] += cc; ++c; continue; }
 
         // If it's just one quotation mark, begin/end quoted field
-        if (cc == '"') { quote = !quote; continue; }
+        if (cc === '"') { quote = !quote; continue; }
 
         // If it's a comma and we're not in a quoted field, move on to the next column
-        if (cc == ',' && !quote) { ++col; continue; }
+        if (cc === ',' && !quote) { ++col; continue; }
 
         // If it's a newline (CRLF) and we're not in a quoted field, skip the next character
         // and move on to the next row and move to column 0 of that new row
-        if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
+        if (cc === '\r' && nc === '\n' && !quote) { ++row; col = 0; ++c; continue; }
 
         // If it's a newline (LF or CR) and we're not in a quoted field,
         // move on to the next row and move to column 0 of that new row
-        if (cc == '\n' && !quote) { ++row; col = 0; continue; }
-        if (cc == '\r' && !quote) { ++row; col = 0; continue; }
+        if (cc === '\n' && !quote) { ++row; col = 0; continue; }
+        if (cc === '\r' && !quote) { ++row; col = 0; continue; }
 
         // Otherwise, append the current character to the current column
         arr[row][col] += cc;
@@ -49,7 +49,7 @@ const CSVToArray = (str) => {
 
 function Import() {
     const [file, setFile] = useState();
-    const [header, setHeader] = useState();
+    const [header, setHeader] = useState([]);
     const [array, setArray] = useState([]);
 
     const fileReader = new FileReader();
@@ -76,13 +76,56 @@ function Import() {
     const handleOnSubmit = (e) => {
         e.preventDefault();
 
-        if (file) {
-            fileReader.onload = function (event) {
-                const text = event.target.result;
-                setArray(CSVToArray(text));
-            };
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", `Basic ${process.env.REACT_APP_ATLASSIAN_AUTH}`);
+        myHeaders.append("Cookie", `atlassian.xsrf.token=${process.env.REACT_APP_TOKEN}`);
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("X-Atlassian-Token", "nocheck");
+        // myHeaders.append("Accept", "application/json");
 
-            fileReader.readAsText(file);
+
+        // const myBody = {
+        //     fields: {
+        //         project:
+        //         {
+        //             key: "PLG"
+        //         },
+        //         summary: "REST ye merry gentlemen.",
+        //         description: "Creating of an issue using project keys and issue type names using the REST API",
+        //         issuetype: {
+        //             name: "Bug"
+        //         }
+        //     }
+        // }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        for (const ticket of array) {
+            console.log("POST - ", ticket);
+            const myBody = JSON.stringify({
+                fields: {
+                    project: {
+                        key: "PLG"
+                    },
+                    summary: ticket[1],
+                    description: ticket[2],
+                    issuetype: {
+                        name: ticket[0]
+                    }
+                }
+            });
+            console.log("POST - Body ", myBody);
+
+            fetch(`${process.env.REACT_APP_PROXY}/https://spolio.atlassian.net/rest/api/2/issue`, { ...requestOptions, body: {} })
+                .then(res => res.json())
+                .then(result => {
+                    console.log("Result: ", result);
+                })
+                .catch(error => console.log('error', error));
         }
     };
 
@@ -107,26 +150,30 @@ function Import() {
             </form>
 
             <br />
+            {
+                file &&
+                <div className='data-table'>
+                    <table>
+                        <thead>
+                            <tr>
+                                {header.map((key, id) => (
+                                    <th key={id}>{key}</th>
+                                ))}
+                            </tr>
+                        </thead>
 
-            <table>
-                <thead>
-                    <tr>
-                        {header && header.map((key) => (
-                            <th>{key}</th>
-                        ))}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {array.slice(1).map((item) => (
-                        <tr key={item.id}>
-                            {Object.values(item).map((val) => (
-                                <td style={{ whiteSpace: "pre-line" }}>{val}</td>
+                        <tbody>
+                            {array.map((item, id) => (
+                                <tr key={id}>
+                                    {Object.values(item).map((val, id) => (
+                                        <td key={id} style={{ whiteSpace: "pre-line" }}>{val}</td>
+                                    ))}
+                                </tr>
                             ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
     );
 }
