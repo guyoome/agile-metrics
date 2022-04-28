@@ -66,16 +66,16 @@ function Commitment() {
     }, [])
 
     useEffect(() => {
-            for (const key in data) {
-                if (Object.hasOwnProperty.call(data, key)) {
-                    const team = data[key];
-                    const teamVariance = [];
-                    team.forEach(sprint => {
-                        teamVariance.push(variance(sprint.estimated.value, sprint.completed.value))
-                    });
-                    setCommitment(prevCommitment => ({ ...prevCommitment, [key]: teamVariance }));
-                }
+        for (const key in data) {
+            if (Object.hasOwnProperty.call(data, key)) {
+                const team = data[key];
+                const teamVariance = [];
+                team.forEach(sprint => {
+                    teamVariance.push(variance(sprint.estimated.value, sprint.completed.value))
+                });
+                setCommitment(prevCommitment => ({ ...prevCommitment, [key]: teamVariance }));
             }
+        }
     }, [data])
 
     useEffect(() => {
@@ -86,7 +86,8 @@ function Commitment() {
                     name: "Sprint -" + (data[selectedTeam].length - id),
                     estimated: sprint.estimated.value,
                     completed: sprint.completed.value,
-                    error: Math.round(commitment[selectedTeam][id] * 100) / 100
+                    error: Math.round(commitment[selectedTeam][id] * 100) / 100,
+                    avg: Math.round(average(commitment[selectedTeam]) * 100) / 100
                 })
             });
             setChartData(stats);
@@ -116,9 +117,15 @@ function Commitment() {
                 </table>
             </div>
             <div className="flex-item mt-5">
-                <Input.Dropdown default="--Choose a team--"
-                    options={Teams.getTags()}
-                    value={(e) => { setSelectedTeam(e) }} />
+                {Object.keys(data).length === Teams.getTags().length ?
+                    <Input.Dropdown default="--Choose a team--"
+                        options={Teams.getTags()}
+                        value={(e) => { setSelectedTeam(e) }} />
+                    :
+                    <Input.Dropdown default="--Loading Data--"
+                        options={[]}
+                        value={(e) => { }} />
+                }
             </div>
             <div className='mt-5'></div>
             <div className="bg-white" id='commitment-chart'>
@@ -130,6 +137,7 @@ function Commitment() {
                         <Bar dataKey="estimated" fill="#537dc1" />
                         <Bar dataKey="completed" fill="#21ab92" />
                         <Line type="monotone" dataKey="error" stroke="#fb5168" strokeWidth={4} dot={{ stroke: '#fb5168', strokeWidth: 2 }} />
+                        <Line type="monotone" dataKey="avg" stroke="#cccccc" strokeWidth={4} dot={false} strokeDasharray="4 4" />
                         <XAxis dataKey="name" />
                         <YAxis />
                     </ComposedChart >
