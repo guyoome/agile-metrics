@@ -96,36 +96,38 @@ function Commitment() {
 
     return (
         <div style={{ textAlign: "start" }}>
-            <h1>Commitment</h1>
+            <h1>🦄 Commitment</h1>
             <div className='data-table' id='agile-health-check-table'>
                 <table >
                     <thead>
                         <tr>
-                            {Object.keys(commitment).map((e, id) => (
-                                <th key={id}>{e}</th>
-                            ))}
+                            {Object.keys(commitment).length !== 0 ?
+                                Object.keys(commitment).map((e, id) => (
+                                    <th key={id}>{e}</th>
+                                ))
+                                :
+                                <th>-</th>
+                            }
                         </tr>
                     </thead>
 
                     <tbody className='am-data-table__content'>
                         <tr>
-                            {Object.values(commitment).map((e, id) => (
-                                <td key={id}>{Math.round(average(e) * 100) / 100}%</td>
-                            ))}
+                            {Object.keys(commitment).length !== 0 ?
+                                Object.values(commitment).map((e, id) => (
+                                    <td key={id}>{Math.round(average(e) * 100) / 100}%</td>
+                                ))
+                                :
+                                <th>-</th>
+                            }
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div className="flex-item mt-5">
-                {Object.keys(data).length === Teams.getTags().length ?
-                    <Input.Dropdown default="--Choose a team--"
-                        options={Teams.getTags()}
-                        value={(e) => { setSelectedTeam(e) }} />
-                    :
-                    <Input.Dropdown default="--Loading Data--"
-                        options={[]}
-                        value={(e) => { }} />
-                }
+                <Input.Dropdown default="--Choose a team--"
+                    options={Object.keys(commitment)}
+                    value={(e) => { setSelectedTeam(e) }} />
             </div>
             <div className='mt-5'></div>
             <div className="bg-white" id='commitment-chart'>

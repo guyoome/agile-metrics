@@ -12,6 +12,7 @@ import Burnup from './Burnup/Burnup';
 import HealthCheck from './HealthCheck/HealthCheck';
 import GlobalHealthCheck from './HealthCheck/GlobalHealthCheck';
 import Commitment from './Velocity/Commitment';
+import Kanban from './Kanban/Kanban';
 
 
 ReactDOM.render(
@@ -24,6 +25,7 @@ ReactDOM.render(
           <Route path="health-check" element={<HealthCheck />} />
           <Route path="health-check-multi" element={<GlobalHealthCheck />}/>
           <Route path="velocity" element={<Commitment />}/>
+          <Route path="kanban" element={<Kanban />}/>
         </Route>
       </Routes>
     </BrowserRouter>
