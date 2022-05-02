@@ -74,13 +74,15 @@ const editData = (history, timeline) => {
 
 }
 
-const editWip = (data) => {
+const editWip = (data, timeframe) => {
     // arr {date,wip}
     const arr = [];
 
-    data.forEach(element => {
+    const dataCopy = data.slice(-timeframe);
+
+    dataCopy.forEach(element => {
         arr.push({
-            date: data.date,
+            date: element.date,
             wip: element[3] + element[4]
         })
     });
@@ -96,7 +98,7 @@ const editWip = (data) => {
     arr.forEach((element, id) => {
         arr[id].avg = avg;
     });
-
+    
     return arr;
 }
 
@@ -105,6 +107,7 @@ function Kanban() {
     const [timeline, setTimeline] = useState([]);
     const [data, setData] = useState([]);
     const [wip, setWip] = useState([]);
+    const [timeframe, setTimeframe] = useState(0) // x days ago
 
     useEffect(() => {
         var myHeaders = new Headers();
@@ -139,14 +142,21 @@ function Kanban() {
     }, [timeline])
 
     useEffect(() => {
-        setWip(editWip(data));
+        setWip(editWip(data, timeframe));
 
-    }, [data])
+    }, [data, timeframe])
 
 
     return (
         <div style={{ textAlign: "start" }}>
             <h1>🧜‍♂️ Kanban</h1>
+            <div className="mt-5">
+                <h3>Timeframe</h3>
+                <p>Past 2 weeks
+                    <Input.Checkbox
+                        value={(e) => { e ? setTimeframe(14) : setTimeframe(0) }} />
+                </p>
+            </div>
 
             <div className="mt-5">
                 <ResponsiveContainer height={400}>
