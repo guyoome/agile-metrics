@@ -74,10 +74,37 @@ const editData = (history, timeline) => {
 
 }
 
+const editWip = (data) => {
+    // arr {date,wip}
+    const arr = [];
+
+    data.forEach(element => {
+        arr.push({
+            date: data.date,
+            wip: element[3] + element[4]
+        })
+    });
+
+    // avg WIP
+    let tot = 0;
+    let sum = 0;
+    arr.forEach(element => {
+        sum += element.wip
+        tot++;
+    });
+    const avg = sum / tot;
+    arr.forEach((element, id) => {
+        arr[id].avg = avg;
+    });
+
+    return arr;
+}
+
 function Kanban() {
     const [history, setHistory] = useState({});
     const [timeline, setTimeline] = useState([]);
     const [data, setData] = useState([]);
+    const [wip, setWip] = useState([]);
 
     useEffect(() => {
         var myHeaders = new Headers();
@@ -111,6 +138,11 @@ function Kanban() {
 
     }, [timeline])
 
+    useEffect(() => {
+        setWip(editWip(data));
+
+    }, [data])
+
 
     return (
         <div style={{ textAlign: "start" }}>
@@ -135,6 +167,20 @@ function Kanban() {
                         <Area type="monotone" dataKey="0" stroke="#FFAB00" fillOpacity={1} fill="#FFAB00" stackId="1" />
                         {/* <Line type="linear" dataKey="4" stroke="#00c39e" dot={false} strokeWidth={3} /> */}
                         {/* <Line type="linear" dataKey="5" stroke="#00c39e" dot={false} strokeWidth={3} /> */}
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                    </ComposedChart >
+                </ResponsiveContainer>
+            </div>
+            <div className="mt-5">
+                <ResponsiveContainer height={400}>
+                    <ComposedChart data={wip}>
+                        <CartesianGrid stroke="#ccc" />
+                        <Tooltip />
+                        <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+
+                        <Line type="linear" dataKey="wip" stroke="#00c39e" dot={false} strokeWidth={3} />
+                        <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} />
                         <XAxis dataKey="date" />
                         <YAxis />
                     </ComposedChart >
