@@ -26,7 +26,7 @@ const generateDateFormat = (timestamp) => {
     return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
 }
 
-const editData = (history, timeline) => {
+const editData = (history, timeline, timeframe) => {
     const arr = []
 
     // console.log("🦓#1", arr)
@@ -70,7 +70,9 @@ const editData = (history, timeline) => {
         arr[i][5] = (arr[i - 1] ? arr[i - 1][5] + element[5] : element[5]);
     });
 
-    return arr;
+    const arrCopy = arr.slice(-timeframe);
+
+    return arrCopy;
 
 }
 
@@ -98,7 +100,7 @@ const editWip = (data, timeframe) => {
     arr.forEach((element, id) => {
         arr[id].avg = avg;
     });
-    
+
     return arr;
 }
 
@@ -137,9 +139,9 @@ function Kanban() {
     }, [history])
 
     useEffect(() => {
-        setData(editData(history, timeline));
+        setData(editData(history, timeline, timeframe));
 
-    }, [timeline])
+    }, [timeline, timeframe])
 
     useEffect(() => {
         setWip(editWip(data, timeframe));
@@ -156,6 +158,10 @@ function Kanban() {
                     <Input.Checkbox
                         value={(e) => { e ? setTimeframe(14) : setTimeframe(0) }} />
                 </p>
+                {/* <p>Past month
+                    <Input.Checkbox
+                        value={(e) => { e ? setTimeframe(31) : setTimeframe(0) }} />
+                </p> */}
             </div>
 
             <div className="mt-5">
