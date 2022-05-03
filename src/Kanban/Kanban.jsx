@@ -26,7 +26,7 @@ const generateDateFormat = (timestamp) => {
     return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
 }
 
-const editData = (history, timeline, timeframe) => {
+const editData = (history, timeline) => {
     const arr = []
 
     // console.log("🦓#1", arr)
@@ -70,9 +70,9 @@ const editData = (history, timeline, timeframe) => {
         arr[i][5] = (arr[i - 1] ? arr[i - 1][5] + element[5] : element[5]);
     });
 
-    const arrCopy = arr.slice(-timeframe);
+    // const arrCopy = arr.slice(-timeframe);
 
-    return arrCopy;
+    return arr;
 
 }
 
@@ -80,9 +80,16 @@ const editWip = (data, timeframe) => {
     // arr {date,wip}
     const arr = [];
 
-    const dataCopy = data.slice(-timeframe);
+    // const dataCopy = data.slice(-timeframe);
 
-    dataCopy.forEach(element => {
+    // dataCopy.forEach(element => {
+    //     arr.push({
+    //         date: element.date,
+    //         wip: element[3] + element[4]
+    //     })
+    // });
+
+    data.forEach(element => {
         arr.push({
             date: element.date,
             wip: element[3] + element[4]
@@ -104,12 +111,31 @@ const editWip = (data, timeframe) => {
     return arr;
 }
 
+const editThroughput = (data) => {
+    const arr = [];
+    // create arr with obj { start:done, end:done } by week (7days)
+    let mem = 0;
+    data.forEach((element, id) => {
+        // console.log("test %", id % 7, "| id:", id);
+        if (id % 7 === 0) {
+
+            arr.push({ throughput: element[5] - mem, date: element.date });
+            mem = element[5];
+        }
+    });
+    console.log("🎆#1 result", arr);
+    return arr;
+
+}
+
 function Kanban() {
     const [history, setHistory] = useState({});
     const [timeline, setTimeline] = useState([]);
     const [data, setData] = useState([]);
+    const [cumulativeFlow, setCumulativeFlow] = useState([]);
     const [wip, setWip] = useState([]);
-    const [timeframe, setTimeframe] = useState(0) // x days ago
+    const [timeframe, setTimeframe] = useState(0); // x days ago
+    const [throughput, setThroughput] = useState(0);
 
     useEffect(() => {
         var myHeaders = new Headers();
@@ -139,14 +165,26 @@ function Kanban() {
     }, [history])
 
     useEffect(() => {
-        setData(editData(history, timeline, timeframe));
+        setData(editData(history, timeline));
 
-    }, [timeline, timeframe])
+    }, [timeline])
 
     useEffect(() => {
-        setWip(editWip(data, timeframe));
+        setCumulativeFlow(data.slice(-timeframe));
 
     }, [data, timeframe])
+
+    useEffect(() => {
+        // Timeframe is handle by cumulativeFlow
+        // wip don't need previous values to calculate the actual one in the timeframe
+        setWip(editWip(cumulativeFlow));
+
+    }, [cumulativeFlow])
+
+    useEffect(() => {
+        setThroughput(editThroughput(data).slice(-timeframe/7));
+
+    }, [data,timeframe])
 
 
     return (
@@ -166,7 +204,7 @@ function Kanban() {
 
             <div className="mt-5">
                 <ResponsiveContainer height={400}>
-                    <ComposedChart data={data}>
+                    <ComposedChart data={cumulativeFlow}>
                         <CartesianGrid stroke="#ccc" />
                         <Tooltip />
                         <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
@@ -197,6 +235,20 @@ function Kanban() {
 
                         <Line type="linear" dataKey="wip" stroke="#00c39e" dot={false} strokeWidth={3} />
                         <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                    </ComposedChart >
+                </ResponsiveContainer>
+            </div>
+            <div className="mt-5">
+                <ResponsiveContainer height={400}>
+                    <ComposedChart data={throughput}>
+                        <CartesianGrid stroke="#ccc" />
+                        <Tooltip />
+                        <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+
+                        <Line type="linear" dataKey="throughput" stroke="#00c39e" dot={false} strokeWidth={3} />
+                        {/* <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} /> */}
                         <XAxis dataKey="date" />
                         <YAxis />
                     </ComposedChart >
