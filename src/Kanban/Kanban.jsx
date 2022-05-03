@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import Teams from '../utils/Teams';
-import * as Button from "../components/Button";
-import { ResponsiveContainer, ComposedChart, Bar, LabelList, Area, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
+import { ResponsiveContainer, ComposedChart, Area, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as Input from "../components/Input";
 import "../HealthCheck/HealthCheck.css";
 
 const editTimeline = (startDate) => {
     const start = parseInt(startDate)
     let obj = {}
-    // let i = 0;
+    
     for (var arr = [], dt = new Date(start); dt <= Date.now(); dt.setDate(dt.getDate() + 1)) {
-        // const date = new Date(dt);
-        // console.log(dt)
+
         obj[generateDateFormat(dt)] = { column: [0, 0, 0, 0, 0, 0] };
-        // obj[generateDateFormat(dt)] = { id: i, column: [0, 0, 0, 0, 0, 0] };
-        // i++;
     }
     obj[generateDateFormat(Date.now())] = { column: [0, 0, 0, 0, 0, 0] };
-    // console.log("😴obj", obj)
+
     return obj;
 }
 
@@ -29,8 +24,6 @@ const generateDateFormat = (timestamp) => {
 const editData = (history, timeline) => {
     const arr = []
 
-    // console.log("🦓#1", arr)
-    //
     for (const key in history) {
         if (Object.hasOwnProperty.call(history, key)) {
             const change = history[key][0];
@@ -40,17 +33,14 @@ const editData = (history, timeline) => {
             }
         }
     }
-    // console.log("🐪#2", timeline)
 
     // -> Array
-
     for (const key in timeline) {
         if (Object.hasOwnProperty.call(timeline, key)) {
             const element = timeline[key];
             arr.push({ ...element, date: key })
         }
     }
-    // console.log("🐏#3", arr)
 
     // populate column
     arr.forEach((element, index) => {
@@ -58,7 +48,6 @@ const editData = (history, timeline) => {
         delete element.column;
         arr[index] = { ...element, ...column }
     });
-    // console.log("🦥#4", arr)
 
     // Do the Sum for the scope: [0,1,2,0,1] => [0,1,3,3,4]
     arr.forEach((element, i) => {
@@ -70,8 +59,6 @@ const editData = (history, timeline) => {
         arr[i][5] = (arr[i - 1] ? arr[i - 1][5] + element[5] : element[5]);
     });
 
-    // const arrCopy = arr.slice(-timeframe);
-
     return arr;
 
 }
@@ -79,15 +66,6 @@ const editData = (history, timeline) => {
 const editWip = (data, timeframe) => {
     // arr {date,wip}
     const arr = [];
-
-    // const dataCopy = data.slice(-timeframe);
-
-    // dataCopy.forEach(element => {
-    //     arr.push({
-    //         date: element.date,
-    //         wip: element[3] + element[4]
-    //     })
-    // });
 
     data.forEach(element => {
         arr.push({
@@ -116,7 +94,6 @@ const editThroughput = (data) => {
     // create arr with obj { start:done, end:done } by week (7days)
     let mem = 0;
     data.forEach((element, id) => {
-        // console.log("test %", id % 7, "| id:", id);
         if (id % 7 === 0) {
 
             arr.push({ throughput: element[5] - mem, date: element.date });
@@ -153,7 +130,6 @@ function Kanban() {
             .then(res => res.json())
             .then(result => {
                 setHistory(result.columnChanges);
-                // console.log("🐍Joe", history)
             })
             .catch(error => console.log('error', error));
     }, [])
@@ -196,10 +172,6 @@ function Kanban() {
                     <Input.Checkbox
                         value={(e) => { e ? setTimeframe(14) : setTimeframe(0) }} />
                 </p>
-                {/* <p>Past month
-                    <Input.Checkbox
-                        value={(e) => { e ? setTimeframe(31) : setTimeframe(0) }} />
-                </p> */}
             </div>
 
             <div className="mt-5">
@@ -210,17 +182,11 @@ function Kanban() {
                         <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
 
                         <Area type="monotone" dataKey="5" stroke="#FF5630" fillOpacity={1} fill="#FF5630" stackId="1" />
-                        {/* <Line type="linear" dataKey="0" stroke="#ffba49" dot={false} strokeWidth={4} /> */}
                         <Area type="monotone" dataKey="4" stroke="#00B8D9" fillOpacity={1} fill="#00B8D9" stackId="1" />
-                        {/* <Line type="linear" dataKey="1" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" /> */}
                         <Area type="monotone" dataKey="3" stroke="#36B37E" fillOpacity={1} fill="#36B37E" stackId="1" />
                         <Area type="monotone" dataKey="2" stroke="#6554C0" fillOpacity={1} fill="#6554C0" stackId="1" />
-                        {/* <Line type="linear" dataKey="2" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" /> */}
-                        {/* <Line type="linear" dataKey="3" stroke="#CBD6E6" dot={false} strokeWidth={2} strokeDasharray="4 4" /> */}
                         <Area type="monotone" dataKey="1" stroke="#008DA6" fillOpacity={1} fill="#008DA6" stackId="1" />
                         <Area type="monotone" dataKey="0" stroke="#FFAB00" fillOpacity={1} fill="#FFAB00" stackId="1" />
-                        {/* <Line type="linear" dataKey="4" stroke="#00c39e" dot={false} strokeWidth={3} /> */}
-                        {/* <Line type="linear" dataKey="5" stroke="#00c39e" dot={false} strokeWidth={3} /> */}
                         <XAxis dataKey="date" />
                         <YAxis />
                     </ComposedChart >
