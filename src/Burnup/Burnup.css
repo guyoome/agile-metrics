@@ -4,23 +4,3 @@
     justify-content: space-around;
 }
 
-.mt-5 {
-    margin-top: 32px;
-}
-
-.bg-white{
-    background-color: #fff;
-}
-
-.highlight {
-    /* color: blue; */
-    font-size: calc(1em*1.438);
-    font-weight: bold;
-}
-
-p {
-    font-size: 1rem;
-    line-height: normal;
-    font-weight: 400;
-    color: #27416b;
-}

@@ -1,11 +1,13 @@
 .App {
   text-align: center;
 }
-.page{
+
+.page {
   padding: 24px;
   padding-top: 108px;
 
 }
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -42,7 +44,32 @@
   }
 }
 
-hr{
+hr {
   margin-top: 48px;
   margin-bottom: 48px;
+}
+
+.mt-5 {
+  margin-top: 32px;
+}
+
+.mr-2 {
+  margin-right: 8px;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.highlight {
+  /* color: blue; */
+  font-size: calc(1em*1.438);
+  font-weight: bold;
+}
+
+p {
+  font-size: 1rem;
+  line-height: normal;
+  font-weight: 400;
+  color: #27416b;
 }
