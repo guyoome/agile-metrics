@@ -126,7 +126,7 @@ const avg = (arr, key) => {
     });
 
     // write avg in arr
-    const avg = Math.round((sum / tot)*100)/100;
+    const avg = Math.round((sum / tot) * 100) / 100;
     arrCopy.forEach((element, id) => {
         arr[id].avg = avg;
     });
@@ -202,14 +202,6 @@ function Kanban() {
                 <h3>Timeframe</h3>
                 <Button.Multiple default inputs={timeframeInput}
                     selected={(e) => setTimeframe(e)} />
-                {/* <p>Past 2 weeks
-                    <Input.Checkbox
-                        value={(e) => { e ? setTimeframe(14) : setTimeframe(0) }} />
-                </p>
-                <p>Past month
-                    <Input.Checkbox
-                        value={(e) => { e ? setTimeframe(30) : setTimeframe(0) }} />
-                </p> */}
             </div>
 
             <div className="mt-5">
