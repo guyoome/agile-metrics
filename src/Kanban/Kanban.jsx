@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ResponsiveContainer, ComposedChart, Area, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as Input from "../components/Input";
 import * as Button from "../components/Button";
+import * as Card from "../components/Card";
 import "../HealthCheck/HealthCheck.css";
 
 const timeframeInput = [
@@ -228,8 +229,11 @@ function Kanban() {
                     selected={(e) => setTimeframe(e)} />
             </div>
 
-            <div className="mt-5">
-                Cycle Time: {avgCycleTime} | Wip: {avgWip} | Throughput: {avgThroughput}
+            <div className="mt-5" style={{display:"flex", columnGap:"36px"}}>
+                <Card.Number title="Cycle Time" value={avgCycleTime} unit="days"/>
+                <Card.Number title="Wip" value={avgWip} unit="items"/>
+                <Card.Number title="Throughput" value={avgThroughput} unit="items"/>
+                {/* Cycle Time: {avgCycleTime} | Wip: {avgWip} | Throughput: {avgThroughput} */}
             </div>
 
             <div className="mt-5">
