@@ -140,8 +140,11 @@ function Kanban() {
     const [data, setData] = useState([]);
     const [cumulativeFlow, setCumulativeFlow] = useState([]);
     const [wip, setWip] = useState([]);
-    const [timeframe, setTimeframe] = useState(0); // x days ago
+    const [avgWip, setAvgWip] = useState(0);
     const [throughput, setThroughput] = useState(0);
+    const [avgThroughput, setAvgThroughput] = useState(0);
+    const [avgCycleTime, setAvgCycleTime] = useState(0);
+    const [timeframe, setTimeframe] = useState(0); // x days ago
 
     useEffect(() => {
         var myHeaders = new Headers();
@@ -185,14 +188,35 @@ function Kanban() {
         const globalWip = editWip(cumulativeFlow);
         setWip(avg(globalWip, "wip"));
 
-
     }, [cumulativeFlow])
+
+    useEffect(() => {
+        if (wip[0] !== undefined) {
+            setAvgWip(wip[0].avg);
+        }
+
+    }, [wip])
 
     useEffect(() => {
         const globalThroughput = editThroughput(data).slice(-timeframe / 7); // /7 because it's week not days
         setThroughput(avg(globalThroughput, "throughput"));
 
     }, [data, timeframe])
+
+    useEffect(() => {
+        if (throughput[0] !== undefined) {
+            setAvgThroughput(throughput[0].avg);
+        }
+
+    }, [throughput])
+
+    useEffect(() => {
+        if (avgWip && avgThroughput) {
+            const littleLaw = avgWip / (avgThroughput / 7);
+            setAvgCycleTime(Math.round(littleLaw * 100) / 100);
+        }
+
+    }, [avgWip, avgThroughput])
 
 
     return (
@@ -202,6 +226,10 @@ function Kanban() {
                 <h3>Timeframe</h3>
                 <Button.Multiple default inputs={timeframeInput}
                     selected={(e) => setTimeframe(e)} />
+            </div>
+
+            <div className="mt-5">
+                Cycle Time: {avgCycleTime} | Wip: {avgWip} | Throughput: {avgThroughput}
             </div>
 
             <div className="mt-5">
