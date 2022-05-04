@@ -6,7 +6,7 @@ import "../HealthCheck/HealthCheck.css";
 const editTimeline = (startDate) => {
     const start = parseInt(startDate)
     let obj = {}
-    
+
     for (var arr = [], dt = new Date(start); dt <= Date.now(); dt.setDate(dt.getDate() + 1)) {
 
         obj[generateDateFormat(dt)] = { column: [0, 0, 0, 0, 0, 0] };
@@ -75,16 +75,16 @@ const editWip = (data, timeframe) => {
     });
 
     // avg WIP
-    let tot = 0;
-    let sum = 0;
-    arr.forEach(element => {
-        sum += element.wip
-        tot++;
-    });
-    const avg = sum / tot;
-    arr.forEach((element, id) => {
-        arr[id].avg = avg;
-    });
+    // let tot = 0;
+    // let sum = 0;
+    // arr.forEach(element => {
+    //     sum += element.wip
+    //     tot++;
+    // });
+    // const avg = sum / tot;
+    // arr.forEach((element, id) => {
+    //     arr[id].avg = avg;
+    // });
 
     return arr;
 }
@@ -100,9 +100,31 @@ const editThroughput = (data) => {
             mem = element[5];
         }
     });
-    console.log("🎆#1 result", arr);
+
+
+    // console.log("🎆#1 result", arr);
     return arr;
 
+}
+
+const avg = (arr, key) => {
+    const arrCopy = arr.slice();
+
+    // calc avg throughput
+    let tot = 0;
+    let sum = 0;
+    arrCopy.forEach(element => {
+        sum += element[key]
+        tot++;
+    });
+
+    // write avg in arr
+    const avg = sum / tot;
+    arrCopy.forEach((element, id) => {
+        arr[id].avg = avg;
+    });
+
+    return arrCopy;
 }
 
 function Kanban() {
@@ -153,14 +175,18 @@ function Kanban() {
     useEffect(() => {
         // Timeframe is handle by cumulativeFlow
         // wip don't need previous values to calculate the actual one in the timeframe
-        setWip(editWip(cumulativeFlow));
+        const globalWip = editWip(cumulativeFlow);
+        setWip(avg(globalWip,"wip"));
+
 
     }, [cumulativeFlow])
 
     useEffect(() => {
-        setThroughput(editThroughput(data).slice(-timeframe/7));
+        const globalThroughput = editThroughput(data).slice(-timeframe / 7);
+        setThroughput(avg(globalThroughput, "throughput"));
+        console.log("throughput",throughput)
 
-    }, [data,timeframe])
+    }, [data, timeframe])
 
 
     return (
@@ -171,6 +197,10 @@ function Kanban() {
                 <p>Past 2 weeks
                     <Input.Checkbox
                         value={(e) => { e ? setTimeframe(14) : setTimeframe(0) }} />
+                </p>
+                <p>Past month
+                    <Input.Checkbox
+                        value={(e) => { e ? setTimeframe(30) : setTimeframe(0) }} />
                 </p>
             </div>
 
@@ -214,7 +244,7 @@ function Kanban() {
                         <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
 
                         <Line type="linear" dataKey="throughput" stroke="#00c39e" dot={false} strokeWidth={3} />
-                        {/* <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} /> */}
+                        <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} />
                         <XAxis dataKey="date" />
                         <YAxis />
                     </ComposedChart >
