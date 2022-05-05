@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ResponsiveContainer, ComposedChart, Area, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
-import * as Input from "../components/Input";
 import * as Button from "../components/Button";
 import * as Card from "../components/Card";
 import "../HealthCheck/HealthCheck.css";
@@ -74,7 +73,6 @@ const editData = (history, timeline) => {
 }
 
 const editWip = (data, timeframe) => {
-    // arr {date,wip}
     const arr = [];
 
     data.forEach(element => {
@@ -83,18 +81,6 @@ const editWip = (data, timeframe) => {
             wip: element[3] + element[4]
         })
     });
-
-    // avg WIP
-    // let tot = 0;
-    // let sum = 0;
-    // arr.forEach(element => {
-    //     sum += element.wip
-    //     tot++;
-    // });
-    // const avg = sum / tot;
-    // arr.forEach((element, id) => {
-    //     arr[id].avg = avg;
-    // });
 
     return arr;
 }
@@ -222,24 +208,24 @@ function Kanban() {
 
     return (
         <div style={{ textAlign: "start" }}>
+
             <h1>🧜‍♂️ Kanban</h1>
+
             <Button.SaveAsPNG icon="💾" text="Download Dashboard" node="kanban-dashboard" fileName="kanban-dashboard" />
 
             <div id='kanban-dashboard' style={{ padding: "0 0 20px 0" }}>
+
                 <div className="mt-5">
                     <h3>Timeframe</h3>
                     <Button.Multiple default inputs={timeframeInput}
                         selected={(e) => setTimeframe(e)} />
                 </div>
-                <div className="mt-5 layout"
-                // style={{ display: "flex", columnGap: "36px" }}
-                >
+
+                <div className="mt-5 layout">
                     <Card.Number className="layout-item" title="Cycle Time" value={avgCycleTime} unit="days" tooltip="Average time an item take from inProgress to Done" />
                     <Card.Number className="layout-item" title="Wip" value={avgWip} unit="items" tooltip="Average number of items in progress" />
                     <Card.Number className="layout-item" title="Throughput" value={avgThroughput} unit="items" tooltip="Average number of items done per weeks" />
-                    {/* </div>
-
-            <div className="mt-5"> */}
+                
                     <div style={{ width: "100%", height: "250px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
                         <ResponsiveContainer className="layout-item" >
                             <ComposedChart data={cumulativeFlow}>
@@ -259,9 +245,10 @@ function Kanban() {
                         </ResponsiveContainer>
                     </div>
                 </div>
-                <div className="mt-5 layout">
-                    <div style={{ width: "100%", height: "300px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
 
+                <div className="mt-5 layout">
+
+                    <div style={{ width: "100%", height: "300px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
                         <ResponsiveContainer >
                             <ComposedChart data={wip}>
                                 <CartesianGrid stroke="#ccc" />
@@ -275,10 +262,8 @@ function Kanban() {
                             </ComposedChart >
                         </ResponsiveContainer>
                     </div>
-                    {/* </div>
-            <div className="mt-5"> */}
-                    <div style={{ width: "100%", height: "300px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
 
+                    <div style={{ width: "100%", height: "300px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
                         <ResponsiveContainer>
                             <ComposedChart data={throughput}>
                                 <CartesianGrid stroke="#ccc" />
