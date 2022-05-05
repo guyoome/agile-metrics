@@ -1,0 +1,8 @@
+.card-tooltip-text {
+    color: rgba(0, 0, 0, 0.6);
+    visibility: hidden;
+}
+
+.card-tooltip:hover .card-tooltip-text {
+    visibility: visible;
+}

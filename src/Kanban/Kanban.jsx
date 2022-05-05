@@ -229,11 +229,10 @@ function Kanban() {
                     selected={(e) => setTimeframe(e)} />
             </div>
 
-            <div className="mt-5" style={{display:"flex", columnGap:"36px"}}>
-                <Card.Number title="Cycle Time" value={avgCycleTime} unit="days"/>
-                <Card.Number title="Wip" value={avgWip} unit="items"/>
-                <Card.Number title="Throughput" value={avgThroughput} unit="items"/>
-                {/* Cycle Time: {avgCycleTime} | Wip: {avgWip} | Throughput: {avgThroughput} */}
+            <div className="mt-5" style={{ display: "flex", columnGap: "36px" }}>
+                <Card.Number title="Cycle Time" value={avgCycleTime} unit="days" tooltip="Average time an item take from inProgress to Done" />
+                <Card.Number title="Wip" value={avgWip} unit="items" tooltip="Average number of items in progress" />
+                <Card.Number title="Throughput" value={avgThroughput} unit="items" tooltip="Average number of items done per weeks" />
             </div>
 
             <div className="mt-5">
