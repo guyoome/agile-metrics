@@ -225,7 +225,7 @@ function Kanban() {
             <h1>🧜‍♂️ Kanban</h1>
             <Button.SaveAsPNG icon="💾" text="Download Dashboard" node="kanban-dashboard" fileName="kanban-dashboard" />
 
-            <div id='kanban-dashboard' style={{padding:"0 0 20px 0"}}>
+            <div id='kanban-dashboard' style={{ padding: "0 0 20px 0" }}>
                 <div className="mt-5">
                     <h3>Timeframe</h3>
                     <Button.Multiple default inputs={timeframeInput}
@@ -240,50 +240,58 @@ function Kanban() {
                     {/* </div>
 
             <div className="mt-5"> */}
-                    <ResponsiveContainer height={280} className="layout-item" >
-                        <ComposedChart data={cumulativeFlow}>
-                            <CartesianGrid stroke="#ccc" />
-                            <Tooltip />
-                            <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+                    <div style={{ width: "100%", height: "250px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
+                        <ResponsiveContainer className="layout-item" >
+                            <ComposedChart data={cumulativeFlow}>
+                                <CartesianGrid stroke="#ccc" />
+                                <Tooltip />
+                                <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
 
-                            <Area type="monotone" dataKey="5" stroke="#FF5630" fillOpacity={1} fill="#FF5630" stackId="1" isAnimationActive={false} />
-                            <Area type="monotone" dataKey="4" stroke="#00B8D9" fillOpacity={1} fill="#00B8D9" stackId="1" isAnimationActive={false} />
-                            <Area type="monotone" dataKey="3" stroke="#36B37E" fillOpacity={1} fill="#36B37E" stackId="1" isAnimationActive={false} />
-                            <Area type="monotone" dataKey="2" stroke="#6554C0" fillOpacity={1} fill="#6554C0" stackId="1" isAnimationActive={false} />
-                            <Area type="monotone" dataKey="1" stroke="#008DA6" fillOpacity={1} fill="#008DA6" stackId="1" isAnimationActive={false} />
-                            <Area type="monotone" dataKey="0" stroke="#FFAB00" fillOpacity={1} fill="#FFAB00" stackId="1" isAnimationActive={false} />
-                            <XAxis dataKey="date" />
-                            <YAxis />
-                        </ComposedChart >
-                    </ResponsiveContainer>
+                                <Area type="monotone" dataKey="5" stroke="#FF5630" fillOpacity={1} fill="#FF5630" stackId="1" isAnimationActive={false} />
+                                <Area type="monotone" dataKey="4" stroke="#00B8D9" fillOpacity={1} fill="#00B8D9" stackId="1" isAnimationActive={false} />
+                                <Area type="monotone" dataKey="3" stroke="#36B37E" fillOpacity={1} fill="#36B37E" stackId="1" isAnimationActive={false} />
+                                <Area type="monotone" dataKey="2" stroke="#6554C0" fillOpacity={1} fill="#6554C0" stackId="1" isAnimationActive={false} />
+                                <Area type="monotone" dataKey="1" stroke="#008DA6" fillOpacity={1} fill="#008DA6" stackId="1" isAnimationActive={false} />
+                                <Area type="monotone" dataKey="0" stroke="#FFAB00" fillOpacity={1} fill="#FFAB00" stackId="1" isAnimationActive={false} />
+                                <XAxis dataKey="date" />
+                                <YAxis />
+                            </ComposedChart >
+                        </ResponsiveContainer>
+                    </div>
                 </div>
                 <div className="mt-5 layout">
-                    <ResponsiveContainer height={280}>
-                        <ComposedChart data={wip}>
-                            <CartesianGrid stroke="#ccc" />
-                            <Tooltip />
-                            <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+                    <div style={{ width: "100%", height: "300px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
 
-                            <Line type="linear" dataKey="wip" stroke="#00c39e" dot={false} strokeWidth={3} isAnimationActive={false} />
-                            <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} />
-                            <XAxis dataKey="date" />
-                            <YAxis />
-                        </ComposedChart >
-                    </ResponsiveContainer>
+                        <ResponsiveContainer >
+                            <ComposedChart data={wip}>
+                                <CartesianGrid stroke="#ccc" />
+                                <Tooltip />
+                                <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+
+                                <Line type="linear" dataKey="wip" stroke="#00c39e" dot={false} strokeWidth={3} isAnimationActive={false} />
+                                <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} />
+                                <XAxis dataKey="date" />
+                                <YAxis />
+                            </ComposedChart >
+                        </ResponsiveContainer>
+                    </div>
                     {/* </div>
             <div className="mt-5"> */}
-                    <ResponsiveContainer height={280}>
-                        <ComposedChart data={throughput}>
-                            <CartesianGrid stroke="#ccc" />
-                            <Tooltip />
-                            <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+                    <div style={{ width: "100%", height: "300px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
 
-                            <Line type="linear" dataKey="throughput" stroke="#00c39e" dot={false} strokeWidth={3} isAnimationActive={false} />
-                            <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} />
-                            <XAxis dataKey="date" />
-                            <YAxis />
-                        </ComposedChart >
-                    </ResponsiveContainer>
+                        <ResponsiveContainer>
+                            <ComposedChart data={throughput}>
+                                <CartesianGrid stroke="#ccc" />
+                                <Tooltip />
+                                <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+
+                                <Line type="linear" dataKey="throughput" stroke="#00c39e" dot={false} strokeWidth={3} isAnimationActive={false} />
+                                <Line type="linear" dataKey="avg" stroke="#FF0000" dot={false} strokeWidth={3} />
+                                <XAxis dataKey="date" />
+                                <YAxis />
+                            </ComposedChart >
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
         </div>
