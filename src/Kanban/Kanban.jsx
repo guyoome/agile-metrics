@@ -229,14 +229,16 @@ function Kanban() {
                     selected={(e) => setTimeframe(e)} />
             </div>
 
-            <div className="mt-5" style={{ display: "flex", columnGap: "36px" }}>
-                <Card.Number title="Cycle Time" value={avgCycleTime} unit="days" tooltip="Average time an item take from inProgress to Done" />
-                <Card.Number title="Wip" value={avgWip} unit="items" tooltip="Average number of items in progress" />
-                <Card.Number title="Throughput" value={avgThroughput} unit="items" tooltip="Average number of items done per weeks" />
-            </div>
+            <div className="mt-5 layout" 
+            // style={{ display: "flex", columnGap: "36px" }}
+            >
+                <Card.Number className="layout-item" title="Cycle Time" value={avgCycleTime} unit="days" tooltip="Average time an item take from inProgress to Done" />
+                <Card.Number className="layout-item" title="Wip" value={avgWip} unit="items" tooltip="Average number of items in progress" />
+                <Card.Number  className="layout-item" title="Throughput" value={avgThroughput} unit="items" tooltip="Average number of items done per weeks" />
+            {/* </div>
 
-            <div className="mt-5">
-                <ResponsiveContainer height={400}>
+            <div className="mt-5"> */}
+                <ResponsiveContainer height={280} className="layout-item" >
                     <ComposedChart data={cumulativeFlow}>
                         <CartesianGrid stroke="#ccc" />
                         <Tooltip />
@@ -253,8 +255,8 @@ function Kanban() {
                     </ComposedChart >
                 </ResponsiveContainer>
             </div>
-            <div className="mt-5">
-                <ResponsiveContainer height={400}>
+            <div className="mt-5 layout">
+                <ResponsiveContainer height={280}>
                     <ComposedChart data={wip}>
                         <CartesianGrid stroke="#ccc" />
                         <Tooltip />
@@ -266,9 +268,9 @@ function Kanban() {
                         <YAxis />
                     </ComposedChart >
                 </ResponsiveContainer>
-            </div>
-            <div className="mt-5">
-                <ResponsiveContainer height={400}>
+            {/* </div>
+            <div className="mt-5"> */}
+                <ResponsiveContainer height={280}>
                     <ComposedChart data={throughput}>
                         <CartesianGrid stroke="#ccc" />
                         <Tooltip />

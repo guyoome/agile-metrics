@@ -3,7 +3,9 @@ import "./Card.css";
 
 const getContainerStyle = () => ({
     width: "250px",
+    minWidth: "250px",
     height: "250px",
+    minHeight: "250px",
     backgroundColor: "rgba(0, 0, 0, .04)",
     borderRadius: "4px",
     // lineHeight: "250px",

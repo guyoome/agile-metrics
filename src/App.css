@@ -73,3 +73,12 @@ p {
   font-weight: 400;
   color: #27416b;
 }
+
+.layout{
+  display: flex;
+  column-gap: 36px;
+}
+
+.layout-item{
+  
+}
