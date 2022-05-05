@@ -8,11 +8,9 @@ const getContainerStyle = () => ({
     minHeight: "250px",
     backgroundColor: "rgba(0, 0, 0, .04)",
     borderRadius: "4px",
-    // lineHeight: "250px",
     display: "flex",
     alignContent: "center",
     flexDirection: "column",
-    // rowGap: "20px",
     textAlign: "center",
     padding: "0 8px 0 8px"
 })
@@ -25,11 +23,6 @@ const getTitleStyle = () => ({
 
 const getValueStyle = () => ({
     fontSize: "70px",
-    // margin:"0 0 0 16px"
-})
-
-const getTooltipStyle = () => ({
-    color:"rgba(0,0,0,0.6)"
 })
 
 function Number(props) {

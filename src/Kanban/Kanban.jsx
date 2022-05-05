@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ResponsiveContainer, ComposedChart, Area, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as Button from "../components/Button";
 import * as Card from "../components/Card";
+import Teams from '../utils/Teams';
 import "../HealthCheck/HealthCheck.css";
 
 const timeframeInput = [
@@ -122,6 +123,8 @@ const avg = (arr, key) => {
 }
 
 function Kanban() {
+    const [teamTag, setTeamTag] = useState("ACID");
+    const [team, setTeam] = useState(undefined);
     const [history, setHistory] = useState({});
     const [timeline, setTimeline] = useState([]);
     const [data, setData] = useState([]);
@@ -134,24 +137,34 @@ function Kanban() {
     const [timeframe, setTimeframe] = useState(0); // x days ago
 
     useEffect(() => {
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", `Basic ${process.env.REACT_APP_ATLASSIAN_AUTH}`);
-        myHeaders.append("Cookie", `atlassian.xsrf.token=${process.env.REACT_APP_TOKEN}`);
-        myHeaders.append("Accept", "application/json")
+        if (team) {
+            console.log('🥡test string:', team);
 
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", `Basic ${process.env.REACT_APP_ATLASSIAN_AUTH}`);
+            myHeaders.append("Cookie", `atlassian.xsrf.token=${process.env.REACT_APP_TOKEN}`);
+            myHeaders.append("Accept", "application/json")
 
-        fetch(`${process.env.REACT_APP_PROXY}/spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/cumulativeflowdiagram.json?rapidViewId=74&swimlaneId=130&swimlaneId=129&columnId=688&columnId=1037&columnId=689&columnId=690&columnId=695&columnId=691&_=1651150695543`, requestOptions)
-            .then(res => res.json())
-            .then(result => {
-                setHistory(result.columnChanges);
-            })
-            .catch(error => console.log('error', error));
-    }, [])
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+            // const testString = `this is a map -> ${team.columns.map(column => (`name:${column} | id:${column}`))}`;
+            // console.log('🥡test string:', testString);
+            fetch(`${process.env.REACT_APP_PROXY}/spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/cumulativeflowdiagram.json?rapidViewId=${team.id}&swimlaneId=${team.swimlaneId}${team.columns.map(column => (`&columnId=${column.id}`)).join('')}`, requestOptions)
+                .then(res => res.json())
+                .then(result => {
+                    setHistory(result.columnChanges);
+                })
+                .catch(error => console.log('error', error));
+        }
+    }, [team])
+
+    useEffect(() => {
+        setTeam(Teams.getTeamByTag(teamTag));
+
+    }, [teamTag])
 
     useEffect(() => {
 
@@ -225,13 +238,13 @@ function Kanban() {
                     <Card.Number className="layout-item" title="Cycle Time" value={avgCycleTime} unit="days" tooltip="Average time an item take from inProgress to Done" />
                     <Card.Number className="layout-item" title="Wip" value={avgWip} unit="items" tooltip="Average number of items in progress" />
                     <Card.Number className="layout-item" title="Throughput" value={avgThroughput} unit="items" tooltip="Average number of items done per weeks" />
-                
+
                     <div style={{ width: "100%", height: "250px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
                         <ResponsiveContainer className="layout-item" >
                             <ComposedChart data={cumulativeFlow}>
                                 <CartesianGrid stroke="#ccc" />
                                 <Tooltip />
-                                <Legend verticalAlign="top" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+                                <Legend verticalAlign="top" layout="vertical" align="center" wrapperStyle={{ paddingLeft: "10px" }} />
 
                                 <Area type="monotone" dataKey="5" stroke="#FF5630" fillOpacity={1} fill="#FF5630" stackId="1" isAnimationActive={false} />
                                 <Area type="monotone" dataKey="4" stroke="#00B8D9" fillOpacity={1} fill="#00B8D9" stackId="1" isAnimationActive={false} />

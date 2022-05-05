@@ -48,6 +48,36 @@ const TEAMS = [
         id: "29",
         swimlaneId: "52",
         columnId: ["231", "233"],
+    },
+    {
+        tag: "ACID",
+        name: "ACID",
+        type: "kanban",
+        id: "74",
+        swimlaneId: "130",
+        columns: [
+            { name: "Backlog", id: "688", active: false },
+            { name: "To Be Refined", id: "1037", active: false },
+            { name: "To Do", id: "689", active: false },
+            { name: "In Progress", id: "690", active: true },
+            { name: "To Be Reviewed", id: "695", active: true },
+            { name: "Done", id: "691", active: false },
+        ],
+    },
+    {
+        tag: "TKF",
+        name: "Yumiko Taskforce",
+        type: "kanban",
+        id: "77",
+        swimlaneId: "140",
+        columns: [
+            { name: "Backlog", id: "828", active: false },
+            { name: "To Do", id: "829", active: false },
+            { name: "In Progress", id: "830", active: true },
+            { name: "To Be Reviewed", id: "834", active: true },
+            { name: "To Be Released", id: "892", active: true },
+            { name: "Done", id: "831", active: false },
+        ],
     }
 
 ]
