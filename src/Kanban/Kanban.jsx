@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ResponsiveContainer, ComposedChart, Area, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as Button from "../components/Button";
 import * as Card from "../components/Card";
+import * as Input from "../components/Input";
 import Teams from '../utils/Teams';
 import "../HealthCheck/HealthCheck.css";
 
@@ -73,7 +74,7 @@ const editData = (history, timeline) => {
 
 }
 
-const editWip = (data, timeframe) => {
+const editWip = (data) => {
     const arr = [];
 
     data.forEach(element => {
@@ -123,7 +124,7 @@ const avg = (arr, key) => {
 }
 
 function Kanban() {
-    const [teamTag, setTeamTag] = useState("ACID");
+    const [teamTag, setTeamTag] = useState("");
     const [team, setTeam] = useState(undefined);
     const [history, setHistory] = useState({});
     const [timeline, setTimeline] = useState([]);
@@ -138,8 +139,6 @@ function Kanban() {
 
     useEffect(() => {
         if (team) {
-            console.log('🥡test string:', team);
-
             var myHeaders = new Headers();
             myHeaders.append("Authorization", `Basic ${process.env.REACT_APP_ATLASSIAN_AUTH}`);
             myHeaders.append("Cookie", `atlassian.xsrf.token=${process.env.REACT_APP_TOKEN}`);
@@ -150,8 +149,7 @@ function Kanban() {
                 headers: myHeaders,
                 redirect: 'follow'
             };
-            // const testString = `this is a map -> ${team.columns.map(column => (`name:${column} | id:${column}`))}`;
-            // console.log('🥡test string:', testString);
+
             fetch(`${process.env.REACT_APP_PROXY}/spolio.atlassian.net/rest/greenhopper/1.0/rapid/charts/cumulativeflowdiagram.json?rapidViewId=${team.id}&swimlaneId=${team.swimlaneId}${team.columns.map(column => (`&columnId=${column.id}`)).join('')}`, requestOptions)
                 .then(res => res.json())
                 .then(result => {
@@ -223,12 +221,17 @@ function Kanban() {
         <div style={{ textAlign: "start" }}>
 
             <h1>🧜‍♂️ Kanban</h1>
+            <div className='layout mt-5'>
+                <Input.Dropdown default="--Choose a team--"
+                    options={Teams.getTagsByType("kanban")}
+                    value={(e) => { setTeamTag(e) }} />
 
-            <Button.SaveAsPNG icon="💾" text="Download Dashboard" node="kanban-dashboard" fileName="kanban-dashboard" />
-
+                <Button.SaveAsPNG icon="💾" text="Download Dashboard" node="kanban-dashboard" fileName="kanban-dashboard" />
+            </div>
             <div id='kanban-dashboard' style={{ padding: "0 0 20px 0" }}>
 
                 <div className="mt-5">
+
                     <h3>Timeframe</h3>
                     <Button.Multiple default inputs={timeframeInput}
                         selected={(e) => setTimeframe(e)} />
