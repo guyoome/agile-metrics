@@ -2,6 +2,7 @@ const TEAMS = [
     {
         tag: "CMP",
         name: "Loyalty",
+        type: "scrum",
         id: "6",
         swimlaneId: "7",
         columnId: ["34", "36"],
@@ -9,6 +10,7 @@ const TEAMS = [
     {
         tag: "ORC",
         name: "Journey",
+        type: "scrum",
         id: "75",
         swimlaneId: "131",
         columnId: ["708", "710"],
@@ -17,6 +19,7 @@ const TEAMS = [
     {
         tag: "SCF",
         name: "Marketing Auto",
+        type: "scrum",
         id: "26",
         swimlaneId: "45",
         columnId: ["199", "201"],
@@ -24,6 +27,7 @@ const TEAMS = [
     {
         tag: "MW",
         name: "Mobile Wallet",
+        type: "scrum",
         id: "72",
         swimlaneId: "126",
         columnId: ["663", "665"],
@@ -31,6 +35,7 @@ const TEAMS = [
     {
         tag: "DATA",
         name: "Data",
+        type: "scrum",
         id: "70",
         swimlaneId: "122",
         columnId: ["636", "638"],
@@ -38,6 +43,7 @@ const TEAMS = [
     {
         tag: "OPS",
         name: "Tech Ops",
+        type: "scrum",
         id: "28",
         swimlaneId: "51",
         columnId: ["225", "227"],
@@ -45,6 +51,7 @@ const TEAMS = [
     {
         tag: "SHT",
         name: "Shanghai Team",
+        type: "scrum",
         id: "29",
         swimlaneId: "52",
         columnId: ["231", "233"],
