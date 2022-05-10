@@ -1,3 +1,4 @@
+
 const editTimeline = (startDate) => {
     const start = parseInt(startDate)
     let obj = {}
@@ -11,10 +12,16 @@ const editTimeline = (startDate) => {
     return obj;
 }
 
+/**
+ * Return a timestamp in the format needed: JJ/MM/AAAA
+ * @param {Number} timestamp - timestamp in ms
+ * @returns {String} A string is returned
+ */
 const generateDateFormat = (timestamp) => {
     const date = new Date(timestamp);
     return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
 }
+
 
 const editData = (history, timeline) => {
     const arr = []
@@ -87,6 +94,12 @@ const editThroughput = (data) => {
 
 }
 
+/**
+ * Return an Array with a new attribute containing the average
+ * @param {Array[Object]} arr - Array you want a copy with average of it - [{..., key}]
+ * @param {string} key - Key of the attribute you want to calculate average
+ * @returns {Array} An Array with an average attribute is returned - [{..., key, avgOfKey}]
+ */
 const avg = (arr, key) => {
     const arrCopy = arr.slice();
 
