@@ -17,6 +17,15 @@ const Teams = {
             }
         });
         return teamByTag;
+    },
+    getTagsByType: function (type) {
+        const tags = [];
+        this.list.forEach(team => {
+            if (team.type === type) {
+                tags.push(team.tag)
+            }
+        });
+        return tags;
     }
 }
 
