@@ -57,13 +57,17 @@ function Kanban() {
     }, [teamTag])
 
     useEffect(() => {
+        if (team !== undefined) {
+            setTimeline(kanban.editTimeline(Object.keys(history)[0], team.columns));
 
-        setTimeline(kanban.editTimeline(Object.keys(history)[0]));
+        }
 
     }, [history])
 
     useEffect(() => {
-        setData(kanban.editData(history, timeline));
+        if (team !== undefined) {
+            setData(kanban.editData(history, timeline, team.columns));
+        }
 
     }, [timeline])
 
@@ -75,8 +79,10 @@ function Kanban() {
     useEffect(() => {
         // Timeframe is handle by cumulativeFlow
         // wip don't need previous values to calculate the actual one in the timeframe
-        const globalWip = kanban.editWip(cumulativeFlow);
-        setWip(kanban.avg(globalWip, "wip"));
+        if (team !== undefined) {
+            const globalWip = kanban.editWip(cumulativeFlow, team.columns);
+            setWip(kanban.avg(globalWip, "wip"));
+        }
 
     }, [cumulativeFlow])
 
@@ -88,9 +94,11 @@ function Kanban() {
     }, [wip])
 
     useEffect(() => {
-        const globalThroughput = kanban.editThroughput(data).slice(-timeframe / 7); // /7 because it's week not days
-        setThroughput(kanban.avg(globalThroughput, "throughput"));
+        if (team !== undefined && team) {
+            const globalThroughput = kanban.editThroughput(data, team.columns).slice(-timeframe / 7); // /7 because it's week not days
+            setThroughput(kanban.avg(globalThroughput, "throughput"));
 
+        }
     }, [data, timeframe])
 
     useEffect(() => {

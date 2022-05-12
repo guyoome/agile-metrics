@@ -85,8 +85,21 @@ const TEAMS = [
             { name: "To Be Released", id: "892", active: true },
             { name: "Done", id: "831", active: false },
         ],
+    },
+    {
+        tag: "UX/UI",
+        name: "User eXperience/User Interface",
+        type: "kanban",
+        id: "62",
+        swimlaneId: "112",
+        columns: [
+            { name: "Backlog", id: "542", active: false },
+            { name: "To Do", id: "543", active: false },
+            { name: "In Progress", id: "544", active: true },
+            { name: "To Be Tested", id: "751", active: true },
+            { name: "Done", id: "545", active: false },
+        ],
     }
-
 ]
 
 export default TEAMS;
