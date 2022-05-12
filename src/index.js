@@ -8,11 +8,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Burnup from './Burnup/Burnup';
-import HealthCheck from './HealthCheck/HealthCheck';
-import GlobalHealthCheck from './HealthCheck/GlobalHealthCheck';
-import Commitment from './Velocity/Commitment';
-import Kanban from './Kanban/Kanban';
+import Burnup from './Pages/Burnup/Burnup';
+import HealthCheck from './Pages/HealthCheck/HealthCheck';
+import GlobalHealthCheck from './Pages/HealthCheck/GlobalHealthCheck';
+import Commitment from './Pages/Velocity/Commitment';
+import Kanban from './Pages/Kanban/Kanban';
 
 
 ReactDOM.render(

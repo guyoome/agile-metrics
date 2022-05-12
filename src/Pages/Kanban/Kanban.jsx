@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ResponsiveContainer, ComposedChart, Area, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
-import * as Button from "../components/Button";
-import * as Card from "../components/Card";
-import * as Input from "../components/Input";
+import * as Button from "../../components/Button";
+import * as Card from "../../components/Card";
+import * as Input from "../../components/Input";
 import * as kanban from "./Kanban.logic";
-import Teams from '../utils/Teams';
+import Teams from '../../utils/Teams';
 import "../HealthCheck/HealthCheck.css";
 
 const timeframeInput = [

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Teams from '../utils/Teams';
-import * as Button from "../components/Button";
+import Teams from '../../utils/Teams';
+import * as Button from "../../components/Button";
 import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
-import * as Input from "../components/Input";
+import * as Input from "../../components/Input";
 import "../HealthCheck/HealthCheck.css";
 
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import * as Input from "../components/Input";
-import * as Button from "../components/Button";
-import Teams from '../utils/Teams';
+import * as Input from "../../components/Input";
+import * as Button from "../../components/Button";
+import Teams from '../../utils/Teams';
 import { ResponsiveContainer, ComposedChart, Bar, LabelList, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import * as burnup from "./Burnup.logic";
 

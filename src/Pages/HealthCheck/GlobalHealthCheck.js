@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import * as Button from "../components/Button";
+import * as Button from "../../components/Button";
 import "./HealthCheck.css";
 
 import glossary from "./glossary.json";
