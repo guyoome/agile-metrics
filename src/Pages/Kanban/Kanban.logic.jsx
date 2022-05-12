@@ -1,4 +1,18 @@
 
+const getTrend = (arr, key) => {
+    const firstValue = arr[0][key];
+    const lastValue = arr[arr.length - 1][key];
+    let trend = "🔼"; 
+
+    if ((lastValue - firstValue) < 0) {
+        trend = "🔽";
+    } else if ((lastValue - firstValue) === 0) {
+        trend = "⏸";
+    }
+
+    return trend;
+}
+
 const editTimeline = (startDate, columns) => {
     const start = parseInt(startDate)
     let obj = {}
@@ -141,5 +155,6 @@ export {
     editData,
     editWip,
     editThroughput,
-    avg
+    avg,
+    getTrend
 }

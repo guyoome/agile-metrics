@@ -15,20 +15,6 @@ const timeframeInput = [
     { text: "Past 6 months", value: 183 }
 ]
 
-const getTrend = (arr, key) => {
-    const firstValue = arr[0][key];
-    const lastValue = arr[arr.length - 1][key];
-    let trend = "🔼"; 
-
-    if ((lastValue - firstValue) < 0) {
-        trend = "🔽";
-    } else if ((lastValue - firstValue) === 0) {
-        trend = "⏸";
-    }
-
-    return trend;
-}
-
 function Kanban() {
     const [teamTag, setTeamTag] = useState("");
     const [team, setTeam] = useState(undefined);
@@ -112,7 +98,7 @@ function Kanban() {
 
     useEffect(() => {
         if (wip[0] !== undefined) {
-            setWipTrend(getTrend(wip, "wip"));
+            setWipTrend(kanban.getTrend(wip, "wip"));
         }
     }, [wip])
 
@@ -133,7 +119,7 @@ function Kanban() {
 
     useEffect(() => {
         if (throughput[0] !== undefined) {
-            setThroughputTrend(getTrend(throughput, "throughput"));
+            setThroughputTrend(kanban.getTrend(throughput, "throughput"));
         }
 
     }, [throughput])
