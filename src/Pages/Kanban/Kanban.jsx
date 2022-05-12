@@ -15,6 +15,20 @@ const timeframeInput = [
     { text: "Past 6 months", value: 183 }
 ]
 
+const getTrend = (arr, key) => {
+    const firstValue = arr[0][key];
+    const lastValue = arr[arr.length - 1][key];
+    let trend = "🔼"; 
+
+    if ((lastValue - firstValue) < 0) {
+        trend = "🔽";
+    } else if ((lastValue - firstValue) === 0) {
+        trend = "⏸";
+    }
+
+    return trend;
+}
+
 function Kanban() {
     const [teamTag, setTeamTag] = useState("");
     const [team, setTeam] = useState(undefined);
@@ -23,9 +37,11 @@ function Kanban() {
     const [data, setData] = useState([]);
     const [cumulativeFlow, setCumulativeFlow] = useState([]);
     const [wip, setWip] = useState([]);
-    const [avgWip, setAvgWip] = useState(0);
+    const [wipAvg, setWipAvg] = useState(0);
+    const [wipTrend, setWipTrend] = useState("");
     const [throughput, setThroughput] = useState(0);
-    const [avgThroughput, setAvgThroughput] = useState(0);
+    const [throughputAvg, setThroughputAvg] = useState(0);
+    const [throughputTrend, setThroughputTrend] = useState("");
     const [avgCycleTime, setAvgCycleTime] = useState(0);
     const [timeframe, setTimeframe] = useState(0); // x days ago
 
@@ -88,9 +104,17 @@ function Kanban() {
 
     useEffect(() => {
         if (wip[0] !== undefined) {
-            setAvgWip(wip[0].avg);
+            setWipAvg(wip[0].avg);
+
         }
 
+    }, [wip])
+
+    useEffect(() => {
+        if (wip[0] !== undefined) {
+            // console.log("💌:", wip)
+            setWipTrend(getTrend(wip, "wip"));
+        }
     }, [wip])
 
     useEffect(() => {
@@ -103,18 +127,25 @@ function Kanban() {
 
     useEffect(() => {
         if (throughput[0] !== undefined) {
-            setAvgThroughput(throughput[0].avg);
+            setThroughputAvg(throughput[0].avg);
         }
 
     }, [throughput])
 
     useEffect(() => {
-        if (avgWip && avgThroughput) {
-            const littleLaw = avgWip / (avgThroughput / 7);
+        if (throughput[0] !== undefined) {
+            setThroughputTrend(getTrend(throughput, "throughput"));
+        }
+
+    }, [throughput])
+
+    useEffect(() => {
+        if (wipAvg && throughputAvg) {
+            const littleLaw = wipAvg / (throughputAvg / 7);
             setAvgCycleTime(Math.round(littleLaw * 100) / 100);
         }
 
-    }, [avgWip, avgThroughput])
+    }, [wipAvg, throughputAvg])
 
 
     return (
@@ -139,8 +170,8 @@ function Kanban() {
 
                 <div className="mt-5 layout">
                     <Card.Number className="layout-item" title="Cycle Time" value={avgCycleTime} unit="days" tooltip="Average time an item take from inProgress to Done" />
-                    <Card.Number className="layout-item" title="Wip" value={avgWip} unit="items" tooltip="Average number of items in progress" />
-                    <Card.Number className="layout-item" title="Throughput" value={avgThroughput} unit="items" tooltip="Average number of items done per weeks" />
+                    <Card.Number className="layout-item" title={`Wip ${wipTrend}`} value={wipAvg} unit="items" tooltip="Average number of items in progress" />
+                    <Card.Number className="layout-item" title={`Throughput ${throughputTrend}`} value={throughputAvg} unit="items" tooltip="Average number of items done per weeks" />
 
                     <div style={{ width: "100%", height: "250px", backgroundColor: "rgba(0, 0, 0, .04)", padding: "16px 16px 0 0", borderRadius: "4px" }}>
                         <ResponsiveContainer className="layout-item" >
