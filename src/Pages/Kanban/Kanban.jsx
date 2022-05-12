@@ -112,7 +112,6 @@ function Kanban() {
 
     useEffect(() => {
         if (wip[0] !== undefined) {
-            // console.log("💌:", wip)
             setWipTrend(getTrend(wip, "wip"));
         }
     }, [wip])
