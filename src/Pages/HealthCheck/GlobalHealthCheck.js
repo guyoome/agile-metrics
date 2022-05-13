@@ -209,7 +209,7 @@ function HealthCheck() {
 
     return (
         <div>
-            <div style={getLayoutStyle()}>
+            <div style={getLayoutStyle()} className="mt-5">
                 <div>
 
                     <input type="text" placeholder='Table Name'

@@ -167,7 +167,7 @@ function Burnup() {
 
     return (
         <div>
-            <div className="flex-container">
+            <div className="flex-container mt-5">
 
                 <div className="flex-item">
                     <Input.Dropdown default="--Choose a team--"
