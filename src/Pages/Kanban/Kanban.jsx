@@ -83,7 +83,10 @@ function Kanban() {
     }, [timeline])
 
     useEffect(() => {
-        setCumulativeFlow(data.slice(-timeframe));
+        if (team !== undefined && team) {
+            setCumulativeFlow(kanban.editCumulativeFlow(data, team.columns, timeframe))
+        }
+        // setCumulativeFlow(data.slice(-timeframe));
 
     }, [data, timeframe])
 
@@ -175,7 +178,7 @@ function Kanban() {
                                 {team && team.columns.slice(0).reverse().map((column, id) => (
                                     <Area key={id} type="monotone" dataKey={column.name} stroke={colors[id]} fillOpacity={1} fill={colors[id]} stackId="1" isAnimationActive={false} />
                                 ))}
-                                <Legend verticalAlign="middle" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "8px" }}/>
+                                <Legend verticalAlign="middle" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "8px" }} />
                                 <XAxis dataKey="date" />
                                 <YAxis />
                             </ComposedChart >

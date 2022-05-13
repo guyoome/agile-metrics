@@ -61,7 +61,7 @@ const editData = (history, timeline, columns) => {
             arr.push({ ...element, date: key })
         }
     }
-    
+
     // populate column
     arr.forEach((element, index) => {
         const column = element.column;
@@ -162,11 +162,39 @@ const avg = (arr, key) => {
     return arrCopy;
 }
 
+const editCumulativeFlow = (arr, columns, timeframe) => {
+    let arrCopy = structuredClone(arr);
+    arrCopy = arrCopy.slice(-timeframe);
+
+    // get initial values
+    const initialValues = {};
+    columns.forEach(column => {
+        initialValues[column.name] = arrCopy[0][column.name]
+    });
+
+
+    for (let day = 0; day < arrCopy.length; day++) {
+        for (let j = 0; j < columns.length; j++) {
+            const column = columns[j];
+            if (!column.active) {
+                arrCopy[day][column.name] -= initialValues[column.name];
+                if (arrCopy[day][column.name] < 0) {
+                    arrCopy[day][column.name] = 0;
+                }
+            }
+        }
+        // arrCopy[day][columns[columns.length-1].name] -= initialValues[columns[columns.length-1].name];
+    }
+
+    return arrCopy;
+}
+
 export {
     editTimeline,
     editData,
     editWip,
     editThroughput,
     avg,
-    getTrend
+    getTrend,
+    editCumulativeFlow
 }
