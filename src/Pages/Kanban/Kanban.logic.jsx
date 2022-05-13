@@ -2,7 +2,7 @@
 const getTrend = (arr, key) => {
     const firstValue = arr[0][key];
     const lastValue = arr[arr.length - 1][key];
-    let trend = "🔼"; 
+    let trend = "🔼";
 
     if ((lastValue - firstValue) < 0) {
         trend = "🔽";
@@ -61,13 +61,15 @@ const editData = (history, timeline, columns) => {
             arr.push({ ...element, date: key })
         }
     }
-
+    // console.log("💌Array", arr)
     // populate column
     arr.forEach((element, index) => {
         const column = element.column;
         delete element.column;
         arr[index] = { ...element, ...column }
     });
+
+    // console.log("💥Array", arr)
 
     // Do the Sum for the scope: [0,1,2,0,1] => [0,1,3,3,4]
 
@@ -78,6 +80,19 @@ const editData = (history, timeline, columns) => {
 
         }
     }
+
+    // change column naming
+
+    for (let i = 0; i < arr.length; i++) {
+        const day = arr[i];
+        for (let j = 0; j < columns.length; j++) {
+            const status = columns[j];
+            Object.defineProperty(arr[i], status.name,
+                Object.getOwnPropertyDescriptor(arr[i], j));
+            delete arr[i][j];
+        }
+    }
+    console.log("💥Array", arr)
 
     return arr;
 

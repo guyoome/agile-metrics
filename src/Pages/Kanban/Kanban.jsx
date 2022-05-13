@@ -13,6 +13,15 @@ const timeframeInput = [
     { text: "Past month", value: 31 },
     { text: "Past 3 months", value: 92 },
     { text: "Past 6 months", value: 183 }
+];
+
+const colors = [
+    "#FF5630",
+    "#00B8D9",
+    "#36B37E",
+    "#6554C0",
+    "#008DA6",
+    "#FFAB00"
 ]
 
 function Kanban() {
@@ -163,14 +172,10 @@ function Kanban() {
                             <ComposedChart data={cumulativeFlow}>
                                 <CartesianGrid stroke="#ccc" />
                                 <Tooltip />
-                                <Legend verticalAlign="top" layout="vertical" align="center" wrapperStyle={{ paddingLeft: "10px" }} />
-
-                                <Area type="monotone" dataKey="5" stroke="#FF5630" fillOpacity={1} fill="#FF5630" stackId="1" isAnimationActive={false} />
-                                <Area type="monotone" dataKey="4" stroke="#00B8D9" fillOpacity={1} fill="#00B8D9" stackId="1" isAnimationActive={false} />
-                                <Area type="monotone" dataKey="3" stroke="#36B37E" fillOpacity={1} fill="#36B37E" stackId="1" isAnimationActive={false} />
-                                <Area type="monotone" dataKey="2" stroke="#6554C0" fillOpacity={1} fill="#6554C0" stackId="1" isAnimationActive={false} />
-                                <Area type="monotone" dataKey="1" stroke="#008DA6" fillOpacity={1} fill="#008DA6" stackId="1" isAnimationActive={false} />
-                                <Area type="monotone" dataKey="0" stroke="#FFAB00" fillOpacity={1} fill="#FFAB00" stackId="1" isAnimationActive={false} />
+                                {team && team.columns.slice(0).reverse().map((column, id) => (
+                                    <Area key={id} type="monotone" dataKey={column.name} stroke={colors[id]} fillOpacity={1} fill={colors[id]} stackId="1" isAnimationActive={false} />
+                                ))}
+                                <Legend verticalAlign="middle" layout="vertical" align="right" wrapperStyle={{ paddingLeft: "8px" }}/>
                                 <XAxis dataKey="date" />
                                 <YAxis />
                             </ComposedChart >
