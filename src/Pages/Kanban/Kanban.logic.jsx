@@ -61,15 +61,13 @@ const editData = (history, timeline, columns) => {
             arr.push({ ...element, date: key })
         }
     }
-    // console.log("💌Array", arr)
+    
     // populate column
     arr.forEach((element, index) => {
         const column = element.column;
         delete element.column;
         arr[index] = { ...element, ...column }
     });
-
-    // console.log("💥Array", arr)
 
     // Do the Sum for the scope: [0,1,2,0,1] => [0,1,3,3,4]
 
@@ -92,7 +90,6 @@ const editData = (history, timeline, columns) => {
             delete arr[i][j];
         }
     }
-    console.log("💥Array", arr)
 
     return arr;
 
@@ -107,7 +104,7 @@ const editWip = (data, columns) => {
         for (let i = 0; i < columns.length; i++) {
             const column = columns[i];
             if (column.active) {
-                wip += element[i]
+                wip += element[column.name]
             }
         }
 
@@ -125,13 +122,13 @@ const editThroughput = (data, columns) => {
     // create arr with obj { start:done, end:done } by week (7days)
     let mem = 0;
 
-    const doneIndex = columns.length - 1; // -1 for max id in the array
+    const doneColumn = columns[columns.length - 1]; // -1 for max id in the array
 
     data.forEach((element, id) => {
         if (id % 7 === 0) {
 
-            arr.push({ throughput: element[doneIndex] - mem, date: element.date });
-            mem = element[doneIndex];
+            arr.push({ throughput: element[doneColumn.name] - mem, date: element.date });
+            mem = element[doneColumn.name];
         }
     });
 
