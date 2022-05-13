@@ -183,7 +183,6 @@ const editCumulativeFlow = (arr, columns, timeframe) => {
                 }
             }
         }
-        // arrCopy[day][columns[columns.length-1].name] -= initialValues[columns[columns.length-1].name];
     }
 
     return arrCopy;
